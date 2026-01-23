@@ -1,0 +1,12 @@
+[general]
+import = [
+   "~/.config/alacritty/dank-theme.toml"
+]
+
+[font]
+normal = { family = "Hasklug Nerd Font", style = "Regular" }
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\u0001B\r"
