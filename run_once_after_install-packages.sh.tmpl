@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# chezmoi:template: hash-before-contents
+# This script runs once after chezmoi apply to install system packages via Ansible
+# The hash comment above ensures it only runs once per machine (not on every apply)
+
+set -euo pipefail
+
+ANSIBLE_DIR="{{ .chezmoi.homeDir }}/.local/share/ansible-setup"
+
+echo ""
+echo "======================================"
+echo "  Package Installation (Ansible)"
+echo "======================================"
+echo ""
+
+if [[ ! -d "$ANSIBLE_DIR" ]]; then
+    echo "ERROR: Ansible setup directory not found at $ANSIBLE_DIR"
+    exit 1
+fi
+
+# Prompt user - they may want to skip on subsequent runs or partial setups
+read -p "Install system packages and Flatpaks via Ansible? [Y/n] " -n 1 -r
+echo ""
+
+if [[ $REPLY =~ ^[Nn]$ ]]; then
+    echo "Skipping package installation."
+    echo "You can run it manually later with: ~/.local/share/ansible-setup/bootstrap.sh"
+    exit 0
+fi
+
+echo ""
+exec "$ANSIBLE_DIR/bootstrap.sh"

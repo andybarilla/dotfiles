@@ -1,0 +1,41 @@
+# Package lists for Fedora setup
+# Edit this file to add/remove packages
+
+# Packages available in Fedora repositories
+fedora_packages:
+  - btop
+  - chezmoi
+  - dgop
+  - distrobox
+  - dms
+  - dms-greeter
+  - fzf
+  - gh
+  - ghostty
+  - khal
+  - libappindicator
+  - matugen
+  - neovim
+  - niri
+  - pavucontrol
+  - podman-compose
+  - podman-docker
+  - python3-vdirsyncer
+  - python3-websocket-client
+  - ripgrep
+  - swaybg
+  - vdirsyncer
+  - vim-default-editor
+  - weechat
+
+# Packages from external repositories (repos must be configured first)
+external_packages:
+  - 1password
+  - brave-browser
+  - code
+  - lens
+
+# RPMs to download and install directly
+remote_rpms:
+  - name: nautilus-dropbox
+    url: https://www.dropbox.com/download?dl=packages/fedora/nautilus-dropbox-2024.04.17-1.fc43.x86_64.rpm

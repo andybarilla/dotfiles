@@ -1,0 +1,21 @@
+# Flatpak configuration
+# Edit this file to add/remove Flatpak apps
+
+# Flatpak remotes to configure
+flatpak_remotes:
+  - name: flathub
+    url: https://dl.flathub.org/repo/flathub.flatpakrepo
+
+# Flatpak applications to install
+flatpak_apps:
+  - com.autoclaude.ui
+  - com.fastmail.Fastmail
+  - com.getpostman.Postman
+  - com.github.tchx84.Flatseal
+  - com.plexamp.Plexamp
+  - com.ranfdev.DistroShelf
+  - com.slack.Slack
+  - com.synology.SynologyDrive
+  - com.ticktick.TickTick
+  - md.obsidian.Obsidian
+  - org.remmina.Remmina

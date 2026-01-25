@@ -1,0 +1,23 @@
+# Package installation for traditional Fedora (using dnf)
+
+- name: Install packages from Fedora repos
+  ansible.builtin.dnf:
+    name: "{{ fedora_packages }}"
+    state: present
+  become: true
+
+- name: Install packages from external repos
+  ansible.builtin.dnf:
+    name: "{{ external_packages }}"
+    state: present
+  become: true
+
+- name: Install remote RPMs
+  ansible.builtin.dnf:
+    name: "{{ item.url }}"
+    state: present
+    disable_gpg_check: true
+  loop: "{{ remote_rpms }}"
+  loop_control:
+    label: "{{ item.name }}"
+  become: true

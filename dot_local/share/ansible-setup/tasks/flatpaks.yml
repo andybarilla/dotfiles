@@ -1,0 +1,20 @@
+# Flatpak setup tasks
+
+- name: Add Flatpak remotes
+  community.general.flatpak_remote:
+    name: "{{ item.name }}"
+    flatpakrepo_url: "{{ item.url }}"
+    state: present
+  loop: "{{ flatpak_remotes }}"
+  loop_control:
+    label: "{{ item.name }}"
+  become: true
+
+- name: Install Flatpak applications
+  community.general.flatpak:
+    name: "{{ item }}"
+    state: present
+    remote: flathub
+  loop: "{{ flatpak_apps }}"
+  loop_control:
+    label: "{{ item }}"

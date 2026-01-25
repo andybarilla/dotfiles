@@ -1,0 +1,53 @@
+---
+# Fedora workstation setup playbook
+# Works with both traditional and atomic (Silverblue/Kinoite) Fedora
+#
+# Usage:
+#   ansible-playbook playbook.yml -K
+#
+# Or use the bootstrap script:
+#   ./bootstrap.sh
+
+- name: Setup Fedora workstation
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  vars_files:
+    - vars/packages.yml
+    - vars/repo_keys.yml
+    - vars/flatpaks.yml
+
+  pre_tasks:
+    - name: Detect if running on atomic Fedora
+      ansible.builtin.set_fact:
+        is_atomic: "{{ ansible_facts['pkg_mgr'] == 'rpm-ostree' or (ansible_facts['distribution'] == 'Fedora' and (ansible_facts['distribution_variant'] | default('')) in ['Silverblue', 'Kinoite', 'Sericea', 'Onyx']) }}"
+
+    - name: Check for ostree-booted
+      ansible.builtin.stat:
+        path: /run/ostree-booted
+      register: ostree_booted
+
+    - name: Set atomic fact from ostree-booted file
+      ansible.builtin.set_fact:
+        is_atomic: true
+      when: ostree_booted.stat.exists
+
+    - name: Display detected system type
+      ansible.builtin.debug:
+        msg: "System type: {{ 'Atomic (rpm-ostree)' if is_atomic else 'Traditional (dnf)' }}"
+
+  tasks:
+    - name: Setup external repositories
+      ansible.builtin.include_tasks: tasks/repos.yml
+
+    - name: Install packages (traditional Fedora)
+      ansible.builtin.include_tasks: tasks/packages-dnf.yml
+      when: not is_atomic
+
+    - name: Install packages (atomic Fedora)
+      ansible.builtin.include_tasks: tasks/packages-ostree.yml
+      when: is_atomic
+
+    - name: Setup Flatpak applications
+      ansible.builtin.include_tasks: tasks/flatpaks.yml

@@ -1,0 +1,5 @@
+[lens-repo]
+name=Lens Repo
+baseurl=https://downloads.k8slens.dev/rpm/packages
+enabled=1
+gpgcheck=0

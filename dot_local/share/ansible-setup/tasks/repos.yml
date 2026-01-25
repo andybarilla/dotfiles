@@ -1,0 +1,24 @@
+# Tasks for setting up external repositories
+
+- name: Import GPG keys for external repos
+  ansible.builtin.rpm_key:
+    key: "{{ item.url }}"
+    state: present
+  loop: "{{ repo_gpg_keys }}"
+  loop_control:
+    label: "{{ item.name }}"
+  become: true
+
+- name: Copy repository files
+  ansible.builtin.copy:
+    src: "repos/{{ item }}"
+    dest: "/etc/yum.repos.d/{{ item }}"
+    owner: root
+    group: root
+    mode: "0644"
+  loop:
+    - 1password.repo
+    - brave-browser.repo
+    - vscode.repo
+    - lens.repo
+  become: true

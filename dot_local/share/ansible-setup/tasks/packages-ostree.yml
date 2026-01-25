@@ -1,0 +1,37 @@
+# Package installation for atomic Fedora (using rpm-ostree)
+
+- name: Install packages from Fedora repos (rpm-ostree)
+  community.general.rpm_ostree_pkg:
+    name: "{{ fedora_packages }}"
+    state: present
+  become: true
+
+- name: Install packages from external repos (rpm-ostree)
+  community.general.rpm_ostree_pkg:
+    name: "{{ external_packages }}"
+    state: present
+  become: true
+
+- name: Download remote RPMs
+  ansible.builtin.get_url:
+    url: "{{ item.url }}"
+    dest: "/tmp/{{ item.name }}.rpm"
+    mode: "0644"
+  loop: "{{ remote_rpms }}"
+  loop_control:
+    label: "{{ item.name }}"
+  register: downloaded_rpms
+
+- name: Install remote RPMs (rpm-ostree)
+  community.general.rpm_ostree_pkg:
+    name: "/tmp/{{ item.name }}.rpm"
+    state: present
+  loop: "{{ remote_rpms }}"
+  loop_control:
+    label: "{{ item.name }}"
+  become: true
+
+- name: Reminder about reboot
+  ansible.builtin.debug:
+    msg: "Layered packages installed. Run 'systemctl reboot' to apply changes."
+  when: ansible_facts['pkg_mgr'] == 'rpm-ostree'
