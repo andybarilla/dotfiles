@@ -17,6 +17,7 @@
     - vars/packages.yml
     - vars/repo_keys.yml
     - vars/flatpaks.yml
+    - vars/gcloud.yml
 
   pre_tasks:
     - name: Detect if running on atomic Fedora
@@ -51,3 +52,6 @@
 
     - name: Setup Flatpak applications
       ansible.builtin.include_tasks: tasks/flatpaks.yml
+
+    - name: Setup Google Cloud SDK
+      ansible.builtin.include_tasks: tasks/gcloud.yml
