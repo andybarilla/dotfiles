@@ -1,0 +1,13 @@
+[Unit]
+Description=Backup all distrobox containers
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/SynologyDrive/PostInstall/distrobox-backup-all.sh --skip-unchanged
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target
