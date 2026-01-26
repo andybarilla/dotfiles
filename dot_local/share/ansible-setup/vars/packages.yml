@@ -10,7 +10,6 @@ fedora_packages:
   - podman-compose
   - podman-docker
   - ripgrep
-  - vim-default-editor
   - weechat
 
 # Packages from external repositories (repos must be configured first)
