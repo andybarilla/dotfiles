@@ -4,27 +4,12 @@
 # Packages available in Fedora repositories
 fedora_packages:
   - btop
-  - chezmoi
-  - dgop
   - distrobox
-  - dms
-  - dms-greeter
-  - fzf
   - gh
-  - ghostty
-  - khal
-  - libappindicator
-  - matugen
   - neovim
-  - niri
-  - pavucontrol
   - podman-compose
   - podman-docker
-  - python3-vdirsyncer
-  - python3-websocket-client
   - ripgrep
-  - swaybg
-  - vdirsyncer
   - vim-default-editor
   - weechat
 
