@@ -18,6 +18,8 @@ if [[ ! -d "$ANSIBLE_DIR" ]]; then
     exit 1
 fi
 
+chmod +x "$ANSIBLE_DIR/bootstrap.sh"
+
 # Prompt user - they may want to skip on subsequent runs or partial setups
 read -p "Install system packages and Flatpaks via Ansible? [Y/n] " -n 1 -r
 echo ""
