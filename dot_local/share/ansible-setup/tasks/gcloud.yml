@@ -1,0 +1,51 @@
+# Google Cloud SDK installation tasks
+
+# Check if gcloud is already installed
+- name: Check if Google Cloud SDK is installed
+  ansible.builtin.stat:
+    path: "{{ gcloud_install_dir }}/bin/gcloud"
+  register: gcloud_binary
+
+# Download and install Google Cloud SDK
+- name: Create cache directory for downloads
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.cache/ansible-downloads"
+    state: directory
+    mode: "0755"
+  when: not gcloud_binary.stat.exists
+
+- name: Download Google Cloud SDK installer
+  ansible.builtin.get_url:
+    url: https://sdk.cloud.google.com
+    dest: "{{ ansible_env.HOME }}/.cache/ansible-downloads/gcloud-install.sh"
+    mode: "0755"
+  when: not gcloud_binary.stat.exists
+
+- name: Install Google Cloud SDK (traditional)
+  ansible.builtin.command:
+    cmd: bash {{ ansible_env.HOME }}/.cache/ansible-downloads/gcloud-install.sh --disable-prompts --install-dir={{ ansible_env.HOME }}
+  when: not gcloud_binary.stat.exists and not in_toolbox
+
+- name: Install Google Cloud SDK (via host)
+  ansible.builtin.command:
+    cmd: flatpak-spawn --host bash {{ ansible_env.HOME }}/.cache/ansible-downloads/gcloud-install.sh --disable-prompts --install-dir={{ ansible_env.HOME }}
+  when: not gcloud_binary.stat.exists and in_toolbox
+
+# Install gcloud components
+- name: Install gcloud components (traditional)
+  ansible.builtin.command:
+    cmd: "{{ gcloud_install_dir }}/bin/gcloud components install {{ item }} --quiet"
+  loop: "{{ gcloud_components }}"
+  when: not in_toolbox
+  register: gcloud_component_result
+  changed_when: "'already installed' not in gcloud_component_result.stderr"
+  failed_when: gcloud_component_result.rc != 0
+
+- name: Install gcloud components (via host)
+  ansible.builtin.command:
+    cmd: flatpak-spawn --host {{ gcloud_install_dir }}/bin/gcloud components install {{ item }} --quiet
+  loop: "{{ gcloud_components }}"
+  when: in_toolbox
+  register: gcloud_component_result_host
+  changed_when: "'already installed' not in gcloud_component_result_host.stderr"
+  failed_when: gcloud_component_result_host.rc != 0

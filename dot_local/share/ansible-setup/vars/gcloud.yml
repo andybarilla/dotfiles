@@ -1,0 +1,7 @@
+# Google Cloud SDK configuration
+
+gcloud_install_dir: "{{ ansible_env.HOME }}/google-cloud-sdk"
+
+gcloud_components:
+  - kubectl
+  - gke-gcloud-auth-plugin

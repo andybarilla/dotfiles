@@ -20,23 +20,29 @@
     - vars/gcloud.yml
 
   pre_tasks:
-    - name: Detect if running on atomic Fedora
-      ansible.builtin.set_fact:
-        is_atomic: "{{ ansible_facts['pkg_mgr'] == 'rpm-ostree' or (ansible_facts['distribution'] == 'Fedora' and (ansible_facts['distribution_variant'] | default('')) in ['Silverblue', 'Kinoite', 'Sericea', 'Onyx']) }}"
-
-    - name: Check for ostree-booted
+    - name: Check if running inside a toolbox
       ansible.builtin.stat:
-        path: /run/ostree-booted
-      register: ostree_booted
+        path: /run/.toolboxenv
+      register: toolboxenv
 
-    - name: Set atomic fact from ostree-booted file
+    - name: Set toolbox fact
       ansible.builtin.set_fact:
-        is_atomic: true
-      when: ostree_booted.stat.exists
+        in_toolbox: "{{ toolboxenv.stat.exists }}"
+
+    - name: Check for ostree-booted on host
+      ansible.builtin.command:
+        cmd: "{{ 'flatpak-spawn --host test -f /run/ostree-booted' if in_toolbox else 'test -f /run/ostree-booted' }}"
+      register: ostree_check
+      changed_when: false
+      failed_when: false
+
+    - name: Set atomic fact
+      ansible.builtin.set_fact:
+        is_atomic: "{{ ostree_check.rc == 0 }}"
 
     - name: Display detected system type
       ansible.builtin.debug:
-        msg: "System type: {{ 'Atomic (rpm-ostree)' if is_atomic else 'Traditional (dnf)' }}"
+        msg: "System type: {{ 'Atomic (rpm-ostree)' if is_atomic else 'Traditional (dnf)' }}{{ ' (running from toolbox)' if in_toolbox else '' }}"
 
   tasks:
     - name: Setup external repositories
@@ -55,3 +61,6 @@
 
     - name: Setup Google Cloud SDK
       ansible.builtin.include_tasks: tasks/gcloud.yml
+
+    - name: Install Claude Code
+      ansible.builtin.include_tasks: tasks/claude-code.yml

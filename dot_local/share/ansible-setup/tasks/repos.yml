@@ -1,5 +1,6 @@
 # Tasks for setting up external repositories
 
+# Traditional approach (not in toolbox)
 - name: Import GPG keys for external repos
   ansible.builtin.rpm_key:
     key: "{{ item.url }}"
@@ -8,10 +9,11 @@
   loop_control:
     label: "{{ item.name }}"
   become: true
+  when: not in_toolbox
 
 - name: Copy repository files
   ansible.builtin.copy:
-    src: "repos/{{ item }}"
+    src: "files/repos/{{ item }}"
     dest: "/etc/yum.repos.d/{{ item }}"
     owner: root
     group: root
@@ -22,3 +24,25 @@
     - vscode.repo
     - lens.repo
   become: true
+  when: not in_toolbox
+
+# Toolbox approach (use flatpak-spawn --host)
+- name: Import GPG keys for external repos (via host)
+  ansible.builtin.command:
+    cmd: flatpak-spawn --host sudo rpm --import "{{ item.url }}"
+  loop: "{{ repo_gpg_keys }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: in_toolbox
+  changed_when: true
+
+- name: Copy repository files to host
+  ansible.builtin.command:
+    cmd: flatpak-spawn --host sudo cp "{{ playbook_dir }}/files/repos/{{ item }}" "/etc/yum.repos.d/{{ item }}"
+  loop:
+    - 1password.repo
+    - brave-browser.repo
+    - vscode.repo
+    - lens.repo
+  when: in_toolbox
+  changed_when: true

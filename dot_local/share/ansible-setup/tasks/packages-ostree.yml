@@ -1,37 +1,71 @@
 # Package installation for atomic Fedora (using rpm-ostree)
 
+# Traditional approach (not in toolbox)
 - name: Install packages from Fedora repos (rpm-ostree)
   community.general.rpm_ostree_pkg:
     name: "{{ fedora_packages }}"
     state: present
   become: true
+  when: not in_toolbox
 
 - name: Install packages from external repos (rpm-ostree)
   community.general.rpm_ostree_pkg:
     name: "{{ external_packages }}"
     state: present
   become: true
+  when: not in_toolbox
+
+# Toolbox approach (use flatpak-spawn --host)
+- name: Install packages from Fedora repos (rpm-ostree via host)
+  ansible.builtin.command:
+    cmd: flatpak-spawn --host sudo rpm-ostree install -y --idempotent {{ fedora_packages | join(' ') }}
+  when: in_toolbox
+  changed_when: true
+
+- name: Install packages from external repos (rpm-ostree via host)
+  ansible.builtin.command:
+    cmd: flatpak-spawn --host sudo rpm-ostree install -y --idempotent {{ external_packages | join(' ') }}
+  when: in_toolbox
+  changed_when: true
+
+# Remote RPMs - download to home directory (shared between toolbox and host)
+- name: Create temp directory for RPM downloads
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.cache/ansible-rpm-downloads"
+    state: directory
+    mode: "0755"
 
 - name: Download remote RPMs
   ansible.builtin.get_url:
     url: "{{ item.url }}"
-    dest: "/tmp/{{ item.name }}.rpm"
+    dest: "{{ ansible_env.HOME }}/.cache/ansible-rpm-downloads/{{ item.name }}.rpm"
     mode: "0644"
   loop: "{{ remote_rpms }}"
   loop_control:
     label: "{{ item.name }}"
   register: downloaded_rpms
 
+# Install remote RPMs - traditional approach
 - name: Install remote RPMs (rpm-ostree)
   community.general.rpm_ostree_pkg:
-    name: "/tmp/{{ item.name }}.rpm"
+    name: "{{ ansible_env.HOME }}/.cache/ansible-rpm-downloads/{{ item.name }}.rpm"
     state: present
   loop: "{{ remote_rpms }}"
   loop_control:
     label: "{{ item.name }}"
   become: true
+  when: not in_toolbox
+
+# Install remote RPMs - toolbox approach
+- name: Install remote RPMs (rpm-ostree via host)
+  ansible.builtin.command:
+    cmd: flatpak-spawn --host sudo rpm-ostree install -y --idempotent "{{ ansible_env.HOME }}/.cache/ansible-rpm-downloads/{{ item.name }}.rpm"
+  loop: "{{ remote_rpms }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: in_toolbox
+  changed_when: true
 
 - name: Reminder about reboot
   ansible.builtin.debug:
     msg: "Layered packages installed. Run 'systemctl reboot' to apply changes."
-  when: ansible_facts['pkg_mgr'] == 'rpm-ostree'

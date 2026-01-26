@@ -5,6 +5,7 @@
 fedora_packages:
   - btop
   - distrobox
+  - flatpak
   - gh
   - neovim
   - podman-compose

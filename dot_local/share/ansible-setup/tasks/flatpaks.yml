@@ -1,5 +1,6 @@
 # Flatpak setup tasks
 
+# Traditional approach (not in toolbox)
 - name: Add Flatpak remotes
   community.general.flatpak_remote:
     name: "{{ item.name }}"
@@ -9,6 +10,7 @@
   loop_control:
     label: "{{ item.name }}"
   become: true
+  when: not in_toolbox
 
 - name: Install Flatpak applications
   community.general.flatpak:
@@ -18,3 +20,25 @@
   loop: "{{ flatpak_apps }}"
   loop_control:
     label: "{{ item }}"
+  when: not in_toolbox
+
+# Toolbox approach (use flatpak-spawn --host)
+- name: Add Flatpak remotes (via host)
+  ansible.builtin.command:
+    cmd: flatpak-spawn --host flatpak remote-add --if-not-exists {{ item.name }} {{ item.url }}
+  loop: "{{ flatpak_remotes }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: in_toolbox
+  changed_when: true
+
+- name: Install Flatpak applications (via host)
+  ansible.builtin.command:
+    cmd: flatpak-spawn --host flatpak install -y --noninteractive flathub {{ item }}
+  loop: "{{ flatpak_apps }}"
+  loop_control:
+    label: "{{ item }}"
+  when: in_toolbox
+  register: flatpak_install_result
+  changed_when: "'Installing' in flatpak_install_result.stdout or 'Updating' in flatpak_install_result.stdout"
+  failed_when: flatpak_install_result.rc != 0 and 'already installed' not in flatpak_install_result.stderr
