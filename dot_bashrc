@@ -31,3 +31,9 @@ if [ -f '/opt/google-cloud-sdk/path.bash.inc' ]; then . '/opt/google-cloud-sdk/p
 if [ -f '/opt/google-cloud-sdk/completion.bash.inc' ]; then . '/opt/google-cloud-sdk/completion.bash.inc'; fi
 export PATH="/home/andy/.config/herd-lite/bin:$PATH"
 export PHP_INI_SCAN_DIR="/home/andy/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
+
+ghcloneall() {
+	gh repo list $1 --limit 4000 | while read -r repo _; do
+		gh repo clone "$repo" "$repo"
+	done
+}

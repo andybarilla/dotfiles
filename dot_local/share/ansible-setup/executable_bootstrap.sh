@@ -47,17 +47,15 @@ if [[ "$IS_ATOMIC" == true ]]; then
     fi
 
     # Ensure dnf.conf exists with optimized settings
-    if ! toolbox run -c "$TOOLBOX_NAME" test -f /etc/dnf/dnf.conf; then
-        echo ""
-        echo "==> Configuring dnf in toolbox..."
-        toolbox run -c "$TOOLBOX_NAME" sudo tee /etc/dnf/dnf.conf > /dev/null << 'EOF'
+    echo ""
+    echo "==> Configuring dnf in toolbox..."
+    toolbox run -c "$TOOLBOX_NAME" sudo tee /etc/dnf/dnf.conf > /dev/null << 'EOF'
 # see `man dnf.conf` for defaults and possible options
 
 [main]
 fastest_mirror = True
 max_parallel_downloads = 10
 EOF
-    fi
 
     # Check if ansible is installed in the toolbox
     if ! toolbox run -c "$TOOLBOX_NAME" command -v ansible-playbook &>/dev/null; then
