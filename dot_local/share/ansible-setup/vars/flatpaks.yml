@@ -8,14 +8,10 @@ flatpak_remotes:
 
 # Flatpak applications to install
 flatpak_apps:
-  - com.autoclaude.ui
   - com.fastmail.Fastmail
   - com.getpostman.Postman
-  - com.github.tchx84.Flatseal
   - com.plexamp.Plexamp
-  - com.ranfdev.DistroShelf
   - com.slack.Slack
   - com.synology.SynologyDrive
-  - com.ticktick.TickTick
   - md.obsidian.Obsidian
   - org.remmina.Remmina
