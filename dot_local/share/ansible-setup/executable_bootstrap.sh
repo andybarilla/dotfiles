@@ -45,7 +45,20 @@ if [[ "$IS_ATOMIC" == true ]]; then
         echo "==> Creating toolbox container for Ansible..."
         toolbox create -c "$TOOLBOX_NAME"
     fi
-    
+
+    # Ensure dnf.conf exists with optimized settings
+    if ! toolbox run -c "$TOOLBOX_NAME" test -f /etc/dnf/dnf.conf; then
+        echo ""
+        echo "==> Configuring dnf in toolbox..."
+        toolbox run -c "$TOOLBOX_NAME" sudo tee /etc/dnf/dnf.conf > /dev/null << 'EOF'
+# see `man dnf.conf` for defaults and possible options
+
+[main]
+fastest_mirror = True
+max_parallel_downloads = 10
+EOF
+    fi
+
     # Check if ansible is installed in the toolbox
     if ! toolbox run -c "$TOOLBOX_NAME" command -v ansible-playbook &>/dev/null; then
         echo ""
@@ -68,10 +81,25 @@ if ! run_ansible_galaxy collection list 2>/dev/null | grep -q community.general;
     run_ansible_galaxy collection install community.general
 fi
 
+# Authenticate sudo once before running ansible
+# This avoids issues with password prompts during playbook execution
+echo ""
+echo "==> Authenticating for privileged operations..."
+if ! sudo -v; then
+    echo "ERROR: Failed to authenticate for sudo access"
+    exit 1
+fi
+
+# Keep sudo credentials fresh in the background during playbook execution
+# This refreshes credentials every 50 seconds (default sudo timeout is 5 minutes)
+(while true; do sudo -n true; sleep 50; kill -0 "$$" 2>/dev/null || exit; done) &
+SUDO_REFRESH_PID=$!
+trap "kill $SUDO_REFRESH_PID 2>/dev/null" EXIT
+
 echo ""
 echo "==> Running Ansible playbook..."
 cd "$SCRIPT_DIR"
-run_ansible playbook.yml -K "$@"
+run_ansible playbook.yml "$@"
 
 echo ""
 echo "==> Setup complete!"
