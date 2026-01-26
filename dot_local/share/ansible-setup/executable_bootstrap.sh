@@ -82,24 +82,45 @@ if ! run_ansible_galaxy collection list 2>/dev/null | grep -q community.general;
 fi
 
 # Authenticate sudo once before running ansible
-# This avoids issues with password prompts during playbook execution
+# Note: We read from /dev/tty to handle cases where stdin is consumed (e.g., curl | sh)
 echo ""
 echo "==> Authenticating for privileged operations..."
-if ! sudo -v; then
+if ! sudo -v < /dev/tty; then
     echo "ERROR: Failed to authenticate for sudo access"
     exit 1
 fi
 
-# Keep sudo credentials fresh in the background during playbook execution
-# This refreshes credentials every 50 seconds (default sudo timeout is 5 minutes)
-(while true; do sudo -n true; sleep 50; kill -0 "$$" 2>/dev/null || exit; done) &
-SUDO_REFRESH_PID=$!
-trap "kill $SUDO_REFRESH_PID 2>/dev/null" EXIT
+# On atomic systems, ansible runs in a toolbox and uses flatpak-spawn --host sudo
+# for privileged operations. This creates a new session that doesn't inherit cached
+# sudo credentials. We work around this by creating a temporary NOPASSWD sudoers rule.
+TEMP_SUDOERS="/etc/sudoers.d/zzz-temp-ansible-bootstrap"
+cleanup_sudoers() {
+    if [[ "$IS_ATOMIC" == true ]] && [[ -f "$TEMP_SUDOERS" ]]; then
+        sudo rm -f "$TEMP_SUDOERS"
+    fi
+}
+
+if [[ "$IS_ATOMIC" == true ]]; then
+    echo "==> Setting up temporary passwordless sudo for bootstrap..."
+    echo "$USER ALL=(ALL) NOPASSWD: ALL" | sudo tee "$TEMP_SUDOERS" > /dev/null
+    sudo chmod 440 "$TEMP_SUDOERS"
+    trap cleanup_sudoers EXIT
+else
+    # Keep sudo credentials fresh in the background during playbook execution
+    # This refreshes credentials every 50 seconds (default sudo timeout is 5 minutes)
+    (while true; do sudo -n true; sleep 50; kill -0 "$$" 2>/dev/null || exit; done) &
+    SUDO_REFRESH_PID=$!
+    trap "kill $SUDO_REFRESH_PID 2>/dev/null" EXIT
+fi
 
 echo ""
 echo "==> Running Ansible playbook..."
 cd "$SCRIPT_DIR"
 run_ansible playbook.yml "$@"
+
+# Clean up temp sudoers before final message (trap will also handle abnormal exits)
+cleanup_sudoers
+trap - EXIT
 
 echo ""
 echo "==> Setup complete!"

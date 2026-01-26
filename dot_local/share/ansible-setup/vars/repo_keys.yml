@@ -5,5 +5,7 @@ repo_gpg_keys:
     url: https://downloads.1password.com/linux/keys/1password.asc
   - name: Brave Browser
     url: https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
+  - name: Dropbox
+    url: https://linux.dropbox.com/fedora/rpm-public-key.asc
   - name: Microsoft
     url: https://packages.microsoft.com/keys/microsoft.asc

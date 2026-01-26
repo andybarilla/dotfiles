@@ -5,7 +5,6 @@
 fedora_packages:
   - btop
   - distrobox
-  - flatpak
   - gh
   - neovim
   - podman-compose
@@ -19,8 +18,7 @@ external_packages:
   - brave-browser
   - code
   - lens
+  - nautilus-dropbox
 
 # RPMs to download and install directly
-remote_rpms:
-  - name: nautilus-dropbox
-    url: https://www.dropbox.com/download?dl=packages/fedora/nautilus-dropbox-2024.04.17-1.fc43.x86_64.rpm
+remote_rpms: []

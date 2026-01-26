@@ -45,6 +45,9 @@
         msg: "System type: {{ 'Atomic (rpm-ostree)' if is_atomic else 'Traditional (dnf)' }}{{ ' (running from toolbox)' if in_toolbox else '' }}"
 
   tasks:
+    - name: Configure dnf performance settings
+      ansible.builtin.include_tasks: tasks/dnf-config.yml
+
     - name: Setup external repositories
       ansible.builtin.include_tasks: tasks/repos.yml
 
@@ -64,3 +67,6 @@
 
     - name: Install Claude Code
       ansible.builtin.include_tasks: tasks/claude-code.yml
+
+    - name: Configure git
+      ansible.builtin.include_tasks: tasks/git.yml

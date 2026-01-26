@@ -1,6 +1,10 @@
 # Tasks for setting up external repositories
+#
+# On atomic systems (rpm-ostree), GPG keys are imported automatically from the
+# gpgkey= line in repo files, so we only need to copy the repo files.
+# On traditional systems, we need to explicitly import GPG keys first.
 
-# Traditional approach (not in toolbox)
+# Traditional Fedora only: import GPG keys
 - name: Import GPG keys for external repos
   ansible.builtin.rpm_key:
     key: "{{ item.url }}"
@@ -9,8 +13,9 @@
   loop_control:
     label: "{{ item.name }}"
   become: true
-  when: not in_toolbox
+  when: not is_atomic and not in_toolbox
 
+# Copy repository files (works on both atomic and traditional)
 - name: Copy repository files
   ansible.builtin.copy:
     src: "files/repos/{{ item }}"
@@ -21,27 +26,20 @@
   loop:
     - 1password.repo
     - brave-browser.repo
+    - dropbox.repo
     - vscode.repo
     - lens.repo
   become: true
   when: not in_toolbox
 
-# Toolbox approach (use flatpak-spawn --host)
-- name: Import GPG keys for external repos (via host)
-  ansible.builtin.command:
-    cmd: flatpak-spawn --host sudo rpm --import "{{ item.url }}"
-  loop: "{{ repo_gpg_keys }}"
-  loop_control:
-    label: "{{ item.name }}"
-  when: in_toolbox
-  changed_when: true
-
+# When running from toolbox, use flatpak-spawn to copy files to host
 - name: Copy repository files to host
   ansible.builtin.command:
     cmd: flatpak-spawn --host sudo cp "{{ playbook_dir }}/files/repos/{{ item }}" "/etc/yum.repos.d/{{ item }}"
   loop:
     - 1password.repo
     - brave-browser.repo
+    - dropbox.repo
     - vscode.repo
     - lens.repo
   when: in_toolbox
