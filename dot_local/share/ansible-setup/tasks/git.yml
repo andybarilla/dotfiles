@@ -11,3 +11,8 @@
     name: user.email
     value: "me@andybarilla.com"
     scope: global
+
+- name: Switch chezmoi remote to SSH
+  ansible.builtin.command:
+    cmd: git -C "{{ ansible_env.HOME }}/.local/share/chezmoi" remote set-url origin git@github.com:andybarilla/dotfiles.git
+  changed_when: true
