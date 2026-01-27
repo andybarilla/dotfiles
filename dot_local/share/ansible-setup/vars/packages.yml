@@ -11,6 +11,7 @@ fedora_packages:
   - podman-docker
   - ripgrep
   - weechat
+  - go
 
 # Packages from external repositories (repos must be configured first)
 external_packages:
