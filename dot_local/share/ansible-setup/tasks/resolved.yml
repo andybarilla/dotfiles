@@ -1,0 +1,43 @@
+# Tasks for configuring systemd-resolved DNS settings
+
+- name: Check if resolved.conf exists
+  ansible.builtin.command:
+    cmd: "{{ 'flatpak-spawn --host ' if in_toolbox else '' }}test -f /etc/systemd/resolved.conf"
+  register: resolved_conf_exists
+  changed_when: false
+  failed_when: false
+
+- name: Configure systemd-resolved
+  ansible.builtin.copy:
+    dest: /etc/systemd/resolved.conf
+    content: |
+      [Resolve]
+      DNS=192.168.0.1 1.1.1.1
+      FallbackDNS=8.8.8.8 4.4.4.4
+      DNSSEC=no
+      MulticastDNS=yes
+    mode: '0644'
+    owner: root
+    group: root
+  become: true
+  when: not in_toolbox
+  notify: Restart systemd-resolved
+
+- name: Configure systemd-resolved (via host)
+  ansible.builtin.shell:
+    cmd: |
+      flatpak-spawn --host sudo bash -c 'cat > /etc/systemd/resolved.conf << EOF
+      [Resolve]
+      DNS=192.168.0.1 1.1.1.1
+      FallbackDNS=8.8.8.8 4.4.4.4
+      DNSSEC=no
+      MulticastDNS=yes
+      EOF'
+  when: in_toolbox and resolved_conf_exists.rc != 0
+  changed_when: true
+
+- name: Restart systemd-resolved (via host)
+  ansible.builtin.shell:
+    cmd: flatpak-spawn --host sudo systemctl restart systemd-resolved
+  when: in_toolbox and resolved_conf_exists.rc != 0
+  changed_when: true

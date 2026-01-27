@@ -70,3 +70,13 @@
 
     - name: Configure git
       ansible.builtin.include_tasks: tasks/git.yml
+
+    - name: Configure systemd-resolved
+      ansible.builtin.include_tasks: tasks/resolved.yml
+
+  handlers:
+    - name: Restart systemd-resolved
+      ansible.builtin.systemd:
+        name: systemd-resolved
+        state: restarted
+      become: true

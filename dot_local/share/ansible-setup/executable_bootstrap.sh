@@ -19,6 +19,22 @@ else
     IS_ATOMIC=false
 fi
 
+# Prompt for hostname change
+CURRENT_HOSTNAME=$(hostnamectl --static)
+echo ""
+echo "Current hostname: $CURRENT_HOSTNAME"
+read -r -p "Would you like to change the hostname? [y/N] " < /dev/tty
+if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+    read -r -p "Enter new hostname: " NEW_HOSTNAME < /dev/tty
+    if [[ -n "$NEW_HOSTNAME" ]]; then
+        echo "==> Setting hostname to '$NEW_HOSTNAME'..."
+        sudo hostnamectl set-hostname "$NEW_HOSTNAME"
+        echo "Hostname changed successfully."
+    else
+        echo "No hostname provided, keeping current hostname."
+    fi
+fi
+
 # Function to run ansible-playbook (handles both atomic and traditional)
 run_ansible() {
     if [[ "$IS_ATOMIC" == true ]]; then
