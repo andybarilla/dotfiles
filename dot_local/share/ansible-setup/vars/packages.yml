@@ -10,13 +10,13 @@ fedora_packages:
   - podman-compose
   - podman-docker
   - ripgrep
-  - weechat
+  - vim-default-editor
   - go
 
 # Packages from external repositories (repos must be configured first)
 external_packages:
   - 1password
-  - brave-browser
+  - chromium
   - code
   - lens
   - nautilus-dropbox
