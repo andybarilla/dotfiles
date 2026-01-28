@@ -1,0 +1,29 @@
+# Package installation for Ubuntu/Debian-based systems (using apt)
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+  become: true
+
+- name: Install packages from Ubuntu repos
+  ansible.builtin.apt:
+    name: "{{ ubuntu_packages }}"
+    state: present
+  become: true
+
+- name: Install packages from external repos
+  ansible.builtin.apt:
+    name: "{{ ubuntu_external_packages }}"
+    state: present
+  become: true
+
+- name: Install remote DEBs
+  ansible.builtin.apt:
+    deb: "{{ item.url }}"
+    state: present
+  loop: "{{ remote_debs }}"
+  loop_control:
+    label: "{{ item.name }}"
+  become: true
+  when: remote_debs | length > 0

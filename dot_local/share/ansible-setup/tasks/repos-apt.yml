@@ -1,0 +1,80 @@
+# Tasks for setting up external repositories on Ubuntu/Debian-based systems
+
+# First, clean up any conflicting sources files that might break apt
+- name: Remove conflicting VS Code sources file (before apt operations)
+  ansible.builtin.file:
+    path: /etc/apt/sources.list.d/vscode.sources
+    state: absent
+  become: true
+
+- name: Install apt-transport-https and gpg
+  ansible.builtin.apt:
+    name:
+      - apt-transport-https
+      - gpg
+      - curl
+    state: present
+    update_cache: true
+  become: true
+
+# 1Password repository
+- name: Add 1Password GPG key
+  ansible.builtin.shell:
+    cmd: curl -sS https://downloads.1password.com/linux/keys/1password.asc | gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
+    creates: /usr/share/keyrings/1password-archive-keyring.gpg
+  become: true
+
+- name: Add 1Password apt repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/amd64 stable main"
+    filename: 1password
+    state: present
+  become: true
+
+# VS Code repository
+- name: Add Microsoft GPG key
+  ansible.builtin.shell:
+    cmd: curl -sS https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor --output /usr/share/keyrings/microsoft-archive-keyring.gpg
+    creates: /usr/share/keyrings/microsoft-archive-keyring.gpg
+  become: true
+
+- name: Add VS Code apt repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/repos/code stable main"
+    filename: vscode
+    state: present
+  become: true
+
+# Brave browser repository
+- name: Add Brave GPG key
+  ansible.builtin.shell:
+    cmd: curl -sS https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg | gpg --dearmor --output /usr/share/keyrings/brave-browser-archive-keyring.gpg
+    creates: /usr/share/keyrings/brave-browser-archive-keyring.gpg
+  become: true
+
+- name: Add Brave browser apt repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"
+    filename: brave-browser
+    state: present
+  become: true
+
+# GitHub CLI repository
+- name: Add GitHub CLI GPG key
+  ansible.builtin.shell:
+    cmd: curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | gpg --dearmor -o /usr/share/keyrings/githubcli-archive-keyring.gpg
+    creates: /usr/share/keyrings/githubcli-archive-keyring.gpg
+  become: true
+
+- name: Add GitHub CLI apt repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main"
+    filename: github-cli
+    state: present
+  become: true
+
+# Update apt cache after adding repositories
+- name: Update apt cache after adding repositories
+  ansible.builtin.apt:
+    update_cache: true
+  become: true

@@ -1,0 +1,38 @@
+## Codebase Patterns
+- Use `ansible_distribution` fact to detect distro (Ubuntu, Fedora, etc.)
+- Detect distrobox via `DISTROBOX_ENTER_PATH` env var, not just `/run/.containerenv`
+- Distrobox creates both `/run/.toolboxenv` and `/run/.containerenv` - use env var to distinguish
+- Remove conflicting apt sources files before running apt operations (e.g., vscode.sources vs vscode.list)
+- Skip flatpaks and host-level tasks when running from distrobox
+- Ubuntu package names often differ from Fedora (e.g., `golang-go` vs `go`, `network-manager-openvpn` vs `NetworkManager-openvpn`)
+
+---
+
+## 2026-01-28 - Implement Ubuntu Support
+
+### What was implemented
+- Added Ubuntu/Debian-based distribution support to the ansible setup
+- Updated bootstrap.sh to detect Ubuntu and install ansible via apt
+- Updated playbook.yml with proper distrobox/toolbox detection using env vars
+- Created tasks/repos-apt.yml for setting up APT repositories (1Password, VS Code, Brave, GitHub CLI)
+- Created tasks/packages-apt.yml for installing packages via apt
+- Updated vars/packages.yml with Ubuntu-equivalent package names
+- Added handling for conflicting apt sources files (vscode.sources vs vscode.list)
+
+### Files changed
+- bootstrap.sh - Added Ubuntu detection and apt-based ansible installation
+- playbook.yml - Added distrobox detection, Ubuntu routing, distribution facts
+- tasks/repos-apt.yml - New file for APT repository setup
+- tasks/packages-apt.yml - New file for apt package installation
+- vars/packages.yml - Added ubuntu_packages and ubuntu_external_packages lists
+- progress.txt - This file
+
+### Learnings for future iterations
+- Distrobox sets `DISTROBOX_ENTER_PATH` env var - use this to distinguish from toolbox
+- Both `/run/.toolboxenv` and `/run/.containerenv` exist in distrobox (empty .toolboxenv)
+- VS Code installs its own `.sources` file which conflicts with `.list` files - must remove before apt operations
+- Flatpaks should be skipped when running from distrobox (no flatpak-spawn available)
+- Ubuntu uses different package names: `golang-go` instead of `go`, `chromium-browser` instead of `chromium`
+- The `ansible_distribution` fact returns "Ubuntu" for Ubuntu systems
+
+---
