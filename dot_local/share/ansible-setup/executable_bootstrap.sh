@@ -1,41 +1,46 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Bootstrap script for Fedora workstation setup
+# Bootstrap script for Fedora/Ubuntu workstation setup
 # This script ensures Ansible is installed and runs the playbook
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TOOLBOX_NAME="ansible-toolbox"
 
-echo "==> Fedora Workstation Setup"
+echo "==> Workstation Setup"
 echo ""
+
+# Detect distribution
+if [[ -f /etc/os-release ]]; then
+    . /etc/os-release
+    DISTRO_ID="${ID:-unknown}"
+else
+    DISTRO_ID="unknown"
+fi
 
 # Detect system type
-if [[ -f /run/ostree-booted ]]; then
-    echo "Detected: Atomic Fedora (Silverblue/Kinoite/etc.)"
-    IS_ATOMIC=true
-else
-    echo "Detected: Traditional Fedora"
-    IS_ATOMIC=false
-fi
+IS_ATOMIC=false
+IS_UBUNTU=false
 
-# Prompt for hostname change
-CURRENT_HOSTNAME=$(hostnamectl --static)
-echo ""
-echo "Current hostname: $CURRENT_HOSTNAME"
-read -r -p "Would you like to change the hostname? [y/N] " < /dev/tty
-if [[ "$REPLY" =~ ^[Yy]$ ]]; then
-    read -r -p "Enter new hostname: " NEW_HOSTNAME < /dev/tty
-    if [[ -n "$NEW_HOSTNAME" ]]; then
-        echo "==> Setting hostname to '$NEW_HOSTNAME'..."
-        sudo hostnamectl set-hostname "$NEW_HOSTNAME"
-        echo "Hostname changed successfully."
-    else
-        echo "No hostname provided, keeping current hostname."
-    fi
-fi
+case "$DISTRO_ID" in
+    ubuntu|pop|linuxmint|elementary)
+        echo "Detected: Ubuntu/Debian-based ($DISTRO_ID)"
+        IS_UBUNTU=true
+        ;;
+    fedora)
+        if [[ -f /run/ostree-booted ]]; then
+            echo "Detected: Atomic Fedora (Silverblue/Kinoite/etc.)"
+            IS_ATOMIC=true
+        else
+            echo "Detected: Traditional Fedora"
+        fi
+        ;;
+    *)
+        echo "WARNING: Unknown distribution '$DISTRO_ID', assuming Fedora-compatible"
+        ;;
+esac
 
-# Function to run ansible-playbook (handles both atomic and traditional)
+# Function to run ansible-playbook (handles atomic, traditional, and Ubuntu)
 run_ansible() {
     if [[ "$IS_ATOMIC" == true ]]; then
         toolbox run -c "$TOOLBOX_NAME" ansible-playbook "$@"
@@ -44,7 +49,7 @@ run_ansible() {
     fi
 }
 
-# Function to run ansible-galaxy (handles both atomic and traditional)
+# Function to run ansible-galaxy (handles atomic, traditional, and Ubuntu)
 run_ansible_galaxy() {
     if [[ "$IS_ATOMIC" == true ]]; then
         toolbox run -c "$TOOLBOX_NAME" ansible-galaxy "$@"
@@ -78,6 +83,14 @@ EOF
         echo ""
         echo "==> Installing Ansible in toolbox..."
         toolbox run -c "$TOOLBOX_NAME" sudo dnf install -y ansible
+    fi
+elif [[ "$IS_UBUNTU" == true ]]; then
+    # Ubuntu/Debian-based
+    if ! command -v ansible-playbook &>/dev/null; then
+        echo ""
+        echo "==> Installing Ansible..."
+        sudo apt-get update
+        sudo apt-get install -y ansible
     fi
 else
     # Traditional Fedora
@@ -146,4 +159,7 @@ if [[ "$IS_ATOMIC" == true ]]; then
     echo ""
     echo "The Ansible toolbox '$TOOLBOX_NAME' has been retained for future use."
     echo "To remove it: toolbox rm $TOOLBOX_NAME"
+elif [[ "$IS_UBUNTU" == true ]]; then
+    echo ""
+    echo "Ubuntu setup complete. You may need to log out and back in for some changes to take effect."
 fi

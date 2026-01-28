@@ -1,5 +1,9 @@
-# Package lists for Fedora setup
+# Package lists for workstation setup
 # Edit this file to add/remove packages
+
+# ============================================
+# Fedora packages
+# ============================================
 
 # Packages available in Fedora repositories
 fedora_packages:
@@ -23,3 +27,27 @@ external_packages:
 
 # RPMs to download and install directly
 remote_rpms: []
+
+# ============================================
+# Ubuntu/Debian packages
+# ============================================
+
+# Packages available in Ubuntu repositories
+ubuntu_packages:
+  - btop
+  - neovim
+  - network-manager-openvpn
+  - podman
+  - ripgrep
+  - golang-go
+  - chromium-browser
+
+# Packages from external repositories (repos must be configured first)
+ubuntu_external_packages:
+  - 1password
+  - code
+  - brave-browser
+  - gh
+
+# DEBs to download and install directly
+remote_debs: []

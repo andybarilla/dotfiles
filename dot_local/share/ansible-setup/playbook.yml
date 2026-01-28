@@ -1,6 +1,6 @@
 ---
-# Fedora workstation setup playbook
-# Works with both traditional and atomic (Silverblue/Kinoite) Fedora
+# Workstation setup playbook
+# Works with Fedora (traditional and atomic) and Ubuntu/Debian-based systems
 #
 # Usage:
 #   ansible-playbook playbook.yml -K
@@ -8,7 +8,7 @@
 # Or use the bootstrap script:
 #   ./bootstrap.sh
 
-- name: Setup Fedora workstation
+- name: Setup workstation
   hosts: localhost
   connection: local
   gather_facts: true
@@ -20,14 +20,22 @@
     - vars/gcloud.yml
 
   pre_tasks:
+    - name: Check if running inside a distrobox (via env var)
+      ansible.builtin.set_fact:
+        in_distrobox: "{{ lookup('env', 'DISTROBOX_ENTER_PATH') | length > 0 }}"
+
     - name: Check if running inside a toolbox
       ansible.builtin.stat:
         path: /run/.toolboxenv
       register: toolboxenv
 
-    - name: Set toolbox fact
+    - name: Set toolbox fact (toolbox but not distrobox)
       ansible.builtin.set_fact:
-        in_toolbox: "{{ toolboxenv.stat.exists }}"
+        in_toolbox: "{{ toolboxenv.stat.exists and not in_distrobox }}"
+
+    - name: Set container fact
+      ansible.builtin.set_fact:
+        in_container: "{{ in_toolbox or in_distrobox }}"
 
     - name: Check for ostree-booted on host
       ansible.builtin.command:
@@ -38,29 +46,48 @@
 
     - name: Set atomic fact
       ansible.builtin.set_fact:
-        is_atomic: "{{ ostree_check.rc == 0 }}"
+        is_atomic: "{{ ostree_check.rc == 0 and not in_distrobox }}"
+
+    - name: Set distribution facts
+      ansible.builtin.set_fact:
+        is_ubuntu: "{{ ansible_distribution in ['Ubuntu', 'Pop!_OS', 'Linux Mint', 'elementary OS', 'Debian'] }}"
+        is_fedora: "{{ ansible_distribution == 'Fedora' }}"
 
     - name: Display detected system type
       ansible.builtin.debug:
-        msg: "System type: {{ 'Atomic (rpm-ostree)' if is_atomic else 'Traditional (dnf)' }}{{ ' (running from toolbox)' if in_toolbox else '' }}"
+        msg: >-
+          Distribution: {{ ansible_distribution }} {{ ansible_distribution_version }},
+          System type: {{ 'Atomic (rpm-ostree)' if is_atomic else ('APT-based' if is_ubuntu else 'Traditional (dnf)') }}
+          {{ '(running from toolbox)' if in_toolbox else ('(running from distrobox)' if in_distrobox else '') }}
 
   tasks:
     - name: Configure dnf performance settings
       ansible.builtin.include_tasks: tasks/dnf-config.yml
+      when: is_fedora and not in_distrobox
 
-    - name: Setup external repositories
+    - name: Setup external repositories (Fedora)
       ansible.builtin.include_tasks: tasks/repos.yml
+      when: is_fedora
+
+    - name: Setup external repositories (Ubuntu)
+      ansible.builtin.include_tasks: tasks/repos-apt.yml
+      when: is_ubuntu
 
     - name: Install packages (traditional Fedora)
       ansible.builtin.include_tasks: tasks/packages-dnf.yml
-      when: not is_atomic
+      when: is_fedora and not is_atomic
 
     - name: Install packages (atomic Fedora)
       ansible.builtin.include_tasks: tasks/packages-ostree.yml
       when: is_atomic
 
+    - name: Install packages (Ubuntu)
+      ansible.builtin.include_tasks: tasks/packages-apt.yml
+      when: is_ubuntu
+
     - name: Setup Flatpak applications
       ansible.builtin.include_tasks: tasks/flatpaks.yml
+      when: not in_distrobox
 
     - name: Setup Google Cloud SDK
       ansible.builtin.include_tasks: tasks/gcloud.yml
@@ -70,13 +97,3 @@
 
     - name: Configure git
       ansible.builtin.include_tasks: tasks/git.yml
-
-    - name: Configure systemd-resolved
-      ansible.builtin.include_tasks: tasks/resolved.yml
-
-  handlers:
-    - name: Restart systemd-resolved
-      ansible.builtin.systemd:
-        name: systemd-resolved
-        state: restarted
-      become: true
