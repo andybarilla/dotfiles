@@ -45,6 +45,7 @@ ubuntu_packages:
   - ripgrep
   - golang-go
   - chromium-browser
+  - build-essential
 
 # Packages from external repositories (repos must be configured first)
 ubuntu_external_packages:
