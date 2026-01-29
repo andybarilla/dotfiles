@@ -10,7 +10,6 @@ fedora_packages:
   - btop
   - distrobox
   - gh
-  - neovim
   - NetworkManager-openvpn
   - podman-compose
   - podman-docker
@@ -35,9 +34,9 @@ remote_rpms: []
 # Packages available in Ubuntu repositories
 ubuntu_packages:
   - btop
+  - distrobox
   - flatpak
   - gnome-software-plugin-flatpak
-  - neovim
   - network-manager-openvpn
   - podman
   - ripgrep
@@ -48,7 +47,6 @@ ubuntu_packages:
 ubuntu_external_packages:
   - 1password
   - code
-  - brave-browser
   - gh
 
 # DEBs to download and install directly
