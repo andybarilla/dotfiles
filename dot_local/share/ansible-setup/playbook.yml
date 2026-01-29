@@ -1,6 +1,6 @@
 ---
 # Workstation setup playbook
-# Works with Fedora (traditional and atomic) and Ubuntu/Debian-based systems
+# Works with Fedora (traditional and atomic), Ubuntu/Debian-based, and Arch Linux systems
 #
 # Usage:
 #   ansible-playbook playbook.yml -K
@@ -52,12 +52,13 @@
       ansible.builtin.set_fact:
         is_ubuntu: "{{ ansible_distribution in ['Ubuntu', 'Pop!_OS', 'Linux Mint', 'elementary OS', 'Debian'] }}"
         is_fedora: "{{ ansible_distribution == 'Fedora' }}"
+        is_archlinux: "{{ ansible_distribution == 'Archlinux' }}"
 
     - name: Display detected system type
       ansible.builtin.debug:
         msg: >-
           Distribution: {{ ansible_distribution }} {{ ansible_distribution_version }},
-          System type: {{ 'Atomic (rpm-ostree)' if is_atomic else ('APT-based' if is_ubuntu else 'Traditional (dnf)') }}
+          System type: {{ 'Atomic (rpm-ostree)' if is_atomic else ('APT-based' if is_ubuntu else ('Arch (pacman)' if is_archlinux else 'Traditional (dnf)')) }}
           {{ '(running from toolbox)' if in_toolbox else ('(running from distrobox)' if in_distrobox else '') }}
 
   tasks:
@@ -84,6 +85,14 @@
     - name: Install packages (Ubuntu)
       ansible.builtin.include_tasks: tasks/packages-apt.yml
       when: is_ubuntu
+
+    - name: Install packages (Arch Linux)
+      ansible.builtin.include_tasks: tasks/packages-pacman.yml
+      when: is_archlinux
+
+    - name: Enable systemd services (Arch Linux)
+      ansible.builtin.include_tasks: tasks/services.yml
+      when: is_archlinux
 
     - name: Setup Flatpak applications
       ansible.builtin.include_tasks: tasks/flatpaks.yml

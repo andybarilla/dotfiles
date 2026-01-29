@@ -1,0 +1,9 @@
+# Enable systemd services
+
+- name: Enable systemd services
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: true
+  loop: "{{ arch_services }}"
+  become: true
+  when: arch_services is defined and arch_services | length > 0

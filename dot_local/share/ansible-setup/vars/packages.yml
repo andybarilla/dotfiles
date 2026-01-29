@@ -55,3 +55,44 @@ ubuntu_external_packages:
 
 # DEBs to download and install directly
 remote_debs: []
+
+# ============================================
+# Arch Linux packages
+# ============================================
+
+# Packages available in Arch repositories
+arch_packages:
+  # Desktop environment and display
+  - cosmic
+  - gvfs
+  - gvfs-smb
+  - gnome-keyring
+  # Audio stack
+  - pipewire
+  - wireplumber
+  - pipewire-pulse
+  - pipewire-alsa
+  # Development
+  - base-devel
+  - git
+  - go
+  # System utilities
+  - openssh
+  - btop
+  - ripgrep
+  - firefox
+  # Container tools
+  - distrobox
+  - podman
+  - podman-compose
+  - podman-docker
+
+# Packages from AUR (requires yay or similar)
+arch_aur_packages:
+  - 1password
+  - visual-studio-code-bin
+  - github-cli
+
+# Systemd services to enable
+arch_services:
+  - cosmic-greeter

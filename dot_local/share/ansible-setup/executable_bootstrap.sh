@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Bootstrap script for Fedora/Ubuntu workstation setup
+# Bootstrap script for Fedora/Ubuntu/Arch Linux workstation setup
 # This script ensures Ansible is installed and runs the playbook
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -21,6 +21,7 @@ fi
 # Detect system type
 IS_ATOMIC=false
 IS_UBUNTU=false
+IS_ARCH=false
 
 case "$DISTRO_ID" in
     ubuntu|pop|linuxmint|elementary)
@@ -34,6 +35,10 @@ case "$DISTRO_ID" in
         else
             echo "Detected: Traditional Fedora"
         fi
+        ;;
+    arch)
+        echo "Detected: Arch Linux"
+        IS_ARCH=true
         ;;
     *)
         echo "WARNING: Unknown distribution '$DISTRO_ID', assuming Fedora-compatible"
@@ -91,6 +96,13 @@ elif [[ "$IS_UBUNTU" == true ]]; then
         echo "==> Installing Ansible..."
         sudo apt-get update
         sudo apt-get install -y ansible
+    fi
+elif [[ "$IS_ARCH" == true ]]; then
+    # Arch Linux
+    if ! command -v ansible-playbook &>/dev/null; then
+        echo ""
+        echo "==> Installing Ansible..."
+        sudo pacman -Sy --noconfirm ansible
     fi
 else
     # Traditional Fedora
@@ -156,4 +168,7 @@ if [[ "$IS_ATOMIC" == true ]]; then
 elif [[ "$IS_UBUNTU" == true ]]; then
     echo ""
     echo "Ubuntu setup complete. You may need to log out and back in for some changes to take effect."
+elif [[ "$IS_ARCH" == true ]]; then
+    echo ""
+    echo "Arch Linux setup complete. You may need to reboot for the display manager to take effect."
 fi
