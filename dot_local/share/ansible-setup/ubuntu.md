@@ -1,1 +1,0 @@
-This ansible setup is setup to work with atomic or standard Fedora installations. Implement the ability to also be able to use it on Ubuntu. I've created a distrobox named ubuntu that you can test in. The task is complete when bootstrap.sh runs successfully and has setup the system correctly.

@@ -35,6 +35,8 @@ remote_rpms: []
 # Packages available in Ubuntu repositories
 ubuntu_packages:
   - btop
+  - flatpak
+  - gnome-software-plugin-flatpak
   - neovim
   - network-manager-openvpn
   - podman
