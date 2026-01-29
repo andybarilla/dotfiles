@@ -117,28 +117,22 @@ if ! sudo -v < /dev/tty; then
     exit 1
 fi
 
-# On atomic systems, ansible runs in a toolbox and uses flatpak-spawn --host sudo
-# for privileged operations. This creates a new session that doesn't inherit cached
-# sudo credentials. We work around this by creating a temporary NOPASSWD sudoers rule.
+# Create a temporary NOPASSWD sudoers rule for the duration of the playbook.
+# This approach is used universally because:
+# - Atomic systems: toolbox uses flatpak-spawn which doesn't inherit sudo credentials
+# - Ubuntu with sudo-rs: credential caching works differently than traditional sudo
+# - Traditional Fedora: also works reliably with this approach
 TEMP_SUDOERS="/etc/sudoers.d/zzz-temp-ansible-bootstrap"
 cleanup_sudoers() {
-    if [[ "$IS_ATOMIC" == true ]] && [[ -f "$TEMP_SUDOERS" ]]; then
+    if [[ -f "$TEMP_SUDOERS" ]]; then
         sudo rm -f "$TEMP_SUDOERS"
     fi
 }
 
-if [[ "$IS_ATOMIC" == true ]]; then
-    echo "==> Setting up temporary passwordless sudo for bootstrap..."
-    echo "$USER ALL=(ALL) NOPASSWD: ALL" | sudo tee "$TEMP_SUDOERS" > /dev/null
-    sudo chmod 440 "$TEMP_SUDOERS"
-    trap cleanup_sudoers EXIT
-else
-    # Keep sudo credentials fresh in the background during playbook execution
-    # This refreshes credentials every 50 seconds (default sudo timeout is 5 minutes)
-    (while true; do sudo -n true; sleep 50; kill -0 "$$" 2>/dev/null || exit; done) &
-    SUDO_REFRESH_PID=$!
-    trap "kill $SUDO_REFRESH_PID 2>/dev/null" EXIT
-fi
+echo "==> Setting up temporary passwordless sudo for bootstrap..."
+echo "$USER ALL=(ALL) NOPASSWD: ALL" | sudo tee "$TEMP_SUDOERS" > /dev/null
+sudo chmod 440 "$TEMP_SUDOERS"
+trap cleanup_sudoers EXIT
 
 echo ""
 echo "==> Running Ansible playbook..."
