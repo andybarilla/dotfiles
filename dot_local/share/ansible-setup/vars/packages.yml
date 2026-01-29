@@ -39,6 +39,9 @@ ubuntu_packages:
   - gnome-software-plugin-flatpak
   - network-manager-openvpn
   - podman
+  - podman-compose
+  - podman-docker
+  - python3-distutils-extra
   - ripgrep
   - golang-go
   - chromium-browser
