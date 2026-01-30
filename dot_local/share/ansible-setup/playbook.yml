@@ -94,8 +94,8 @@
       ansible.builtin.include_tasks: tasks/services.yml
       when: is_archlinux
 
-    - name: Configure PAM for gnome-keyring (Arch Linux)
-      ansible.builtin.include_tasks: tasks/gnome-keyring-pam.yml
+    - name: Configure PAM (Arch Linux)
+      ansible.builtin.include_tasks: tasks/pam.yml
       when: is_archlinux
 
     - name: Setup Flatpak applications

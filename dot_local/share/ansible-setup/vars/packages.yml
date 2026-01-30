@@ -83,6 +83,7 @@ arch_packages:
   - btop
   - ripgrep
   - firefox
+  - wget
   # Container tools
   - distrobox
   - podman
@@ -93,6 +94,9 @@ arch_packages:
   - yubikey-manager
   - pam-u2f
   - libfido2
+  - gnupg
+  - pcsclite
+  - ccid
 
 # Packages from AUR (requires yay or similar)
 arch_aur_packages:
