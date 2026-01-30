@@ -16,16 +16,6 @@
     mode: '0644'
   become: true
 
-# Remove any NOPASSWD sudoers rules that would bypass PAM authentication
-- name: Remove NOPASSWD sudoers files
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: absent
-  loop:
-    - /etc/sudoers.d/00_andy
-    - /etc/sudoers.d/zzz-temp-ansible-bootstrap
-  become: true
-
 - name: Add pam_u2f.so to greetd auth section
   community.general.pamd:
     name: greetd
