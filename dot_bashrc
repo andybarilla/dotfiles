@@ -32,6 +32,15 @@ ghcloneall() {
 	done
 }
 
+gcptv() {
+	gcloud config configurations activate titlevision
+	gcloud auth login
+	gcloud auth application-default login --impersonate-service-account local-development@admin-6c4c.iam.gserviceaccount.com
+	gcloud container clusters get-credentials nonprod-autopilot --region us-central1 --project development-37c5
+	gcloud container clusters get-credentials prod-autopilot --region us-central1 --project production-7860
+	GOPROXY=proxy.golang.org go run github.com/GoogleCloudPlatform/artifact-registry-go-tools/cmd/auth@latest refresh
+}
+
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/var/home/andy/google-cloud-sdk/path.bash.inc' ]; then . '/var/home/andy/google-cloud-sdk/path.bash.inc'; fi
 
