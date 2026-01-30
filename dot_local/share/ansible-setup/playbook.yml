@@ -100,13 +100,15 @@
 
     - name: Setup Flatpak applications
       ansible.builtin.include_tasks: tasks/flatpaks.yml
-      when: not in_distrobox
+      when: not is_archlinux and not in_distrobox
 
     - name: Setup Google Cloud SDK
       ansible.builtin.include_tasks: tasks/gcloud.yml
+      when: not is_archlinux
 
     - name: Install Claude Code
       ansible.builtin.include_tasks: tasks/claude-code.yml
+      when: not is_archlinux
 
     - name: Configure git
       ansible.builtin.include_tasks: tasks/git.yml
