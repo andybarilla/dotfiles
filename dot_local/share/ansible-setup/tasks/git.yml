@@ -12,9 +12,14 @@
     value: "me@andybarilla.com"
     scope: global
 
-- name: Set git user name
+- name: set git user name
   community.general.git_config:
-    name: push.autoSetupRemote 
+    name: push.autosetupremote 
     value: true
     scope: global
 
+- name: set git user name
+  community.general.git_config:
+    name: pull.rebase 
+    value: false
+    scope: global
