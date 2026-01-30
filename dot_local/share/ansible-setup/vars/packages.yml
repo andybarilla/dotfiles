@@ -88,6 +88,11 @@ arch_packages:
   - podman
   - podman-compose
   - podman-docker
+  - networkmanager-openvpn
+  # Authentication
+  - yubikey-manager
+  - pam-u2f
+  - libfido2
 
 # Packages from AUR (requires yay or similar)
 arch_aur_packages:
@@ -100,7 +105,13 @@ arch_aur_packages:
   - slack-desktop-wayland
   - obsidian-bin
   - remmina
+  - claude-code
+  - claude-desktop-bin
+  - yubico-authenticator
 
 # Systemd services to enable
 arch_services:
   - cosmic-greeter
+  - pcscd
+ 
+
