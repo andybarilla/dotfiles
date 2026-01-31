@@ -79,6 +79,7 @@ arch_packages:
   - less
   - vi
   # System utilities
+  - avahi
   - openssh
   - btop
   - ripgrep

@@ -2,19 +2,19 @@
 # For sudo, we replace the entire PAM config since we want U2F-only (no password).
 # The pamd module can only add/modify relative to existing lines, but can't easily
 # remove the password auth from system-auth include. Using copy gives us full control.
-- name: Configure sudo PAM for U2F-only authentication
-  ansible.builtin.copy:
-    dest: /etc/pam.d/sudo
-    content: |
-      #%PAM-1.0
-      # U2F-only authentication - no password
-      auth       required   pam_u2f.so cue cue_prompt=Tap\ your\ key
-      account    include    system-auth
-      session    include    system-auth
-    owner: root
-    group: root
-    mode: '0644'
-  become: true
+#- name: Configure sudo PAM for U2F-only authentication
+#  ansible.builtin.copy:
+#    dest: /etc/pam.d/sudo
+#    content: |
+#      #%PAM-1.0
+#      # U2F-only authentication - no password
+#      auth       required   pam_u2f.so cue cue_prompt=Tap\ your\ key
+#      account    include    system-auth
+#      session    include    system-auth
+#    owner: root
+#    group: root
+#    mode: '0644'
+#  become: true
 
 - name: Add pam_u2f.so to greetd auth section
   community.general.pamd:
