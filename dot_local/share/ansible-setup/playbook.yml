@@ -86,16 +86,20 @@
       ansible.builtin.include_tasks: tasks/packages-apt.yml
       when: is_ubuntu
 
-    - name: Configure PAM (Arch Linux)
-      ansible.builtin.include_tasks: tasks/pam.yml
-      when: is_archlinux
-
     - name: Install packages (Arch Linux)
       ansible.builtin.include_tasks: tasks/packages-pacman.yml
       when: is_archlinux
 
+    - name: Configure PAM (Arch Linux)
+      ansible.builtin.include_tasks: tasks/pam.yml
+      when: is_archlinux
+
     - name: Enable systemd services (Arch Linux)
       ansible.builtin.include_tasks: tasks/services.yml
+      when: is_archlinux
+
+    - name: Install AUR packages (Arch Linux)
+      ansible.builtin.include_tasks: tasks/packages-aur.yml
       when: is_archlinux
 
     - name: Setup Flatpak applications

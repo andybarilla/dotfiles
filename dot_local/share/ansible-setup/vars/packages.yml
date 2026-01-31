@@ -97,6 +97,7 @@ arch_packages:
   - gnupg
   - pcsclite
   - ccid
+  - usbutils
 
 # Packages from AUR (requires yay or similar)
 arch_aur_packages:
@@ -112,10 +113,12 @@ arch_aur_packages:
   - claude-code
   - claude-desktop-bin
   - yubico-authenticator
+  - linux-firmware-hauppauge
 
 # Systemd services to enable
 arch_services:
   - cosmic-greeter
   - pcscd
+  - sshd
  
 
