@@ -36,7 +36,7 @@ case "$DISTRO_ID" in
             echo "Detected: Traditional Fedora"
         fi
         ;;
-    arch)
+    arch|cachyos)
         echo "Detected: Arch Linux"
         IS_ARCH=true
         ;;
