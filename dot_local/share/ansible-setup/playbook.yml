@@ -52,7 +52,7 @@
       ansible.builtin.set_fact:
         is_ubuntu: "{{ ansible_distribution in ['Ubuntu', 'Pop!_OS', 'Linux Mint', 'elementary OS', 'Debian'] }}"
         is_fedora: "{{ ansible_distribution == 'Fedora' }}"
-        is_archlinux: "{{ ansible_distribution == 'Archlinux' }}"
+        is_archlinux: "{{ ansible_distribution in ['Archlinux', 'cachyos'] }}"
 
     - name: Display detected system type
       ansible.builtin.debug:
