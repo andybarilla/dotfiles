@@ -63,15 +63,16 @@ remote_debs: []
 # Packages available in Arch repositories
 arch_packages:
   # Desktop environment and display
-  - cosmic
-  - gvfs
-  - gvfs-smb
-  - gnome-keyring
-  # Audio stack
-  - pipewire
-  - wireplumber
-  - pipewire-pulse
-  - pipewire-alsa
+#  - cosmic
+#  - gvfs
+#  - gvfs-smb
+#  - gnome-keyring
+#  - avahi
+#  # Audio stack
+#  - pipewire
+#  - wireplumber
+#  - pipewire-pulse
+#  - pipewire-alsa
   # Development
   - base-devel
   - git
@@ -79,7 +80,6 @@ arch_packages:
   - less
   - vi
   # System utilities
-  - avahi
   - openssh
   - btop
   - ripgrep
@@ -118,7 +118,7 @@ arch_aur_packages:
 
 # Systemd services to enable
 arch_services:
-  - cosmic-greeter
+#  - cosmic-greeter
   - pcscd
   - sshd
  
