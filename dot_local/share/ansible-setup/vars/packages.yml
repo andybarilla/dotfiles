@@ -64,15 +64,25 @@ remote_debs: []
 arch_packages:
   # Desktop environment and display
 #  - cosmic
-#  - gvfs
-#  - gvfs-smb
-#  - gnome-keyring
-#  - avahi
-#  # Audio stack
-#  - pipewire
-#  - wireplumber
-#  - pipewire-pulse
-#  - pipewire-alsa
+  - niri
+  - fuzzel
+  - waybar
+   -xdg-destkop-portal-gtk
+  - alacritty
+  - swaybg
+  - swayidle
+  - swaylock
+  - xwayland-satellite
+  - udiskie
+  - gvfs
+  - gvfs-smb
+  - gnome-keyring
+  - avahi
+  # Audio stack
+  - pipewire
+  - wireplumber
+  - pipewire-pulse
+  - pipewire-alsa
   # Development
   - base-devel
   - git
@@ -102,14 +112,14 @@ arch_packages:
 
 # Packages from AUR (requires yay or similar)
 arch_aur_packages:
-  - 1password
+  - 1password-beta
   - visual-studio-code-bin
   - github-cli
   - synology-drive
   - fastmail
   - postman-bin
   - slack-desktop-wayland
-  - obsidian-bin
+  - obsidian
   - remmina
   - claude-code
   - claude-desktop-bin
