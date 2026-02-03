@@ -67,7 +67,7 @@ arch_packages:
   - niri
   - fuzzel
   - waybar
-   -xdg-destkop-portal-gtk
+  - xdg-destkop-portal-gtk
   - alacritty
   - swaybg
   - swayidle
