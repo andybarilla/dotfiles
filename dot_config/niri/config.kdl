@@ -38,7 +38,7 @@ input {
         //dwtp
         //drag                  false
         //drag-lock             
-        //natural-scroll        
+        natural-scroll
         //accel-speed           0.2
         //accel-profile         "flat"
         //scroll-factor         1.0
@@ -429,6 +429,7 @@ window-rule {
     match app-id=r#"VirtualBox Manager$"#
     match app-id=r#"Qemu-system-x86_64$"#
     match app-id=r#"wlogout$"#
+    match app-id=r#"^wiremix$"#
 
     match title="^Picture-in-Picture$"
     match title="^Archcraft Installer$"

@@ -205,7 +205,7 @@
             "default": ["", "", ""]
         },
         "on-click": "pulsemixer --toggle-mute",
-        "on-click-right": "pulsemixer --toggle-mute",
+        "on-click-right": "alacritty --class wiremix -e wiremix",
         "smooth-scrolling-threshold": 1,
     },
     
@@ -282,8 +282,8 @@
     },
 
     "mpris": {
-       	"format": "{player_icon} {artist} {title}",
-       	"format-paused": "{status_icon} <i>{artist} {title}</i>",
+       	"format": "{player_icon} {artist} - {title}",
+       	"format-paused": "{status_icon} <i>{artist} - {title}</i>",
        	"player-icons": {
        		"default": "▶",
        		"mpv": "🎵"
