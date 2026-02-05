@@ -1,0 +1,8 @@
+---
+# Configure desktop settings via gsettings
+
+- name: Set dark color scheme
+  community.general.dconf:
+    key: "/org/gnome/desktop/interface/color-scheme"
+    value: "'prefer-dark'"
+    state: present

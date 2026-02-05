@@ -1,0 +1,6 @@
+#!/bin/sh
+# Wrapper for Synology Drive to fix Wayland compatibility
+# Forces XCB (X11/XWayland) since bundled Qt lacks Wayland support
+
+export QT_QPA_PLATFORM=xcb
+exec /usr/bin/synology-drive "$@"

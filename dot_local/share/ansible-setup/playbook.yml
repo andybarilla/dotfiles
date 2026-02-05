@@ -116,3 +116,6 @@
 
     - name: Configure git
       ansible.builtin.include_tasks: tasks/git.yml
+
+    - name: Configure desktop settings
+      ansible.builtin.include_tasks: tasks/desktop-settings.yml
