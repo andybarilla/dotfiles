@@ -132,6 +132,8 @@ arch_aur_packages:
   - claude-desktop-bin
   - yubico-authenticator
   - linux-firmware-hauppauge
+  - chromium
+  - lens-bin
 
 # Systemd services to enable
 arch_services:
