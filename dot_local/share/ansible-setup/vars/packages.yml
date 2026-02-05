@@ -88,6 +88,7 @@ arch_packages:
   - wireplumber
   - pipewire-pulse
   - pipewire-alsa
+  - wiremix
   # Development
   - base-devel
   - git
@@ -100,6 +101,7 @@ arch_packages:
   - nodejs
   - valkey
   - mise
+  - 7zip
   # System utilities
   - openssh
   - btop
