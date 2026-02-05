@@ -78,6 +78,9 @@ arch_packages:
   - gvfs-smb
   - gnome-keyring
   - avahi
+  - qt6-wayland
+  - qt5-wayland
+  - xorg-xwayland
   # Audio stack
   - pipewire
   - wireplumber
@@ -89,6 +92,10 @@ arch_packages:
   - go
   - less
   - vi
+  - jdk21-openjdk
+  - maven
+  - npm
+  - nodejs
   # System utilities
   - openssh
   - btop

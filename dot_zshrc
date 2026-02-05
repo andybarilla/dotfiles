@@ -74,6 +74,11 @@ plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
+# Distrobox indicator - prepend 📦 to prompt when inside a container
+if [[ -n "$CONTAINER_ID" ]]; then
+  PROMPT="📦 $CONTAINER_ID $PROMPT"
+fi
+
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
