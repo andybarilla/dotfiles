@@ -104,6 +104,7 @@ arch_packages:
   - openssh
   - btop
   - ripgrep
+  - rsync
   - firefox
   - wget
   # Container tools
