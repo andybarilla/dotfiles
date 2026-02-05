@@ -98,6 +98,10 @@
       ansible.builtin.include_tasks: tasks/services.yml
       when: is_archlinux
 
+    - name: Configure container registries
+      ansible.builtin.include_tasks: tasks/containers.yml
+      when: not in_container
+
     - name: Install AUR packages (Arch Linux)
       ansible.builtin.include_tasks: tasks/packages-aur.yml
       when: is_archlinux
