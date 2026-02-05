@@ -15,6 +15,7 @@ fedora_packages:
   - podman-docker
   - ripgrep
   - go
+  - zsh
 
 # Packages from external repositories (repos must be configured first)
 external_packages:
@@ -46,6 +47,7 @@ ubuntu_packages:
   - golang-go
   - chromium-browser
   - build-essential
+  - zsh
 
 # Packages from external repositories (repos must be configured first)
 ubuntu_external_packages:
@@ -116,6 +118,8 @@ arch_packages:
   - pcsclite
   - ccid
   - usbutils
+  # Shell
+  - zsh
 
 # Packages from AUR (requires yay or similar)
 arch_aur_packages:
