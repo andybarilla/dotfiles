@@ -151,6 +151,10 @@ gcptvdeploy() {
 	goproxy=proxy.golang.org go run github.com/googlecloudplatform/artifact-registry-go-tools/cmd/auth@latest refresh
 }
 
+runansible() {
+    cd ~/.local/share/ansible-setup && ./bootstrap.sh
+}
+
 # omz
 alias zshconfig="geany ~/.zshrc"
 alias ohmyzsh="thunar ~/.oh-my-zsh"
@@ -171,3 +175,7 @@ alias gc='git commit -m'
 alias gp='git push origin master'
 
 export PATH=$HOME/.local/bin:$HOME/bin:$PATH
+
+export EDITOR=vim
+
+eval "$(/usr/bin/mise activate zsh)"

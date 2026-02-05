@@ -99,6 +99,7 @@ arch_packages:
   - npm
   - nodejs
   - valkey
+  - mise
   # System utilities
   - openssh
   - btop
@@ -141,6 +142,7 @@ arch_aur_packages:
   - lens-bin
   - google-cloud-cli
   - google-cloud-cli-gke-gcloud-auth-plugin
+  - google-cloud-cli-gsutil
 
 # Systemd services to enable
 arch_services:
