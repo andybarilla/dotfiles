@@ -28,7 +28,7 @@
         },
         "format": "{icon} {capacity}%",
         "format-charging": " {capacity}%",
-        "format-plugged": "ﮣ {capacity}%",
+        "format-plugged": "󰚥 {capacity}%",
         "format-full": " Full",
         "format-icons": ["", "", "", "", "", "", "", "", ""],
         "format-alt": "{icon} {time}",

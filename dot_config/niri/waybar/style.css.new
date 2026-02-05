@@ -26,7 +26,7 @@ window#waybar {
 	color: @selected;
 	font-size: 18px;
 	border-radius: 20px;
-	margin: 6px 0px;
+	margin: 6px 0px 6px 6px;
 	padding: 2px 12px;
 }
 
@@ -319,12 +319,11 @@ window#waybar {
 #workspaces {
 	background-color: @background-alt1;
 	border-radius: 20px;
-	margin: 6px ;
+	margin: 6px 0px ;
 	padding: 2px 12px;
 }
 #workspaces button{
 	color: @foreground;
-    padding: 2px;
 }
 #workspaces button.active{
 	color: @selected;
@@ -375,10 +374,4 @@ window#waybar.hidden {
 #clock {
 	border-radius: 20px;
 	padding: 2px 14px 2px 14px;
-}
-
-#battery {
-	border-radius: 0px 20px 20px 0px;
-	padding: 2px 14px 2px 14px;
-    margin-right: 6px;
 }
