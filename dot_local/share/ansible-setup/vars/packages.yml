@@ -98,6 +98,7 @@ arch_packages:
   - maven
   - npm
   - nodejs
+  - valkey
   # System utilities
   - openssh
   - btop
@@ -138,6 +139,8 @@ arch_aur_packages:
   - linux-firmware-hauppauge
   - chromium
   - lens-bin
+  - google-cloud-cli
+  - google-cloud-cli-gke-gcloud-auth-plugin
 
 # Systemd services to enable
 arch_services:
