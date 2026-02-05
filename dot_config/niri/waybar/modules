@@ -279,5 +279,18 @@
     "tray": {
         "icon-size": 16,
         "spacing": 10
+    },
+
+    "mpris": {
+       	"format": "{player_icon} {artist} {title}",
+       	"format-paused": "{status_icon} <i>{artist} {title}</i>",
+       	"player-icons": {
+       		"default": "▶",
+       		"mpv": "🎵"
+       	},
+       	"status-icons": {
+       		"paused": "⏸"
+       	},
+       	// "ignored-players": ["firefox"]
     }
 }

@@ -158,6 +158,32 @@ window#waybar {
 #mpd.paused {
 }
 
+/** ********** MPRIS ********* **/
+#mpris {
+	background-color: @background-alt1;
+	color: @foreground;
+	font-size: 12px;
+	font-weight: bold;
+	border-radius: 20px;
+	margin: 6px 0px;
+	padding: 2px 14px;
+}
+
+#mpris.paused {
+	color: @foreground;
+}
+
+#mpris.playing {
+    background: linear-gradient(90deg, @red 25%, @magenta 50%, @blue 75%, @cyan 100%); 
+    background-size: 300% 300%;
+    animation: gradient 10s ease infinite;
+	color: @background;
+}
+
+#mpris.offline {
+	color: @red;
+}
+
 /** ********** Spotify ********** **/
 #custom-spotify {
 	background-color: @background-alt1;

@@ -24,7 +24,8 @@
     //-- Type:1
     "modules-left": [ "custom/menu", "custom/sep", "cpu", "memory", "disk" ],
     //"modules-center": [ "mpd", "custom/sep", "custom/themes", "idle_inhibitor", "custom/lightmode", "tray" ],
-    "modules-center": [ "custom/spotify", "custom/sep", "custom/themes", "idle_inhibitor", "custom/lightmode", "tray" ],
+    "modules-center": [ "mpris", "custom/sep", "custom/themes", "idle_inhibitor", "custom/lightmode", "tray" ],
+    //"modules-center": [ "custom/spotify", "custom/sep", "custom/themes", "idle_inhibitor", "custom/lightmode", "tray" ],
     "modules-right": [ "pulseaudio", "backlight", "bluetooth", "network", "battery", "clock", "custom/sep", "custom/power"],
 
     //-- Type:2
