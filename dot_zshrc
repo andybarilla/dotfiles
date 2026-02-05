@@ -182,3 +182,4 @@ eval "$(/usr/bin/mise activate zsh)"
 
 export DOCKER_HOST=unix:///run/user/$(id -u)/podman/podman.sock
 
+eval "$(~/usr/bin/mise activate zsh)"
