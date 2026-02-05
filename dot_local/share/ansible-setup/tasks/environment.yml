@@ -2,11 +2,10 @@
 # archcraft ships with a broken PATH that only includes /usr/share/archcraft/scripts
 # This breaks non-interactive SSH sessions (e.g., rsync over SSH)
 
-- name: Fix PATH in /etc/environment (archcraft)
+- name: Fix PATH in /etc/environment (Arch Linux)
   ansible.builtin.lineinfile:
     path: /etc/environment
     regexp: '^PATH='
     line: 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/share/archcraft/scripts"'
     state: present
   become: true
-  when: ansible_distribution == 'archcraft'

@@ -90,9 +90,9 @@
       ansible.builtin.include_tasks: tasks/packages-pacman.yml
       when: is_archlinux
 
-    - name: Fix environment PATH (archcraft)
+    - name: Fix environment PATH (Arch Linux)
       ansible.builtin.include_tasks: tasks/environment.yml
-      when: ansible_distribution == 'archcraft'
+      when: is_archlinux
 
 #    - name: Configure PAM (Arch Linux)
 #      ansible.builtin.include_tasks: tasks/pam.yml
