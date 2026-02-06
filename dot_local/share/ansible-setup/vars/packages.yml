@@ -102,6 +102,8 @@ arch_packages:
   - valkey
   - mise
   - 7zip
+  - ttf-jetbrains-mono-nerd
+  - ttf-noto-nerd
   # System utilities
   - openssh
   - btop
