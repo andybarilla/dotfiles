@@ -26,7 +26,7 @@
     //"modules-center": [ "mpd", "custom/sep", "custom/themes", "idle_inhibitor", "custom/lightmode", "tray" ],
     "modules-center": [ "mpris",  "clock" ],
     //"modules-center": [ "custom/spotify", "custom/sep", "custom/themes", "idle_inhibitor", "custom/lightmode", "tray" ],
-    "modules-right": [ "pulseaudio", "bluetooth", "network", "battery", "custom/power"],
+    "modules-right": [ "pulseaudio", "battery", "bluetooth", "network", "custom/power"],
 
     //-- Type:2
     //"modules-left": ["custom/menu", "custom/sep", "niri/workspaces", ],
