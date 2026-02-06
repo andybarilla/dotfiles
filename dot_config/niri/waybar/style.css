@@ -319,7 +319,7 @@ window#waybar {
 #workspaces {
 	background-color: @background-alt1;
 	border-radius: 20px;
-	margin: 6px ;
+	margin: 6px;
 	padding: 2px 12px;
 }
 #workspaces button{
