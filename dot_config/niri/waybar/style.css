@@ -83,7 +83,7 @@ window#waybar {
 #tray {
 	background-color: @background-alt1;
 	border-radius: 20px;
-	margin: 6px 0px 6px 6px ;
+	margin: 6px 6px 6px 0px ;
 	padding: 2px 12px;
 }
 #tray > .passive {
