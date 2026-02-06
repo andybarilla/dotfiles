@@ -251,7 +251,7 @@ window#waybar {
 
 /** ********** Battery ********** **/
 #battery {
-	color: @yellow;
+	color: @magenta;
 	padding: 2px 0px 2px 14px;
 }
 #battery.charging {
