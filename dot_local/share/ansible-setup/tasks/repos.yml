@@ -25,7 +25,6 @@
     mode: "0644"
   loop:
     - 1password.repo
-    - brave-browser.repo
     - dropbox.repo
     - vscode.repo
     - lens.repo
@@ -38,7 +37,6 @@
     cmd: flatpak-spawn --host sudo cp "{{ playbook_dir }}/files/repos/{{ item }}" "/etc/yum.repos.d/{{ item }}"
   loop:
     - 1password.repo
-    - brave-browser.repo
     - dropbox.repo
     - vscode.repo
     - lens.repo
