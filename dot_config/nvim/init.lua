@@ -1,2 +1,5 @@
-require("config.options")
-require("config.lazy")
+require('options')
+require('plugins')
+require('colorscheme')
+require('lsp')
+require('keymaps')
