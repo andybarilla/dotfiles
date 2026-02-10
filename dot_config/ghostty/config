@@ -3,22 +3,27 @@ font-family = "Hasklug Nerd Font Mono"
 font-size = 12
 
 # Window Configuration
-window-decoration = false
+window-decoration = true
 window-padding-x = 12
 window-padding-y = 12
-background-opacity = 1.0
+background-opacity = 0.8
 background-blur-radius = 32
+title = Ghostty@CachyOS
+window-width = 100
+window-height = 30
+
+bold-is-bright = true
 
 # Cursor Configuration
-cursor-style = block
-cursor-style-blink = true
+cursor-style = underline
+cursor-style-blink = false
 
 # Scrollback
-scrollback-limit = 3023
+scrollback-limit = 10000
 
 # Terminal features
 mouse-hide-while-typing = true
-copy-on-select = false
+copy-on-select = clipboard
 confirm-close-surface = false
 
 # Disable annoying copied to clipboard
@@ -48,5 +53,4 @@ keybind = shift+enter=text:\n
 # Rando stuff
 gtk-single-instance = true
 
-# Dank color generation
 theme = dankcolors

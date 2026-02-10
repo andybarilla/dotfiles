@@ -1,110 +1,164 @@
-## Copyright (C) 2020-2025 Aditya Shakya <adi1090x@gmail.com>
-##
-## Configuration for Alacritty, the GPU enhanced terminal emulator.
-## It's a very basic and simple config file, for full configuration, Run `man 5 alacritty`
-
-## GENERAL --------------------------------------------------------
-
-[general]
-## Import additional configuration files.
-import = ["~/.config/alacritty/colors.toml", "~/.config/alacritty/fonts.toml"]
-
-## You can set shell.program to the path of your favorite shell, e.g. /bin/zsh.
-## Entries in shell.args are passed as arguments to the shell.
-#shell = { program = "/bin/zsh", args = ["--login"] }
-
-## Directory the shell is started in. When this is unset, or "None",
-## the working directory of the parent process will be used.
-#working_directory = "None"
-
-## Live config reload
-live_config_reload = true
-
-## Offer IPC using alacritty msg
-ipc_socket = true
-
-## ENVIRONMENT ----------------------------------------------------
-
-## All key-value pairs in the [env] section will be added as environment variables for any process spawned
-## by Alacritty, including its shell. Some entries may override variables set by alacritty itself.
 [env]
-TERM = "alacritty"
-WINIT_X11_SCALE_FACTOR = "1.0"
+TERM = "xterm-256color"
+WINIT_X11_SCALE_FACTOR = "1"
 
-## WINDOW ---------------------------------------------------------
 [window]
-position = "None"
 dynamic_padding = true
 decorations = "full"
-opacity = 1.0
-blur = false
-startup_mode = "Windowed"
-dynamic_title = true
-class = { instance = "Alacritty", general = "Alacritty" }
-decorations_theme_variant = "None"
+title = "Alacritty@CachyOS"
+opacity = 0.8
+decorations_theme_variant = "Dark"
 
-## Number of lines/columns (not pixels) in the terminal.
 [window.dimensions]
-columns = 95
-lines = 24
+columns = 100
+lines = 30
 
-## Blank space added around the window in pixels.
-[window.padding]
-x = 12
-y = 12
+[window.class]
+instance = "Alacritty"
+general = "Alacritty"
 
-## SCROLLING ------------------------------------------------------
 [scrolling]
 history = 10000
 multiplier = 3
 
-## BELL -----------------------------------------------------------
-[bell]
-animation = "Linear"
-duration = 20
-command = { program = "paplay", args = ["/usr/share/sounds/freedesktop/stereo/dialog-error.oga"] }
+[colors]
+draw_bold_text_with_bright_colors = true
 
-## SELECTION ------------------------------------------------------
+[colors.primary]
+background = "0x2E3440"
+foreground = "0xD8DEE9"
+
+[colors.normal]
+black = "0x3B4252"
+red = "0xBF616A"
+green = "0xA3BE8C"
+yellow = "0xEBCB8B"
+blue = "0x81A1C1"
+magenta = "0xB48EAD"
+cyan = "0x88C0D0"
+white = "0xE5E9F0"
+
+[colors.bright]
+black = "0x4C566A"
+red = "0xBF616A"
+green = "0xA3BE8C"
+yellow = "0xEBCB8B"
+blue = "0x81A1C1"
+magenta = "0xB48EAD"
+cyan = "0x8FBCBB"
+white = "0xECEFF4"
+
+[font]
+size = 12
+
+[font.normal]
+family = "monospace"
+style = "Regular"
+
+[font.bold]
+family = "monospace"
+style = "Bold"
+
+[font.italic]
+family = "monospace"
+style = "Italic"
+
+[font.bold_italic]
+family = "monospace"
+style = "Bold Italic"
+
 [selection]
+semantic_escape_chars = ",│`|:\"' ()[]{}<>\t"
 save_to_clipboard = true
 
-## CURSOR ---------------------------------------------------------
 [cursor]
+style = "Underline"
 vi_mode_style = "None"
-blink_interval = 750
-blink_timeout = 5
-unfocused_hollow = false
+unfocused_hollow = true
 thickness = 0.15
 
-[cursor.style]
-shape = "Block"
-blinking = "On"
-
-## MOUSE ----------------------------------------------------------
 [mouse]
-hide_when_typing = false
+hide_when_typing = true
 
-## HINTS ----------------------------------------------------------
-[[hints.enabled]]
-command         = "xdg-open"
-hyperlinks      = true
-post_processing = true
-persist         = false
-mouse.enabled   = true
-binding         = { key = "U", mods = "Control|Shift" }
-regex           = "(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩‘]+"
+[[mouse.bindings]]
+mouse = "Middle"
+action = "PasteSelection"
 
-## DEBUG ----------------------------------------------------------
-[debug]
-render_timer = false
-persistent_logging = false
-log_level = "Warn"
-renderer = "None"
-print_events = false
-highlight_damage = false
-prefer_egl = false
+[keyboard]
+[[keyboard.bindings]]
+key = "Paste"
+action = "Paste"
 
 [[keyboard.bindings]]
-key = "Return"
+key = "Copy"
+action = "Copy"
+
+[[keyboard.bindings]]
+key = "L"
+mods = "Control"
+action = "ClearLogNotice"
+
+[[keyboard.bindings]]
+key = "L"
+mods = "Control"
+mode = "~Vi"
+chars = "\f"
+
+[[keyboard.bindings]]
+key = "PageUp"
 mods = "Shift"
-chars = "\u001B\r"
+mode = "~Alt"
+action = "ScrollPageUp"
+
+[[keyboard.bindings]]
+key = "PageDown"
+mods = "Shift"
+mode = "~Alt"
+action = "ScrollPageDown"
+
+[[keyboard.bindings]]
+key = "Home"
+mods = "Shift"
+mode = "~Alt"
+action = "ScrollToTop"
+
+[[keyboard.bindings]]
+key = "End"
+mods = "Shift"
+mode = "~Alt"
+action = "ScrollToBottom"
+
+[[keyboard.bindings]]
+key = "V"
+mods = "Control|Shift"
+action = "Paste"
+
+[[keyboard.bindings]]
+key = "C"
+mods = "Control|Shift"
+action = "Copy"
+
+[[keyboard.bindings]]
+key = "F"
+mods = "Control|Shift"
+action = "SearchForward"
+
+[[keyboard.bindings]]
+key = "B"
+mods = "Control|Shift"
+action = "SearchBackward"
+
+[[keyboard.bindings]]
+key = "C"
+mods = "Control|Shift"
+mode = "Vi"
+action = "ClearSelection"
+
+[[keyboard.bindings]]
+key = "Key0"
+mods = "Control"
+action = "ResetFontSize"
+
+[general]
+live_config_reload = true
+working_directory = "None"
