@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+## Ghostty ---------------------------------------------------
+
+CONFIG="$HOME/.config/niri/ghostty/config"
+
+if [[ "$1" == '-f' ]]; then
+	ghostty --config-default-files=false --config-file="$CONFIG" \
+			--gtk-single-instance=false --class='com.ghostty.float'
+elif [[ "$1" == '-F' ]]; then
+	ghostty --config-default-files=false --config-file="$CONFIG" \
+			--gtk-single-instance=false --class='com.ghostty.fullscreen' \
+			--fullscreen=true \
+			--window-padding-x=30 --window-padding-y=30 \
+			--background-opacity=0.95 --font-size=14
+else
+	ghostty +new-window ${@}
+fi

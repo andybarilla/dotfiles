@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ghostty +show-config:*)",
+      "Bash(ghostty:*)"
+    ]
+  }
+}
