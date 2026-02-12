@@ -17,6 +17,7 @@ bold-is-bright = true
 # Cursor Configuration
 cursor-style = underline
 cursor-style-blink = false
+adjust-underline-thickness = 2
 
 # Scrollback
 scrollback-limit = 10000
@@ -53,4 +54,4 @@ keybind = shift+enter=text:\n
 # Rando stuff
 gtk-single-instance = true
 
-theme = dankcolors
+theme = github-dark-high-contrast

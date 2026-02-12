@@ -96,6 +96,7 @@ require("lazy").setup({
         opts_extend = { "sources.default" },
     },
     { "mason-org/mason.nvim", opts = {} },
+    { "xiyaowong/transparent.nvim", opts = {} },
     {
         'nvim-telescope/telescope.nvim', version = '*',
         dependencies = {
