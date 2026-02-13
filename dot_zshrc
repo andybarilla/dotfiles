@@ -178,8 +178,9 @@ export PATH=$HOME/.local/bin:$HOME/bin:$PATH
 
 export EDITOR=vim
 
-eval "$(/usr/bin/mise activate zsh)"
+# Activate mise if available
+if command -v mise &> /dev/null; then
+  eval "$(mise activate zsh)"
+fi
 
 export DOCKER_HOST=unix:///run/user/$(id -u)/podman/podman.sock
-
-eval "$(/usr/bin/mise activate zsh)"
