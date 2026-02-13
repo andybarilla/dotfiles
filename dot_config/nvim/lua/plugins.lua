@@ -12,7 +12,12 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-    "Shatur/neovim-ayu",
+    {
+        "projekt0n/github-nvim-theme",
+        name = "github-theme",
+        lazy = false,
+        priority = 1000,
+    },
     {
         "saghen/blink.cmp",
         -- optional: provides snippets for the snippet source
@@ -104,6 +109,14 @@ require("lazy").setup({
             -- optional but recommended
             { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
         }
-    }
+    },
+    {
+        "nvim-tree/nvim-tree.lua",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        opts = {
+            filters = { dotfiles = false, git_ignored = true },
+            update_focused_file = { enable = true },
+        },
+    },
 })
 

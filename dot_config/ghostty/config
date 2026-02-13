@@ -3,12 +3,11 @@ font-family = "Hasklug Nerd Font Mono"
 font-size = 12
 
 # Window Configuration
-window-decoration = true
+window-decoration = true 
 window-padding-x = 12
 window-padding-y = 12
-background-opacity = 0.8
+background-opacity = 1
 background-blur-radius = 32
-title = Ghostty@CachyOS
 window-width = 100
 window-height = 30
 
