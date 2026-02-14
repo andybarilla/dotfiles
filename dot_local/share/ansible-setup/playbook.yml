@@ -102,6 +102,10 @@
       ansible.builtin.include_tasks: tasks/services.yml
       when: is_archlinux
 
+    - name: Enable systemd user services (Arch Linux)
+      ansible.builtin.include_tasks: tasks/user-services.yml
+      when: is_archlinux
+
     - name: Configure container registries
       ansible.builtin.include_tasks: tasks/containers.yml
       when: not in_container

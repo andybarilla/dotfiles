@@ -1,0 +1,17 @@
+# Enable systemd user services and timers
+
+- name: Enable systemd user services
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: true
+    scope: user
+  loop: "{{ arch_user_services }}"
+  when: arch_user_services is defined and arch_user_services | length > 0
+
+- name: Enable systemd user timers
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: true
+    scope: user
+  loop: "{{ arch_user_timers }}"
+  when: arch_user_timers is defined and arch_user_timers | length > 0

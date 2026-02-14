@@ -154,5 +154,13 @@ arch_services:
 #  - cosmic-greeter
   - pcscd
   - sshd
- 
+
+# Systemd user services to enable
+arch_user_services: []
+
+# Systemd user timers to enable
+arch_user_timers:
+  - home-backup.timer
+  - distrobox-backup.timer
+
 
