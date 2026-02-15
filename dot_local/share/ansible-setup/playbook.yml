@@ -116,7 +116,7 @@
 
     - name: Setup Flatpak applications
       ansible.builtin.include_tasks: tasks/flatpaks.yml
-      when: not is_archlinux and not in_distrobox
+      when: not is_ubuntu and not is_archlinux and not in_distrobox
 
     - name: Setup Google Cloud SDK
       ansible.builtin.include_tasks: tasks/gcloud.yml

@@ -36,8 +36,8 @@ remote_rpms: []
 ubuntu_packages:
   - btop
   - distrobox
-  - flatpak
-  - gnome-software-plugin-flatpak
+#  - flatpak
+#  - gnome-software-plugin-flatpak
   - network-manager-openvpn
   - podman
   - podman-compose
@@ -45,9 +45,8 @@ ubuntu_packages:
   - python3-distutils-extra
   - ripgrep
   - golang-go
-  - chromium-browser
   - build-essential
-  - zsh
+  - fish
 
 # Packages from external repositories (repos must be configured first)
 ubuntu_external_packages:
