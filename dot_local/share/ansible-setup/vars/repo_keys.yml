@@ -7,3 +7,5 @@ repo_gpg_keys:
     url: https://linux.dropbox.com/fedora/rpm-public-key.asc
   - name: Microsoft
     url: https://packages.microsoft.com/keys/microsoft.asc
+  - name: Google
+    url: https://dl.google.com/linux/linux_signing_key.pub

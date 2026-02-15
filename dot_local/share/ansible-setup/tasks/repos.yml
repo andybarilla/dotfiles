@@ -28,6 +28,7 @@
     - dropbox.repo
     - vscode.repo
     - lens.repo
+    - google-chrome.repo
   become: true
   when: not in_toolbox
 
@@ -40,5 +41,6 @@
     - dropbox.repo
     - vscode.repo
     - lens.repo
+    - google-chrome.repo
   when: in_toolbox
   changed_when: true

@@ -15,15 +15,15 @@ fedora_packages:
   - podman-docker
   - ripgrep
   - go
+  - python3-psutil
   - zsh
 
 # Packages from external repositories (repos must be configured first)
 external_packages:
   - 1password
-  - chromium
   - code
+  - google-chrome-stable
   - lens
-  - nautilus-dropbox
 
 # RPMs to download and install directly
 remote_rpms: []
@@ -53,6 +53,7 @@ ubuntu_external_packages:
   - 1password
   - code
   - gh
+  - google-chrome-stable
 
 # DEBs to download and install directly
 remote_debs: []

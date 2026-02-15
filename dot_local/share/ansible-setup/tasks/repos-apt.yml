@@ -59,6 +59,20 @@
     state: present
   become: true
 
+# Google Chrome repository
+- name: Add Google Chrome GPG key
+  ansible.builtin.shell:
+    cmd: curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor --output /usr/share/keyrings/google-chrome-keyring.gpg
+    creates: /usr/share/keyrings/google-chrome-keyring.gpg
+  become: true
+
+- name: Add Google Chrome apt repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome-keyring.gpg] https://dl.google.com/linux/chrome/deb/ stable main"
+    filename: google-chrome
+    state: present
+  become: true
+
 # Update apt cache after adding repositories
 - name: Update apt cache after adding repositories
   ansible.builtin.apt:
