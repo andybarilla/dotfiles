@@ -20,51 +20,20 @@
     - vars/gcloud.yml
 
   pre_tasks:
-    - name: Check if running inside a distrobox (via env var)
-      ansible.builtin.set_fact:
-        in_distrobox: "{{ lookup('env', 'DISTROBOX_ENTER_PATH') | length > 0 }}"
-
-    - name: Check if running inside a toolbox
-      ansible.builtin.stat:
-        path: /run/.toolboxenv
-      register: toolboxenv
-
-    - name: Set toolbox fact (toolbox but not distrobox)
-      ansible.builtin.set_fact:
-        in_toolbox: "{{ toolboxenv.stat.exists and not in_distrobox }}"
-
-    - name: Set container fact
-      ansible.builtin.set_fact:
-        in_container: "{{ in_toolbox or in_distrobox }}"
-
-    - name: Check for ostree-booted on host
-      ansible.builtin.command:
-        cmd: "{{ 'flatpak-spawn --host test -f /run/ostree-booted' if in_toolbox else 'test -f /run/ostree-booted' }}"
-      register: ostree_check
-      changed_when: false
-      failed_when: false
-
-    - name: Set atomic fact
-      ansible.builtin.set_fact:
-        is_atomic: "{{ ostree_check.rc == 0 and not in_distrobox }}"
-
     - name: Set distribution facts
       ansible.builtin.set_fact:
         is_ubuntu: "{{ ansible_distribution in ['Ubuntu', 'Pop!_OS', 'Linux Mint', 'elementary OS', 'Debian'] }}"
         is_fedora: "{{ ansible_distribution == 'Fedora' }}"
-        is_archlinux: "{{ ansible_distribution in ['Archlinux', 'cachyos', 'archcraft'] }}"
-
+    
     - name: Display detected system type
       ansible.builtin.debug:
         msg: >-
-          Distribution: {{ ansible_distribution }} {{ ansible_distribution_version }},
-          System type: {{ 'Atomic (rpm-ostree)' if is_atomic else ('APT-based' if is_ubuntu else ('Arch (pacman)' if is_archlinux else 'Traditional (dnf)')) }}
-          {{ '(running from toolbox)' if in_toolbox else ('(running from distrobox)' if in_distrobox else '') }}
+          Distribution: {{ ansible_distribution }} {{ ansible_distribution_version }}
 
   tasks:
     - name: Configure dnf performance settings
       ansible.builtin.include_tasks: tasks/dnf-config.yml
-      when: is_fedora and not in_distrobox
+      when: is_fedora
 
     - name: Setup external repositories (Fedora)
       ansible.builtin.include_tasks: tasks/repos.yml
@@ -74,63 +43,28 @@
       ansible.builtin.include_tasks: tasks/repos-apt.yml
       when: is_ubuntu
 
-    - name: Install packages (traditional Fedora)
+    - name: Install packages (Fedora)
       ansible.builtin.include_tasks: tasks/packages-dnf.yml
-      when: is_fedora and not is_atomic
-
-    - name: Install packages (atomic Fedora)
-      ansible.builtin.include_tasks: tasks/packages-ostree.yml
-      when: is_atomic
+      when: is_fedora
 
     - name: Install packages (Ubuntu)
       ansible.builtin.include_tasks: tasks/packages-apt.yml
       when: is_ubuntu
 
-    - name: Install packages (Arch Linux)
-      ansible.builtin.include_tasks: tasks/packages-pacman.yml
-      when: is_archlinux
-
-    - name: Fix environment PATH (Arch Linux)
-      ansible.builtin.include_tasks: tasks/environment.yml
-      when: is_archlinux
-
-#    - name: Configure PAM (Arch Linux)
-#      ansible.builtin.include_tasks: tasks/pam.yml
-#      when: is_archlinux
-
-    - name: Enable systemd services (Arch Linux)
-      ansible.builtin.include_tasks: tasks/services.yml
-      when: is_archlinux
-
-    - name: Enable systemd user services (Arch Linux)
-      ansible.builtin.include_tasks: tasks/user-services.yml
-      when: is_archlinux
-
-    - name: Configure container registries
-      ansible.builtin.include_tasks: tasks/containers.yml
-      when: not in_container
-
-    - name: Install AUR packages (Arch Linux)
-      ansible.builtin.include_tasks: tasks/packages-aur.yml
-      when: is_archlinux
-
-    - name: Setup Flatpak applications
-      ansible.builtin.include_tasks: tasks/flatpaks.yml
-      when: not is_ubuntu and not is_archlinux and not in_distrobox
-
-    - name: Setup Google Cloud SDK
-      ansible.builtin.include_tasks: tasks/gcloud.yml
-      when: not is_archlinux
-
     - name: Install Claude Code
       ansible.builtin.include_tasks: tasks/claude-code.yml
-      when: not is_archlinux
+
+    - name: Install Mise-en-Place
+      ansible.builtin.include_tasks: tasks/mise.yml
+
+    - name: Install Google Cloud SDK
+      ansible.builtin.include_tasks: tasks/gcloud.yml
+
+    - name: Install Pure prompt for zsh
+      ansible.builtin.include_tasks: tasks/pure-prompt.yml
 
     - name: Configure git
       ansible.builtin.include_tasks: tasks/git.yml
-
-    - name: Install and configure oh-my-zsh
-      ansible.builtin.include_tasks: tasks/oh-my-zsh.yml
 
     - name: Configure desktop settings
       ansible.builtin.include_tasks: tasks/desktop-settings.yml

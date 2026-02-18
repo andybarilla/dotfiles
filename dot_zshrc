@@ -1,185 +1,164 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+# =============================================================================
+# ZSH Configuration - Migrated from fish
+# =============================================================================
 
-# Path to your Oh My Zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+# --- History ---
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt APPEND_HISTORY
+setopt INC_APPEND_HISTORY
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_REDUCE_BLANKS
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time Oh My Zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="archcraft"
+# --- Completion ---
+autoload -Uz compinit
+compinit
+setopt COMPLETE_IN_WORD
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME="archcraft"
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+# --- Prompt (Pure) ---
+# Install: mkdir -p "$HOME/.zsh/pure" && git clone https://github.com/sindresorhus/pure.git "$HOME/.zsh/pure"
+fpath+=("$HOME/.zsh/pure")
+autoload -U promptinit; promptinit
+prompt pure 2>/dev/null
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
+# --- Man pages ---
+export MANROFFOPT="-c"
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
+# --- Environment ---
+export HAPPY_SERVER_URL="https://happy.andybarilla.com"
+export PODMAN_COMPOSE_PROVIDER=""
 
-# Uncomment one of the following lines to change the auto-update behavior
-zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
+# --- PATH ---
+typeset -U path
+[[ -d ~/.local/bin ]] && path=(~/.local/bin $path)
+[[ -d ~/bin ]] && path=(~/bin $path)
+[[ -d ~/Applications/depot_tools ]] && path=(~/Applications/depot_tools $path)
+[[ -d ~/.config/herd-lite/bin ]] && path=(~/.config/herd-lite/bin $path)
 
-# Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# You can also set it to another string to have that shown instead of the default red dots.
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
-
-source $ZSH/oh-my-zsh.sh
-
-# Distrobox indicator - prepend 📦 to prompt when inside a container
-if [[ -n "$CONTAINER_ID" ]]; then
-  PROMPT="📦 $CONTAINER_ID $PROMPT"
+# --- Mise ---
+if command -v mise &>/dev/null; then
+    eval "$(mise activate zsh)"
 fi
 
-# User configuration
+# --- Aliases ---
+# Replace ls with eza
+alias ls='eza -al --color=always --group-directories-first --icons'
+alias la='eza -a --color=always --group-directories-first --icons'
+alias ll='eza -l --color=always --group-directories-first --icons'
+alias lt='eza -aT --color=always --group-directories-first --icons'
+alias l.='eza -a | grep -e "^\."'
 
-# export MANPATH="/usr/local/man:$MANPATH"
+# Common use
+alias grubup="sudo grub-mkconfig -o /boot/grub/grub.cfg"
+alias fixpacman="sudo rm /var/lib/pacman/db.lck"
+alias tarnow='tar -acf '
+alias untar='tar -zxvf '
+alias wget='wget -c '
+alias psmem='ps auxf | sort -nr -k 4'
+alias psmem10='ps auxf | sort -nr -k 4 | head -10'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ......='cd ../../../../..'
+alias dir='dir --color=auto'
+alias vdir='vdir --color=auto'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias hw='hwinfo --short'
+alias big="expac -H M '%m\t%n' | sort -h | nl"
+alias gitpkg='pacman -Q | grep -i "\-git" | wc -l'
+alias update='sudo pacman -Syu'
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+# Get fastest mirrors
+alias mirror="sudo cachyos-rate-mirrors"
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='nvim'
-# fi
+# Help people new to Arch
+alias apt='man pacman'
+alias apt-get='man pacman'
+alias please='sudo'
+alias tb='nc termbin.com 9999'
 
-# Compilation flags
-# export ARCHFLAGS="-arch $(uname -m)"
+# Cleanup orphaned packages
+alias cleanup='sudo pacman -Rns $(pacman -Qtdq)'
 
-# Set personal aliases, overriding those provided by Oh My Zsh libs,
-# plugins, and themes. Aliases can be placed here, though Oh My Zsh
-# users are encouraged to define aliases within a top-level file in
-# the $ZSH_CUSTOM folder, with .zsh extension. Examples:
-# - $ZSH_CUSTOM/aliases.zsh
-# - $ZSH_CUSTOM/macos.zsh
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+# Get the error messages from journalctl
+alias jctl="journalctl -p 3 -xb"
 
-# On-demand rehash
-zshcache_time="$(date +%s%N)"
+# Recent installed packages
+alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 
-autoload -Uz add-zsh-hook
-
-rehash_precmd() {
-  if [[ -a /var/cache/zsh/pacman ]]; then
-    local paccache_time="$(date -r /var/cache/zsh/pacman +%s%N)"
-    if (( zshcache_time < paccache_time )); then
-      rehash
-      zshcache_time="$paccache_time"
-    fi
-  fi
+# --- Functions ---
+history() {
+    builtin fc -li 1
 }
 
-add-zsh-hook -Uz precmd rehash_precmd
+backup() {
+    cp "$1" "$1.bak"
+}
 
-ghcloneall() {
-	gh repo list $1 --limit 4000 | while read -r repo _; do
-		gh repo clone "$repo" "$repo"
-	done
+copy() {
+    if [[ $# -eq 2 && -d "$1" ]]; then
+        local from="${1%/}"
+        command cp -r "$from" "$2"
+    else
+        command cp "$@"
+    fi
 }
 
 gcptv() {
-	gcloud auth revoke
-	gcloud config configurations activate titlevision
-	gcloud auth login
-	gcloud auth application-default login --impersonate-service-account local-development@admin-6c4c.iam.gserviceaccount.com
-	gcloud container clusters get-credentials nonprod-autopilot --region us-central1 --project development-37c5
-	gcloud container clusters get-credentials prod-autopilot --region us-central1 --project production-7860
-	goproxy=proxy.golang.org go run github.com/googlecloudplatform/artifact-registry-go-tools/cmd/auth@latest refresh
+    gcloud auth revoke
+    gcloud config configurations activate titlevision
+    gcloud auth login
+    gcloud auth application-default login --impersonate-service-account local-development@admin-6c4c.iam.gserviceaccount.com
+    gcloud container clusters get-credentials nonprod-autopilot --region us-central1 --project development-37c5
+    gcloud container clusters get-credentials prod-autopilot --region us-central1 --project production-7860
+    env GOPROXY=proxy.golang.org go run github.com/googlecloudplatform/artifact-registry-go-tools/cmd/auth@latest refresh
 }
 
 gcptvdeploy() {
-	gcloud auth revoke
-	gcloud config configurations activate tvtf
-	gcloud auth login
-	gcloud auth application-default login
-	gcloud container clusters get-credentials nonprod-autopilot --region us-central1 --project development-37c5
-	gcloud container clusters get-credentials prod-autopilot --region us-central1 --project production-7860
-	goproxy=proxy.golang.org go run github.com/googlecloudplatform/artifact-registry-go-tools/cmd/auth@latest refresh
+    gcloud auth revoke
+    gcloud config configurations activate tvtf
+    gcloud auth login
+    gcloud auth application-default login
+    gcloud container clusters get-credentials nonprod-autopilot --region us-central1 --project development-37c5
+    gcloud container clusters get-credentials prod-autopilot --region us-central1 --project production-7860
+    env GOPROXY=proxy.golang.org go run github.com/googlecloudplatform/artifact-registry-go-tools/cmd/auth@latest refresh
+}
+
+ghcloneall() {
+    gh repo list "$1" --limit 4000 | while read -r repo _rest; do
+        gh repo clone "$repo" "$repo"
+    done
 }
 
 runansible() {
-    cd ~/.local/share/ansible-setup && ./bootstrap.sh
+    (cd ~/.local/share/ansible-setup && ./bootstrap.sh)
 }
 
-# omz
-alias zshconfig="geany ~/.zshrc"
-alias ohmyzsh="thunar ~/.oh-my-zsh"
+# --- Pacman rehash hook ---
+# Auto-rehash completions when pacman installs new packages
+zshcache_time="$(date +%s%N)"
+autoload -Uz add-zsh-hook
+rehash_precmd() {
+    if [[ -a /var/cache/zsh/pacman ]]; then
+        local paccache_time="$(date -r /var/cache/zsh/pacman +%s%N)"
+        if (( zshcache_time < paccache_time )); then
+            rehash
+            zshcache_time="$paccache_time"
+        fi
+    fi
+}
+add-zsh-hook -Uz precmd rehash_precmd
 
-# ls
-alias l='ls -lh'
-alias ll='ls -lah'
-alias la='ls -A'
-alias lm='ls -m'
-alias lr='ls -R'
-alias lg='ls -l --group-directories-first'
-
-# git
-alias gcl='git clone --depth 1'
-alias gi='git init'
-alias ga='git add'
-alias gc='git commit -m'
-alias gp='git push origin master'
-
-export PATH=$HOME/.local/bin:$HOME/bin:$PATH
-
-export EDITOR=vim
-
-# Activate mise if available
-if command -v mise &> /dev/null; then
-  eval "$(mise activate zsh)"
+# --- Distrobox indicator ---
+if [[ -n "$CONTAINER_ID" ]]; then
+    PROMPT="[${CONTAINER_ID}] $PROMPT"
 fi
-

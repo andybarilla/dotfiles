@@ -1,0 +1,14 @@
+# Install Pure prompt for zsh
+
+- name: Check if Pure prompt is already installed
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.zsh/pure"
+  register: pure_dir
+
+- name: Install Pure prompt
+  ansible.builtin.git:
+    repo: https://github.com/sindresorhus/pure.git
+    dest: "{{ ansible_env.HOME }}/.zsh/pure"
+    depth: 1
+  become: false
+  when: not pure_dir.stat.exists
