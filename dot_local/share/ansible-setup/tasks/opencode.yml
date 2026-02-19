@@ -1,0 +1,14 @@
+# Install Opencode CLI
+# https://claude.ai/download
+
+- name: Check if Opencode is installed
+  ansible.builtin.command: which opencode
+  register: opencode_check 
+  changed_when: false
+  failed_when: false
+
+- name: Install Opencode
+  ansible.builtin.shell: curl -fsSL https://opencode.ai/install | bash
+  when: opencode_check.rc != 0
+  become: false
+

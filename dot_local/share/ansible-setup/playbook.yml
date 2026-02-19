@@ -54,6 +54,9 @@
     - name: Install Claude Code
       ansible.builtin.include_tasks: tasks/claude-code.yml
 
+    - name: Install Opencode
+      ansible.builtin.include_tasks: tasks/opencode.yml
+
     - name: Install Mise-en-Place
       ansible.builtin.include_tasks: tasks/mise.yml
 
