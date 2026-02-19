@@ -2,7 +2,7 @@
 
 - name: Check if dnf.conf already has performance settings
   ansible.builtin.command:
-    cmd: "{{ 'flatpak-spawn --host ' if in_toolbox else '' }}grep -q 'max_parallel_downloads' /etc/dnf/dnf.conf"
+    cmd: "grep -q 'max_parallel_downloads' /etc/dnf/dnf.conf"
   register: dnf_conf_check
   changed_when: false
   failed_when: false
@@ -16,16 +16,4 @@
     marker: "# {mark} ANSIBLE MANAGED - performance settings"
     create: false
   become: true
-  when: not in_toolbox and dnf_conf_check.rc != 0
-
-- name: Add performance settings to dnf.conf (via host)
-  ansible.builtin.shell:
-    cmd: |
-      flatpak-spawn --host sudo bash -c 'cat >> /etc/dnf/dnf.conf << EOF
-      # BEGIN ANSIBLE MANAGED - performance settings
-      fastest_mirror=True
-      max_parallel_downloads=10
-      # END ANSIBLE MANAGED - performance settings
-      EOF'
-  when: in_toolbox and dnf_conf_check.rc != 0
-  changed_when: true
+  when: dnf_conf_check.rc != 0

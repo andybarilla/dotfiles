@@ -1,29 +1,14 @@
 # Install Claude Code CLI
 # https://claude.ai/download
 
-# Traditional approach (not in toolbox)
 - name: Check if Claude Code is installed
   ansible.builtin.command: which claude
   register: claude_check
   changed_when: false
   failed_when: false
-  when: not in_toolbox
 
 - name: Install Claude Code
   ansible.builtin.shell: curl -fsSL https://claude.ai/install.sh | bash
-  when: not in_toolbox and claude_check.rc != 0
+  when: claude_check.rc != 0
   become: false
-
-# Toolbox approach (use flatpak-spawn --host)
-- name: Check if Claude Code is installed (via host)
-  ansible.builtin.command:
-    cmd: flatpak-spawn --host which claude
-  register: claude_check_host
-  changed_when: false
-  failed_when: false
-  when: in_toolbox
-
-- name: Install Claude Code (via host)
-  ansible.builtin.command:
-    cmd: flatpak-spawn --host bash -c 'curl -fsSL https://claude.ai/install.sh | bash'
-  when: in_toolbox and claude_check_host.rc != 0
+  

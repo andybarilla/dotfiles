@@ -12,6 +12,12 @@
     value: "me@andybarilla.com"
     scope: global
 
+- name: Set git default branch 
+  community.general.git_config:
+    name: init.defaultBranch
+    value: "main"
+    scope: global
+
 - name: set git user name
   community.general.git_config:
     name: push.autosetupremote 

@@ -13,9 +13,15 @@
   loop_control:
     label: "{{ item.name }}"
   become: true
-  when: not is_atomic and not in_toolbox
+ 
+# Enable COPR repositories
+- name: Enable Synology Drive COPR repo
+  ansible.builtin.command:
+    cmd: dnf copr enable -y emixampp/synology-drive
+    creates: /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:emixampp:synology-drive.repo
+  become: true
 
-# Copy repository files (works on both atomic and traditional)
+# Copy repository files
 - name: Copy repository files
   ansible.builtin.copy:
     src: "files/repos/{{ item }}"
@@ -25,22 +31,7 @@
     mode: "0644"
   loop:
     - 1password.repo
-    - dropbox.repo
     - vscode.repo
     - lens.repo
     - google-chrome.repo
   become: true
-  when: not in_toolbox
-
-# When running from toolbox, use flatpak-spawn to copy files to host
-- name: Copy repository files to host
-  ansible.builtin.command:
-    cmd: flatpak-spawn --host sudo cp "{{ playbook_dir }}/files/repos/{{ item }}" "/etc/yum.repos.d/{{ item }}"
-  loop:
-    - 1password.repo
-    - dropbox.repo
-    - vscode.repo
-    - lens.repo
-    - google-chrome.repo
-  when: in_toolbox
-  changed_when: true

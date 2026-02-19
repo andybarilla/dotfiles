@@ -40,6 +40,7 @@ typeset -U path
 [[ -d ~/bin ]] && path=(~/bin $path)
 [[ -d ~/Applications/depot_tools ]] && path=(~/Applications/depot_tools $path)
 [[ -d ~/.config/herd-lite/bin ]] && path=(~/.config/herd-lite/bin $path)
+[[ -d ~/.cargo/bin ]] && path=(~/.cargo/bin $path)
 
 # --- Mise ---
 if command -v mise &>/dev/null; then

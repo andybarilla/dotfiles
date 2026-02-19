@@ -1,0 +1,20 @@
+# Install Mise-en-Place CLI
+# https://claude.ai/download
+
+- name: Check if Mise-en-Place is installed
+  ansible.builtin.command: which  mise
+  register: mise_check
+  changed_when: false
+  failed_when: false
+
+- name: Install Mise-en-Place
+  ansible.builtin.shell: curl https://mise.run | sh
+  when: mise_check.rc != 0
+  become: false
+
+- name: Add Mise-en-Place activation to bashrc
+  ansible.builtin.lineinfile:
+    path: ~/.bashrc
+    line: 'eval "$(~/.local/bin/mise activate bash)"'
+    state: present
+  become: false

@@ -60,3 +60,4 @@ if [ -f '/var/home/andy/google-cloud-sdk/completion.bash.inc' ]; then . '/var/ho
 export PATH="$HOME/.local/bin:$HOME/go/bin:$PATH"
 export XCURSOR_SIZE=24
 
+eval "$(~/.local/bin/mise activate bash)"

@@ -136,6 +136,38 @@ key = "Key0"
 mods = "Control"
 action = "ResetFontSize"
 
+# Ctrl+Alt+Arrow - send escape sequences for tmux pane navigation
+[[keyboard.bindings]]
+key = "Left"
+mods = "Control|Alt"
+chars = "\u001b[1;7D"
+
+[[keyboard.bindings]]
+key = "Right"
+mods = "Control|Alt"
+chars = "\u001b[1;7C"
+
+[[keyboard.bindings]]
+key = "Up"
+mods = "Control|Alt"
+chars = "\u001b[1;7A"
+
+[[keyboard.bindings]]
+key = "Down"
+mods = "Control|Alt"
+chars = "\u001b[1;7B"
+
+# Ctrl+Alt+Shift+Arrow - send escape sequences for tmux window navigation
+[[keyboard.bindings]]
+key = "Left"
+mods = "Control|Alt|Shift"
+chars = "\u001b[1;8D"
+
+[[keyboard.bindings]]
+key = "Right"
+mods = "Control|Alt|Shift"
+chars = "\u001b[1;8C"
+
 [general]
 live_config_reload = true
 working_directory = "None"
