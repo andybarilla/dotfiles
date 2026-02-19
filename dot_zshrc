@@ -22,9 +22,14 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
 # --- Prompt (Pure) ---
 # Install: mkdir -p "$HOME/.zsh/pure" && git clone https://github.com/sindresorhus/pure.git "$HOME/.zsh/pure"
-fpath+=("$HOME/.zsh/pure")
-autoload -U promptinit; promptinit
-prompt pure 2>/dev/null
+if [[ -d "$HOME/.zsh/pure" ]]; then
+    fpath+=("$HOME/.zsh/pure")
+    autoload -U promptinit; promptinit
+    prompt pure
+else
+    autoload -Uz promptinit; promptinit
+    prompt walters 2>/dev/null || prompt clint 2>/dev/null || PS1="%n@%m %~ %# "
+fi
 
 # --- Man pages ---
 export MANROFFOPT="-c"
@@ -48,12 +53,20 @@ if command -v mise &>/dev/null; then
 fi
 
 # --- Aliases ---
-# Replace ls with eza
-alias ls='eza -al --color=always --group-directories-first --icons'
-alias la='eza -a --color=always --group-directories-first --icons'
-alias ll='eza -l --color=always --group-directories-first --icons'
-alias lt='eza -aT --color=always --group-directories-first --icons'
-alias l.='eza -a | grep -e "^\."'
+# Replace ls with eza (if available)
+if command -v eza &>/dev/null; then
+    alias ls='eza -al --color=always --group-directories-first --icons'
+    alias la='eza -a --color=always --group-directories-first --icons'
+    alias ll='eza -l --color=always --group-directories-first --icons'
+    alias lt='eza -aT --color=always --group-directories-first --icons'
+    alias l.='eza -a | grep -e "^\."'
+else
+    alias ls='ls --color=auto'
+    alias la='ls -A --color=auto'
+    alias ll='ls -l --color=auto'
+    alias lt='ls -lA --color=auto'
+    alias l.='ls -A | grep -e "^\."'
+fi
 
 # Common use
 alias grubup="sudo grub-mkconfig -o /boot/grub/grub.cfg"
@@ -163,3 +176,12 @@ add-zsh-hook -Uz precmd rehash_precmd
 if [[ -n "$CONTAINER_ID" ]]; then
     PROMPT="[${CONTAINER_ID}] $PROMPT"
 fi
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/andy/google-cloud-sdk/path.zsh.inc' ]; then . '/home/andy/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/andy/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/andy/google-cloud-sdk/completion.zsh.inc'; fi
+
+# opencode
+export PATH=/home/andy/.opencode/bin:$PATH
