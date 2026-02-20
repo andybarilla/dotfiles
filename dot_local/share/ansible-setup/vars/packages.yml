@@ -14,6 +14,7 @@ fedora_packages:
   - NetworkManager-openvpn
   - ripgrep
   - python3-psutil
+  - tailscale
  
 # Packages from external repositories (repos must be configured first)
 external_packages:
