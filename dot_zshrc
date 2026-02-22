@@ -173,12 +173,7 @@ rehash_precmd() {
 add-zsh-hook -Uz precmd rehash_precmd
 
 # --- Always show hostname in Pure prompt ---
-prompt_pure_always_show_host() {
-    psvar[13]=1
-    # Set user_color so Pure renders the user@host segment
-    prompt_pure_state[user_color]=${prompt_pure_state[user_color]:-user}
-}
-add-zsh-hook precmd prompt_pure_always_show_host
+PURE_PROMPT_ALWAYS_SHOW_HOST=1
 
 # --- Distrobox indicator ---
 if [[ -n "$CONTAINER_ID" ]]; then
@@ -191,13 +186,13 @@ if [ -f '/home/andy/google-cloud-sdk/path.zsh.inc' ]; then . '/home/andy/google-
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/andy/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/andy/google-cloud-sdk/completion.zsh.inc'; fi
 
-# opencode
-export PATH=/home/andy/.opencode/bin:$PATH
+# claude code 
+export PATH=/home/andy/.local/bin:$PATH
 
 # rc = Run Claude: Start new session with auto-generated name
 rc() {
-    local session_name="opencode-$(date +%m%d-%H%M)"
-    zellij --session "$session_name" --new-session-with-layout opencode 
+    local session_name="claude-$(date +%m%d-%H%M)"
+    zellij --session "$session_name" --new-session-with-layout claude 
 }
 
 # rj = Run Join: Quick attach to session
@@ -256,3 +251,5 @@ rl() {
             ;;
     esac
 }
+export PATH="/Users/andy/.config/herd-lite/bin:$PATH"
+export PHP_INI_SCAN_DIR="/Users/andy/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
