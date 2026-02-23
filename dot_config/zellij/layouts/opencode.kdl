@@ -1,5 +1,14 @@
 layout {
-    pane command="zsh" {
-        args "-ic" "opencode"
+    default_tab_template name="opencode-1" {
+        pane
+    }
+    default_tab_template name="opencode-2" {
+        pane
+    }
+    default_tab_template name="opencode-3" {
+        pane
+    }
+    default_tab_template name="opencode-4" {
+        pane
     }
 }
