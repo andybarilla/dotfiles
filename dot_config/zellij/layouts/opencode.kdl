@@ -1,14 +1,31 @@
 layout {
-    default_tab_template name="opencode-1" {
-        pane
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="tab-bar"
+        }
+        children
+        pane size=2 borderless=true {
+            plugin location="status-bar"
+        }
     }
-    default_tab_template name="opencode-2" {
-        pane
+    tab name="opencode-1" {
+        pane command="zsh" {
+            args "-ic" "opencode"
+        }
     }
-    default_tab_template name="opencode-3" {
-        pane
+    tab name="opencode-2" {
+        pane command="zsh" {
+            args "-ic" "opencode"
+        }
     }
-    default_tab_template name="opencode-4" {
-        pane
+    tab name="opencode-3" {
+        pane command="zsh" {
+            args "-ic" "opencode"
+        }
+    }
+    tab name="opencode-4" {
+        pane command="zsh" {
+            args "-ic" "opencode"
+        }
     }
 }
