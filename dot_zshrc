@@ -26,6 +26,13 @@ if [[ -d "$HOME/.zsh/pure" ]]; then
     fpath+=("$HOME/.zsh/pure")
     autoload -U promptinit; promptinit
     prompt pure
+
+    # Always show hostname in Pure prompt
+    prompt_pure_always_show_host() {
+        psvar[13]=1
+        prompt_pure_state[user_color]=${prompt_pure_state[user_color]:-user}
+    }
+    add-zsh-hook precmd prompt_pure_always_show_host
 else
     autoload -Uz promptinit; promptinit
     prompt walters 2>/dev/null || prompt clint 2>/dev/null || PS1="%n@%m %~ %# "
@@ -172,13 +179,6 @@ rehash_precmd() {
 }
 add-zsh-hook -Uz precmd rehash_precmd
 
-# --- Always show hostname in Pure prompt ---
-prompt_pure_always_show_host() {
-    psvar[13]=1
-    # Set user_color so Pure renders the user@host segment
-    prompt_pure_state[user_color]=${prompt_pure_state[user_color]:-user}
-}
-add-zsh-hook precmd prompt_pure_always_show_host
 
 # --- Distrobox indicator ---
 if [[ -n "$CONTAINER_ID" ]]; then
