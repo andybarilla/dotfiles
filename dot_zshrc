@@ -54,6 +54,11 @@ typeset -U path
 [[ -d ~/.config/herd-lite/bin ]] && path=(~/.config/herd-lite/bin $path)
 [[ -d ~/.cargo/bin ]] && path=(~/.cargo/bin $path)
 
+# --- Neovim ---
+if command -v neovim &>/dev/null; then
+    alias vi='nvim' 
+fi
+
 # --- Mise ---
 if command -v mise &>/dev/null; then
     eval "$(mise activate zsh)"
@@ -196,8 +201,8 @@ export PATH=/home/andy/.opencode/bin:$PATH
 
 # rc = Run Claude: Start new session with auto-generated name
 rc() {
-    local session_name="opencode-$(date +%m%d-%H%M)"
-    zellij --session "$session_name" --new-session-with-layout opencode 
+    local session_name="agents-$(date +%m%d-%H%M)"
+    zellij --session "$session_name" --new-session-with-layout agents 
 }
 
 # rj = Run Join: Quick attach to session
