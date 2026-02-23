@@ -55,7 +55,7 @@ typeset -U path
 [[ -d ~/.cargo/bin ]] && path=(~/.cargo/bin $path)
 
 # --- Neovim ---
-if command -v neovim &>/dev/null; then
+if command -v nvim &>/dev/null; then
     alias vi='nvim' 
 fi
 
