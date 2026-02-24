@@ -1,0 +1,50 @@
+# Install Nerd Fonts from GitHub releases
+# https://github.com/ryanoasis/nerd-fonts
+
+- name: Create user fonts directory
+  ansible.builtin.file:
+    path: ~/.local/share/fonts
+    state: directory
+    mode: "0755"
+  become: false
+
+- name: Get latest Nerd Fonts version
+  ansible.builtin.shell: curl -sL https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | grep '"tag_name"' | cut -d'"' -f4
+  register: nerd_fonts_version
+  changed_when: false
+
+- name: Check if JetBrainsMono Nerd Font is installed
+  ansible.builtin.shell: fc-list | grep -qi "JetBrainsMono Nerd"
+  register: jetbrains_check
+  changed_when: false
+  failed_when: false
+
+- name: Install JetBrainsMono Nerd Font
+  ansible.builtin.shell: |
+    curl -fsSL "https://github.com/ryanoasis/nerd-fonts/releases/download/{{ nerd_fonts_version.stdout }}/JetBrainsMono.tar.xz" -o /tmp/JetBrainsMono.tar.xz
+    mkdir -p ~/.local/share/fonts/JetBrainsMono
+    tar -xJf /tmp/JetBrainsMono.tar.xz -C ~/.local/share/fonts/JetBrainsMono
+    rm -f /tmp/JetBrainsMono.tar.xz
+  when: jetbrains_check.rc != 0
+  become: false
+
+- name: Check if NotoMono Nerd Font is installed
+  ansible.builtin.shell: fc-list | grep -qi "NotoMono Nerd\|NotoSansMono Nerd"
+  register: noto_check
+  changed_when: false
+  failed_when: false
+
+- name: Install Noto Nerd Font
+  ansible.builtin.shell: |
+    curl -fsSL "https://github.com/ryanoasis/nerd-fonts/releases/download/{{ nerd_fonts_version.stdout }}/Noto.tar.xz" -o /tmp/Noto.tar.xz
+    mkdir -p ~/.local/share/fonts/Noto
+    tar -xJf /tmp/Noto.tar.xz -C ~/.local/share/fonts/Noto
+    rm -f /tmp/Noto.tar.xz
+  when: noto_check.rc != 0
+  become: false
+
+- name: Rebuild font cache
+  ansible.builtin.command: fc-cache -fv
+  changed_when: false
+  become: false
+  when: jetbrains_check.rc != 0 or noto_check.rc != 0
