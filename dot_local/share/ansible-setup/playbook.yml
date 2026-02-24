@@ -24,11 +24,13 @@
       ansible.builtin.set_fact:
         is_ubuntu: "{{ ansible_distribution in ['Ubuntu', 'Pop!_OS', 'Linux Mint', 'elementary OS', 'Debian'] }}"
         is_fedora: "{{ ansible_distribution == 'Fedora' }}"
+        is_archlinux: "{{ ansible_distribution in ['Archlinux', 'cachyos', 'archcraft'] }}"
     
     - name: Display detected system type
       ansible.builtin.debug:
         msg: >-
-          Distribution: {{ ansible_distribution }} {{ ansible_distribution_version }}
+          Distribution: {{ ansible_distribution }} {{ ansible_distribution_version }},
+          System type: {{ 'APT-based' if is_ubuntu else ('Arch (pacman)' if is_archlinux else 'Traditional (dnf)') }}
 
   tasks:
     - name: Configure dnf performance settings
@@ -51,8 +53,29 @@
       ansible.builtin.include_tasks: tasks/packages-apt.yml
       when: is_ubuntu
 
+    - name: Install packages (Arch Linux)
+      ansible.builtin.include_tasks: tasks/packages-pacman.yml
+      when: is_archlinux
+
+    - name: Fix environment PATH (Arch Linux)
+      ansible.builtin.include_tasks: tasks/environment.yml
+      when: is_archlinux
+
+    - name: Enable systemd services (Arch Linux)
+      ansible.builtin.include_tasks: tasks/services.yml
+      when: is_archlinux
+
+    - name: Enable systemd user services (Arch Linux)
+      ansible.builtin.include_tasks: tasks/user-services.yml
+      when: is_archlinux
+
+    - name: Install AUR packages (Arch Linux)
+      ansible.builtin.include_tasks: tasks/packages-aur.yml
+      when: is_archlinux
+
     - name: Install Claude Code
       ansible.builtin.include_tasks: tasks/claude-code.yml
+      when: not is_archlinux
 
     - name: Install Opencode
       ansible.builtin.include_tasks: tasks/opencode.yml
@@ -62,6 +85,7 @@
 
     - name: Install Google Cloud SDK
       ansible.builtin.include_tasks: tasks/gcloud.yml
+      when: not is_archlinux
 
     - name: Install Pure prompt for zsh
       ansible.builtin.include_tasks: tasks/pure-prompt.yml

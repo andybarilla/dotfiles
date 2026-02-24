@@ -57,3 +57,94 @@ ubuntu_external_packages:
 
 # DEBs to download and install directly
 remote_debs: []
+
+# ============================================
+# Arch Linux packages
+# ============================================
+
+# Packages available in Arch repositories
+arch_packages:
+  # Desktop environment and display
+  - niri
+  - fuzzel
+  - waybar
+  - xdg-desktop-portal-gtk
+  - alacritty
+  - swaybg
+  - swayidle
+  - swaylock
+  - xwayland-satellite
+  - udiskie
+  - gvfs
+  - gvfs-smb
+  - gnome-keyring
+  - avahi
+  - qt6-wayland
+  - qt5-wayland
+  - xorg-xwayland
+  # Audio stack
+  - pipewire
+  - wireplumber
+  - pipewire-pulse
+  - pipewire-alsa
+  - wiremix
+  # Development
+  - base-devel
+  - git
+  - go
+  - less
+  - vi
+  - jdk21-openjdk
+  - maven
+  - npm
+  - nodejs
+  - valkey
+  - mise
+  - 7zip
+  - ttf-jetbrains-mono-nerd
+  - ttf-noto-nerd
+  # System utilities
+  - openssh
+  - btop
+  - ripgrep
+  - rsync
+  - firefox
+  - wget
+  # Container tools
+  - distrobox
+  - podman
+  - podman-compose
+  - podman-docker
+  - networkmanager-openvpn
+  # Authentication
+  - yubikey-manager
+  - pam-u2f
+  - libfido2
+  - gnupg
+  - pcsclite
+  - ccid
+  - usbutils
+  # Shell
+  - zsh
+  - zellij
+  - tailscale
+
+# Packages from AUR (requires yay or similar)
+arch_aur_packages:
+  - 1password-beta
+  - github-cli
+  - synology-drive
+  - postman-bin
+  - slack-desktop-wayland
+  - obsidian
+  - remmina
+  - claude-desktop-bin
+  - yubico-authenticator
+  - linux-firmware-hauppauge
+  - chromium
+  - lens-bin
+
+# Systemd services to enable
+arch_services:
+  - pcscd
+  - sshd
