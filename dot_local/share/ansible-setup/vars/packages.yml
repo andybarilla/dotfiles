@@ -40,12 +40,17 @@ ubuntu_packages:
   - ripgrep
   - golang-go
   - build-essential
+  - zsh
 
 # Packages from external repositories (repos must be configured first)
 ubuntu_external_packages:
   - 1password
   - code
   - gh
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+  - docker-compose-plugin
   - google-chrome-stable
   - tailscale
 
