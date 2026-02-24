@@ -9,7 +9,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "zellij pipe --name \"zellij-attention::waiting::$zellij_pane_id\""
+            "command": "notify-send 'Claude Code' \"$CLAUDE_NOTIFICATION_MESSAGE\""
           }
         ]
       }
@@ -19,7 +19,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "zellij pipe --name \"zellij-attention::completed::$zellij_pane_id\""
+            "command": "msg=$(jq -r '.stop_reason // \"Done\"'); notify-send 'Claude Code' \"Stopped: $msg\""
           }
         ]
       }
