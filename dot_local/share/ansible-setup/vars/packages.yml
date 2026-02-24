@@ -35,18 +35,11 @@ remote_rpms: []
 # Packages available in Ubuntu repositories
 ubuntu_packages:
   - btop
-  - distrobox
-#  - flatpak
-#  - gnome-software-plugin-flatpak
   - network-manager-openvpn
-  - podman
-  - podman-compose
-  - podman-docker
   - python3-distutils-extra
   - ripgrep
   - golang-go
   - build-essential
-  - fish
 
 # Packages from external repositories (repos must be configured first)
 ubuntu_external_packages:
@@ -54,6 +47,7 @@ ubuntu_external_packages:
   - code
   - gh
   - google-chrome-stable
+  - tailscale
 
 # DEBs to download and install directly
 remote_debs: []

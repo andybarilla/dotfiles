@@ -73,6 +73,20 @@
     state: present
   become: true
 
+# Tailscale repository
+- name: Add Tailscale GPG key
+  ansible.builtin.shell:
+    cmd: curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/{{ ansible_distribution_release }}.noarmor.gpg --output /usr/share/keyrings/tailscale-archive-keyring.gpg
+    creates: /usr/share/keyrings/tailscale-archive-keyring.gpg
+  become: true
+
+- name: Add Tailscale apt repository
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/ubuntu {{ ansible_distribution_release }} main"
+    filename: tailscale
+    state: present
+  become: true
+
 # Update apt cache after adding repositories
 - name: Update apt cache after adding repositories
   ansible.builtin.apt:
