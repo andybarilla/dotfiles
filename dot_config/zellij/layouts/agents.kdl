@@ -8,17 +8,41 @@ layout {
             plugin location="status-bar"
         }
     }
-    tab name="agent-1" {
-        pane
+
+    // Alt+[ / Alt+] to toggle between these two views
+    swap_tiled_layout name="stacked" {
+        tab {
+            pane stacked=true {
+                pane
+                pane
+                pane
+                pane
+            }
+        }
     }
-    tab name="agent-2" {
-        pane
+
+    swap_tiled_layout name="grid" {
+        tab {
+            pane split_direction="vertical" {
+                pane split_direction="horizontal" {
+                    pane
+                    pane
+                }
+                pane split_direction="horizontal" {
+                    pane
+                    pane
+                }
+            }
+        }
     }
-    tab name="agent-3" {
-        pane
-    }
-    tab name="agent-4" {
-        pane
+
+    tab name="agents" {
+        pane stacked=true {
+            pane name="agent-1" expanded=true
+            pane name="agent-2"
+            pane name="agent-3"
+            pane name="agent-4"
+        }
     }
     tab name="work" {
         pane
