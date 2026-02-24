@@ -103,6 +103,7 @@ arch_packages:
   - 7zip
   - ttf-jetbrains-mono-nerd
   - ttf-noto-nerd
+  - neovim
   # System utilities
   - openssh
   - btop

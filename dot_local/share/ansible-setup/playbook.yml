@@ -73,6 +73,9 @@
       ansible.builtin.include_tasks: tasks/packages-aur.yml
       when: is_archlinux
 
+    - name: Configure container registries
+      ansible.builtin.include_tasks: tasks/containers.yml
+
     - name: Install Claude Code
       ansible.builtin.include_tasks: tasks/claude-code.yml
       when: not is_archlinux
