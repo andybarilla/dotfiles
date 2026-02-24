@@ -1,0 +1,22 @@
+# Install Obsidian
+# https://obsidian.md/download
+
+- name: Check if Obsidian is installed
+  ansible.builtin.command: which obsidian
+  register: obsidian_check
+  changed_when: false
+  failed_when: false
+
+- name: Get latest Obsidian version
+  ansible.builtin.shell: curl -sL https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest | grep '"tag_name"' | cut -d'"' -f4 | sed 's/^v//'
+  register: obsidian_version
+  changed_when: false
+  when: obsidian_check.rc != 0
+
+- name: Download and install Obsidian deb
+  ansible.builtin.shell: |
+    curl -fsSL "https://github.com/obsidianmd/obsidian-releases/releases/download/v{{ obsidian_version.stdout }}/obsidian_{{ obsidian_version.stdout }}_amd64.deb" -o /tmp/obsidian.deb
+    apt install -y /tmp/obsidian.deb
+    rm -f /tmp/obsidian.deb
+  when: obsidian_check.rc != 0
+  become: true

@@ -1,0 +1,24 @@
+# Install Synology Drive Client
+# https://www.synology.com/en-us/dsm/feature/drive
+
+- name: Check if Synology Drive Client is installed
+  ansible.builtin.command: dpkg -s synology-drive-client
+  register: synology_drive_check
+  changed_when: false
+  failed_when: false
+
+- name: Get latest Synology Drive Client version
+  ansible.builtin.shell: curl -sL https://archive.synology.com/download/Utility/SynologyDriveClient | grep -oP '\d+\.\d+\.\d+-\d+' | head -1
+  register: synology_drive_version
+  changed_when: false
+  when: synology_drive_check.rc != 0
+
+- name: Download and install Synology Drive Client deb
+  ansible.builtin.shell: |
+    VERSION="{{ synology_drive_version.stdout }}"
+    BUILD="${VERSION##*-}"
+    curl -fsSL "https://global.synologydownload.com/download/Utility/SynologyDriveClient/${VERSION}/Ubuntu/Installer/synology-drive-client-${BUILD}.x86_64.deb" -o /tmp/synology-drive-client.deb
+    apt install -y /tmp/synology-drive-client.deb
+    rm -f /tmp/synology-drive-client.deb
+  when: synology_drive_check.rc != 0
+  become: true
