@@ -1,0 +1,37 @@
+# Install Alacritty terminal emulator built from source
+# https://github.com/alacritty/alacritty/blob/master/INSTALL.md
+
+- name: Check if Alacritty is installed
+  ansible.builtin.command: which alacritty
+  register: alacritty_check
+  changed_when: false
+  failed_when: false
+
+- name: Check if Rust/cargo is available
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.cargo/bin/cargo"
+  register: cargo_stat
+
+- name: Install Alacritty build dependencies
+  ansible.builtin.apt:
+    name:
+      - cmake
+      - pkg-config
+      - libfreetype6-dev
+      - libfontconfig1-dev
+      - libxcb-xfixes0-dev
+      - libxkbcommon-dev
+      - python3
+    state: present
+  become: true
+  when: alacritty_check.rc != 0
+
+- name: Install Rust via rustup
+  ansible.builtin.shell: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+  when: alacritty_check.rc != 0 and not cargo_stat.stat.exists
+  become: false
+
+- name: Build and install Alacritty via cargo
+  ansible.builtin.shell: ~/.cargo/bin/cargo install alacritty
+  when: alacritty_check.rc != 0
+  become: false

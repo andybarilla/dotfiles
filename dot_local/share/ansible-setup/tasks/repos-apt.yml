@@ -101,6 +101,13 @@
     state: present
   become: true
 
+# Neovim PPA
+- name: Add Neovim stable PPA
+  ansible.builtin.apt_repository:
+    repo: "ppa:neovim-ppa/stable"
+    state: present
+  become: true
+
 # Update apt cache after adding repositories
 - name: Update apt cache after adding repositories
   ansible.builtin.apt:

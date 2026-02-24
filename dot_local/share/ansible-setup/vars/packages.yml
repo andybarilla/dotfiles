@@ -34,7 +34,6 @@ remote_rpms: []
 
 # Packages available in Ubuntu repositories
 ubuntu_packages:
-  - alacritty
   - btop
   - network-manager-openvpn
   - python3-distutils-extra
@@ -42,7 +41,6 @@ ubuntu_packages:
   - golang-go
   - build-essential
   - zsh
-  - neovim
   - libnotify-bin
 
 # Packages from external repositories (repos must be configured first)
@@ -56,6 +54,7 @@ ubuntu_external_packages:
   - docker-compose-plugin
   - google-chrome-stable
   - tailscale
+  - neovim
 
 # DEBs to download and install directly
 remote_debs: []
