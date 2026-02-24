@@ -41,6 +41,8 @@ ubuntu_packages:
   - golang-go
   - build-essential
   - zsh
+  - zellij
+  - neovim
 
 # Packages from external repositories (repos must be configured first)
 ubuntu_external_packages:
