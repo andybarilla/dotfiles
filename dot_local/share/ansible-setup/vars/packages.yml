@@ -34,6 +34,7 @@ remote_rpms: []
 
 # Packages available in Ubuntu repositories
 ubuntu_packages:
+  - alacritty
   - btop
   - network-manager-openvpn
   - python3-distutils-extra
