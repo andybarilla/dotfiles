@@ -67,9 +67,7 @@ arch_packages:
   # Desktop environment and display
   - niri
   - fuzzel
-  - waybar
   - xdg-desktop-portal-gtk
-  - alacritty
   - swaybg
   - swayidle
   - swaylock
@@ -79,9 +77,13 @@ arch_packages:
   - gvfs-smb
   - gnome-keyring
   - avahi
+  - qt6ct
   - qt6-wayland
   - qt5-wayland
   - xorg-xwayland
+  # Networking
+  - tailscale
+  - networkmanager-openvpn
   # Audio stack
   - pipewire
   - wireplumber
@@ -112,11 +114,8 @@ arch_packages:
   - firefox
   - wget
   # Container tools
-  - distrobox
-  - podman
-  - podman-compose
-  - podman-docker
-  - networkmanager-openvpn
+  - docker
+  - docker-compose 
   # Authentication
   - yubikey-manager
   - pam-u2f
@@ -128,7 +127,6 @@ arch_packages:
   # Shell
   - zsh
   - zellij
-  - tailscale
 
 # Packages from AUR (requires yay or similar)
 arch_aur_packages:

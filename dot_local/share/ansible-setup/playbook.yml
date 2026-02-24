@@ -78,7 +78,6 @@
 
     - name: Install Claude Code
       ansible.builtin.include_tasks: tasks/claude-code.yml
-      when: not is_archlinux
 
     - name: Install Opencode
       ansible.builtin.include_tasks: tasks/opencode.yml
@@ -88,7 +87,6 @@
 
     - name: Install Google Cloud SDK
       ansible.builtin.include_tasks: tasks/gcloud.yml
-      when: not is_archlinux
 
     - name: Install Pure prompt for zsh
       ansible.builtin.include_tasks: tasks/pure-prompt.yml

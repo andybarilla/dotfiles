@@ -9,7 +9,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "notify-send 'Claude Code' \"$CLAUDE_NOTIFICATION_MESSAGE\""
+            "command": "msg=$(jq -r '.message// \"Done\"'); notify-send 'Claude Code' \"Waiting: $msg\""
           }
         ]
       }
@@ -19,7 +19,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "msg=$(jq -r '.stop_reason // \"Done\"'); notify-send 'Claude Code' \"Stopped: $msg\""
+            "command": "msg=$(jq -r '.stop_reason // \"Done\"'); notify-send 'Claude Code' \"$msg\""
           }
         ]
       }
