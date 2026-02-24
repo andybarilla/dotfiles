@@ -20,4 +20,7 @@ layout {
     tab name="agent-4" {
         pane
     }
+    tab name="work" {
+        pane
+    }
 }
