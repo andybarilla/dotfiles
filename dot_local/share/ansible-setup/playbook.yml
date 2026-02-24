@@ -82,6 +82,10 @@
     - name: Install Opencode
       ansible.builtin.include_tasks: tasks/opencode.yml
 
+    - name: Install Zellij
+      ansible.builtin.include_tasks: tasks/zellij.yml
+      when: is_ubuntu
+
     - name: Install Mise-en-Place
       ansible.builtin.include_tasks: tasks/mise.yml
 

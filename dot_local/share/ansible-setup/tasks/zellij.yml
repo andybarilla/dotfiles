@@ -1,0 +1,23 @@
+# Install Zellij terminal multiplexer
+# https://zellij.dev/
+
+- name: Check if Zellij is installed
+  ansible.builtin.command: which zellij
+  register: zellij_check
+  changed_when: false
+  failed_when: false
+
+- name: Get latest Zellij version
+  ansible.builtin.shell: curl -sL https://api.github.com/repos/zellij-org/zellij/releases/latest | grep '"tag_name"' | cut -d'"' -f4
+  register: zellij_version
+  changed_when: false
+  when: zellij_check.rc != 0
+
+- name: Download and install Zellij
+  ansible.builtin.shell: |
+    curl -fsSL "https://github.com/zellij-org/zellij/releases/download/{{ zellij_version.stdout }}/zellij-x86_64-unknown-linux-musl.tar.gz" -o /tmp/zellij.tar.gz
+    tar -xzf /tmp/zellij.tar.gz -C /usr/local/bin zellij
+    chmod +x /usr/local/bin/zellij
+    rm -f /tmp/zellij.tar.gz
+  when: zellij_check.rc != 0
+  become: true
