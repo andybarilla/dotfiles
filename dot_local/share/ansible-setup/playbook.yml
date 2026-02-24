@@ -86,6 +86,14 @@
       ansible.builtin.include_tasks: tasks/zellij.yml
       when: is_ubuntu
 
+    - name: Install Obsidian
+      ansible.builtin.include_tasks: tasks/obsidian.yml
+      when: is_ubuntu
+
+    - name: Install Synology Drive Client
+      ansible.builtin.include_tasks: tasks/synology-drive.yml
+      when: is_ubuntu
+
     - name: Install Nerd Fonts
       ansible.builtin.include_tasks: tasks/nerd-fonts.yml
       when: is_ubuntu
