@@ -36,7 +36,6 @@ remote_rpms: []
 ubuntu_packages:
   - btop
   - network-manager-openvpn
-  - python3-distutils-extra
   - ripgrep
   - golang-go
   - build-essential
