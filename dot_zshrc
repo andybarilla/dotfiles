@@ -264,4 +264,4 @@ rl() {
 export PATH="/home/andy/.config/herd-lite/bin:$PATH"
 export PHP_INI_SCAN_DIR="/home/andy/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
 
-alias ktv='kitty --session ~/.config/kitty/sessions/auto-abstractor.conf & disown'
+alias ktv='kgrid ~/dev/titlevision-ai/auto-abstractor'

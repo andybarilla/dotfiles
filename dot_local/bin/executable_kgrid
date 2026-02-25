@@ -1,0 +1,4 @@
+#!/bin/bash
+DIR="${1:-$PWD}"
+kitty --directory "$DIR" --session ~/.config/kitty/sessions/grid.conf &
+disown
