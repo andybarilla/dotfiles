@@ -1,0 +1,20 @@
+# Install Ghostty CLI
+# https://claude.ai/download
+
+- name: Check if Ghostty is installed
+  ansible.builtin.command: which  ghostty
+  register: ghostty_check
+  changed_when: false
+  failed_when: false
+
+- name: Install Ghostty
+  ansible.builtin.shell: bash -c "$(curl -fsSL https://raw.githubusercontent.com/mkasberg/ghostty-ubuntu/HEAD/install.sh)"
+  when: ghostty_check.rc != 0
+  become: false
+
+- name: Add Ghostty activation to bashrc
+  ansible.builtin.lineinfile:
+    path: ~/.bashrc
+    line: 'eval "$(~/.local/bin/ghostty activate bash)"'
+    state: present
+  become: false

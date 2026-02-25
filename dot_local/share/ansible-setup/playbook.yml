@@ -73,18 +73,20 @@
       ansible.builtin.include_tasks: tasks/packages-aur.yml
       when: is_archlinux
 
+    - name: Install Rust
+      ansible.builtin.include_tasks: tasks/rust.yml
+
     - name: Configure container registries
       ansible.builtin.include_tasks: tasks/containers.yml
+
+    - name: Install Ghostty
+      ansible.builtin.include_tasks: tasks/ghostty.yml
 
     - name: Install Claude Code
       ansible.builtin.include_tasks: tasks/claude-code.yml
 
     - name: Install Opencode
       ansible.builtin.include_tasks: tasks/opencode.yml
-
-    - name: Install Alacritty
-      ansible.builtin.include_tasks: tasks/alacritty.yml
-      when: is_ubuntu
 
     - name: Install Zellij
       ansible.builtin.include_tasks: tasks/zellij.yml

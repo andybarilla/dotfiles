@@ -1,0 +1,1 @@
+Clear context, create a worktree, and implement the plan. Spin up a team if you want. $ARGUMENTS
