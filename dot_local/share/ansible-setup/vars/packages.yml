@@ -127,6 +127,9 @@ arch_packages:
   # Shell
   - zsh
   - zellij
+  - cups-pk-helper
+  - kimageformats
+  - cava
 
 # Packages from AUR (requires yay or similar)
 arch_aur_packages:
@@ -142,6 +145,7 @@ arch_aur_packages:
   - linux-firmware-hauppauge
   - chromium
   - lens-bin
+  - dms-shell-bin
 
 # Systemd services to enable
 arch_services:
