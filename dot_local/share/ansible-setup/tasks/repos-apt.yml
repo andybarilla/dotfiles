@@ -103,15 +103,15 @@
 
 # avengemedia PPAs
 - name: Add avengemedia/danklinux PPA
-  ansible.builtin.apt_repository:
-    repo: "ppa:avengemedia/danklinux"
-    state: present
+  ansible.builtin.shell:
+    cmd: add-apt-repository -y ppa:avengemedia/danklinux
+    creates: /etc/apt/sources.list.d/avengemedia-ubuntu-danklinux-*.list
   become: true
 
 - name: Add avengemedia/dms PPA
-  ansible.builtin.apt_repository:
-    repo: "ppa:avengemedia/dms"
-    state: present
+  ansible.builtin.shell:
+    cmd: add-apt-repository -y ppa:avengemedia/dms
+    creates: /etc/apt/sources.list.d/avengemedia-ubuntu-dms-*.list
   become: true
 
 # Update apt cache after adding repositories
