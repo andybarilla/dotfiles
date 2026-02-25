@@ -143,7 +143,7 @@ arch_aur_packages:
   - claude-desktop-bin
   - yubico-authenticator
   - linux-firmware-hauppauge
-  - chromium
+  - google-chrome 
   - lens-bin
   - dms-shell-bin
 
@@ -151,3 +151,4 @@ arch_aur_packages:
 arch_services:
   - pcscd
   - sshd
+  - tailscaled
