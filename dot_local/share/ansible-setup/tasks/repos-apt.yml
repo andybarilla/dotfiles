@@ -101,10 +101,16 @@
     state: present
   become: true
 
-# Neovim PPA
-- name: Add Neovim stable PPA
+# avengemedia PPAs
+- name: Add avengemedia/danklinux PPA
   ansible.builtin.apt_repository:
-    repo: "ppa:neovim-ppa/stable"
+    repo: "ppa:avengemedia/danklinux"
+    state: present
+  become: true
+
+- name: Add avengemedia/dms PPA
+  ansible.builtin.apt_repository:
+    repo: "ppa:avengemedia/dms"
     state: present
   become: true
 

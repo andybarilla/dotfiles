@@ -78,6 +78,7 @@
 
     - name: Configure container registries
       ansible.builtin.include_tasks: tasks/containers.yml
+      when: is_archlinux
 
     - name: Install Ghostty
       ansible.builtin.include_tasks: tasks/ghostty.yml
