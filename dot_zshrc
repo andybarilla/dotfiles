@@ -40,6 +40,10 @@ fi
 
 # --- Man pages ---
 export MANROFFOPT="-c"
+# On Ubuntu/Debian, bat is installed as batcat
+if command -v batcat &>/dev/null && ! command -v bat &>/dev/null; then
+    alias bat='batcat'
+fi
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 # --- Environment ---
