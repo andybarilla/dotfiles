@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Kitty - TitleVision
+Comment=Kitty terminal with TitleVision auto-abstractor session
+Exec=kitty --session ~/.config/kitty/sessions/auto-abstractor.conf
+Icon=kitty
+Terminal=false
+Categories=Development;
