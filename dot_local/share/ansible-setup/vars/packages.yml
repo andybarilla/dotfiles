@@ -152,3 +152,7 @@ arch_services:
   - pcscd
   - sshd
   - tailscaled
+
+# Systemd user timers to enable
+arch_user_timers:
+  - daily-dev-summary.timer
