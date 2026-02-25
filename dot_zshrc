@@ -40,10 +40,6 @@ fi
 
 # --- Man pages ---
 export MANROFFOPT="-c"
-# On Ubuntu/Debian, bat is installed as batcat
-if command -v batcat &>/dev/null && ! command -v bat &>/dev/null; then
-    alias bat='batcat'
-fi
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 # --- Environment ---
@@ -111,6 +107,8 @@ alias update='sudo pacman -Syu'
 alias mirror="sudo cachyos-rate-mirrors"
 
 # Help people new to Arch
+alias apt='man pacman'
+alias apt-get='man pacman'
 alias please='sudo'
 alias tb='nc termbin.com 9999'
 
@@ -265,3 +263,5 @@ rl() {
 }
 export PATH="/home/andy/.config/herd-lite/bin:$PATH"
 export PHP_INI_SCAN_DIR="/home/andy/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
+
+alias ktv='kitty --session ~/.config/kitty/sessions/auto-abstractor.conf & disown'
