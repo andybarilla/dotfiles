@@ -127,6 +127,9 @@ arch_packages:
   # Shell
   - zsh
   - zellij
+  - cups-pk-helper
+  - kimageformats
+  - cava
 
 # Packages from AUR (requires yay or similar)
 arch_aur_packages:
@@ -140,10 +143,12 @@ arch_aur_packages:
   - claude-desktop-bin
   - yubico-authenticator
   - linux-firmware-hauppauge
-  - chromium
+  - google-chrome 
   - lens-bin
+  - dms-shell-bin
 
 # Systemd services to enable
 arch_services:
   - pcscd
   - sshd
+  - tailscaled

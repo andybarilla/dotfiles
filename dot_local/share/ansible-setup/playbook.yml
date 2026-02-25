@@ -76,12 +76,12 @@
     - name: Install Rust
       ansible.builtin.include_tasks: tasks/rust.yml
 
-    - name: Configure container registries
-      ansible.builtin.include_tasks: tasks/containers.yml
-      when: is_archlinux
+    #- name: Configure container registries
+    #  ansible.builtin.include_tasks: tasks/containers.yml
+    #  when: is_archlinux
 
-    - name: Install Ghostty
-      ansible.builtin.include_tasks: tasks/ghostty.yml
+    #- name: Install Ghostty
+    #  ansible.builtin.include_tasks: tasks/ghostty.yml
 
     - name: Install Claude Code
       ansible.builtin.include_tasks: tasks/claude-code.yml
