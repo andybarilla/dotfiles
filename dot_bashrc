@@ -61,3 +61,6 @@ export PATH="$HOME/.local/bin:$HOME/go/bin:$PATH"
 export XCURSOR_SIZE=24
 
 eval "$(~/.local/bin/mise activate bash)"
+. "$HOME/.cargo/env"
+eval "$(~/.local/bin/rust activate bash)"
+eval "$(~/.local/bin/ghostty activate bash)"
