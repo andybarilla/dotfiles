@@ -3,6 +3,7 @@ Description=OpenPortal - skeetr-app
 After=network.target
 
 [Service]
+Environment=PATH=/home/andy/.opencode/bin:/home/andy/.local/bin:/home/andy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ExecStart=/usr/sbin/bunx openportal --name skeetr-app --port 4300
 WorkingDirectory=/home/andy/dev/andybarilla/skeetr-app
 Restart=on-failure
