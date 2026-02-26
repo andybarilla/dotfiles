@@ -114,6 +114,7 @@ arch_packages:
   - rsync
   - firefox
   - wget
+  - tmux
   # Container tools
   - docker
   - docker-compose 
