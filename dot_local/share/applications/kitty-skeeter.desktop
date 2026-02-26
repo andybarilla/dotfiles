@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Kitty - Skeetr 
+Comment=Kitty terminal with Skeetr session
+Exec=/home/andy/.local/bin/kgrid /home/andy/dev/andybarilla/skeetr-app
+Icon=kitty
+Terminal=false
+Categories=Development;
