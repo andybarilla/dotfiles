@@ -69,6 +69,10 @@
       ansible.builtin.include_tasks: tasks/user-services.yml
       when: is_archlinux
 
+    - name: Setup dictation system (Arch Linux)
+      ansible.builtin.include_tasks: tasks/dictation.yml
+      when: is_archlinux
+
     - name: Install AUR packages (Arch Linux)
       ansible.builtin.include_tasks: tasks/packages-aur.yml
       when: is_archlinux

@@ -1,0 +1,14 @@
+[Unit]
+Description=Push-to-talk dictation daemon (OpenAI Whisper)
+After=pipewire.service
+
+[Service]
+Type=simple
+ExecStart=op run --env-file=%h/.config/whisper-dictate/config -- %h/.local/bin/whisper-dictate
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,291 @@
+#!/usr/bin/env python3
+"""Push-to-talk dictation daemon using OpenAI Whisper API.
+
+Hold Caps Lock to record, release to transcribe and inject text.
+Requires: python-evdev, ffmpeg, wtype, notify-send, OPENAI_API_KEY env var.
+"""
+
+import os
+import sys
+import time
+import glob
+import signal
+import subprocess
+import threading
+import tempfile
+import urllib.request
+import urllib.error
+import json
+import mimetypes
+from pathlib import Path
+
+import evdev
+from evdev import InputDevice, ecodes, list_devices
+
+WHISPER_API_URL = "https://api.openai.com/v1/audio/transcriptions"
+MIN_DURATION_SECS = 0.5
+AUDIO_TMPDIR = "/tmp"
+
+# Global state
+ffmpeg_proc = None
+recording_start = None
+current_wav = None
+recording_lock = threading.Lock()
+
+
+def notify(msg, urgency="normal", timeout=2000):
+    try:
+        subprocess.Popen(
+            ["notify-send", "-u", urgency, "-t", str(timeout), "Dictation", msg],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+    except Exception:
+        pass
+
+
+def get_api_key():
+    key = os.environ.get("OPENAI_API_KEY", "")
+    if not key:
+        notify("OPENAI_API_KEY not set", urgency="critical")
+        sys.exit(1)
+    return key
+
+
+def open_input_devices():
+    """Open all keyboard-like input devices."""
+    devices = []
+    for path in list_devices():
+        try:
+            dev = InputDevice(path)
+            caps = dev.capabilities()
+            # Only care about devices with KEY events
+            if ecodes.EV_KEY in caps:
+                keys = caps[ecodes.EV_KEY]
+                if ecodes.KEY_CAPSLOCK in keys:
+                    devices.append(dev)
+        except Exception:
+            pass
+    return devices
+
+
+def start_recording():
+    global ffmpeg_proc, recording_start, current_wav
+
+    fd, wav_path = tempfile.mkstemp(suffix=".wav", dir=AUDIO_TMPDIR, prefix="dictate-")
+    os.close(fd)
+
+    cmd = [
+        "ffmpeg",
+        "-y",
+        "-f", "pulse",
+        "-i", "default",
+        "-acodec", "pcm_s16le",
+        "-ar", "16000",
+        "-ac", "1",
+        wav_path,
+    ]
+
+    proc = subprocess.Popen(
+        cmd,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+
+    with recording_lock:
+        ffmpeg_proc = proc
+        recording_start = time.monotonic()
+        current_wav = wav_path
+
+    notify("Recording...", timeout=10000)
+    return wav_path
+
+
+def stop_recording():
+    """Stop ffmpeg and return (wav_path, duration). Returns (None, 0) if not recording."""
+    with recording_lock:
+        proc = ffmpeg_proc
+        start = recording_start
+        wav = current_wav
+
+    if proc is None:
+        return None, 0
+
+    # Send SIGTERM to ffmpeg so it finalises the WAV header
+    try:
+        proc.terminate()
+        proc.wait(timeout=5)
+    except Exception:
+        try:
+            proc.kill()
+        except Exception:
+            pass
+
+    duration = time.monotonic() - start if start else 0
+
+    with recording_lock:
+        globals()["ffmpeg_proc"] = None
+        globals()["recording_start"] = None
+        globals()["current_wav"] = None
+
+    return wav, duration
+
+
+def build_multipart(fields, file_field, file_path, file_mime="audio/wav"):
+    """Build a multipart/form-data body without external libraries."""
+    boundary = "----WhisperBoundary" + str(int(time.time() * 1000))
+    body_parts = []
+
+    for name, value in fields.items():
+        part = (
+            f"--{boundary}\r\n"
+            f'Content-Disposition: form-data; name="{name}"\r\n\r\n'
+            f"{value}\r\n"
+        ).encode()
+        body_parts.append(part)
+
+    filename = Path(file_path).name
+    with open(file_path, "rb") as f:
+        file_data = f.read()
+
+    file_part = (
+        f"--{boundary}\r\n"
+        f'Content-Disposition: form-data; name="{file_field}"; filename="{filename}"\r\n'
+        f"Content-Type: {file_mime}\r\n\r\n"
+    ).encode() + file_data + b"\r\n"
+    body_parts.append(file_part)
+
+    body_parts.append(f"--{boundary}--\r\n".encode())
+    body = b"".join(body_parts)
+    content_type = f"multipart/form-data; boundary={boundary}"
+    return body, content_type
+
+
+def transcribe_and_inject(wav_path, api_key, language=None):
+    """Called in a background thread: transcribe WAV, inject text, clean up."""
+    try:
+        fields = {"model": "whisper-1"}
+        if language:
+            fields["language"] = language
+
+        body, content_type = build_multipart(fields, "file", wav_path)
+
+        req = urllib.request.Request(
+            WHISPER_API_URL,
+            data=body,
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": content_type,
+            },
+            method="POST",
+        )
+
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            result = json.loads(resp.read().decode())
+
+        text = result.get("text", "").strip()
+        if not text:
+            return
+
+        # Inject text into focused Wayland surface
+        subprocess.run(["wtype", text], check=False)
+
+    except urllib.error.HTTPError as e:
+        body = e.read().decode(errors="replace")
+        notify(f"API error {e.code}: {body[:80]}", urgency="critical", timeout=5000)
+    except Exception as e:
+        notify(f"Dictation error: {e}", urgency="critical", timeout=5000)
+    finally:
+        try:
+            os.unlink(wav_path)
+        except Exception:
+            pass
+
+
+def main():
+    api_key = get_api_key()
+    language = os.environ.get("WHISPER_LANGUAGE", None)
+
+    devices = open_input_devices()
+    if not devices:
+        print("No keyboard devices with KEY_CAPSLOCK found. Check input group membership.", file=sys.stderr)
+        sys.exit(1)
+
+    print(f"Monitoring {len(devices)} device(s) for Caps Lock events...", flush=True)
+
+    # Use a selector to watch all devices
+    import selectors
+    sel = selectors.DefaultSelector()
+    for dev in devices:
+        sel.register(dev, selectors.EVENT_READ)
+
+    caps_held = False
+
+    def handle_signal(sig, frame):
+        # Clean up on exit
+        stop_recording()
+        for dev in devices:
+            try:
+                dev.close()
+            except Exception:
+                pass
+        sys.exit(0)
+
+    signal.signal(signal.SIGTERM, handle_signal)
+    signal.signal(signal.SIGINT, handle_signal)
+
+    while True:
+        try:
+            ready = sel.select(timeout=1.0)
+        except Exception:
+            continue
+
+        for key, _ in ready:
+            dev = key.fileobj
+            try:
+                for event in dev.read():
+                    if event.type != ecodes.EV_KEY:
+                        continue
+                    if event.code != ecodes.KEY_CAPSLOCK:
+                        continue
+
+                    if event.value == 1 and not caps_held:
+                        # Key down
+                        caps_held = True
+                        start_recording()
+
+                    elif event.value == 0 and caps_held:
+                        # Key up
+                        caps_held = False
+                        wav, duration = stop_recording()
+
+                        if wav is None:
+                            continue
+
+                        if duration < MIN_DURATION_SECS:
+                            notify(f"Too short ({duration:.1f}s), ignored")
+                            try:
+                                os.unlink(wav)
+                            except Exception:
+                                pass
+                            continue
+
+                        # Transcribe in background so key loop stays responsive
+                        t = threading.Thread(
+                            target=transcribe_and_inject,
+                            args=(wav, api_key, language),
+                            daemon=True,
+                        )
+                        t.start()
+
+            except OSError:
+                # Device disappeared; remove from selector
+                sel.unregister(dev)
+                try:
+                    dev.close()
+                except Exception:
+                    pass
+
+
+if __name__ == "__main__":
+    main()

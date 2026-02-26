@@ -90,6 +90,7 @@ arch_packages:
   - pipewire-pulse
   - pipewire-alsa
   - wiremix
+  - python-evdev
   # Development
   - base-devel
   - git
@@ -133,6 +134,7 @@ arch_packages:
 
 # Packages from AUR (requires yay or similar)
 arch_aur_packages:
+  - wtype
   - 1password-beta
   - github-cli
   - synology-drive
@@ -156,3 +158,7 @@ arch_services:
 # Systemd user timers to enable
 arch_user_timers:
   - daily-dev-summary.timer
+
+# Systemd user services to enable
+arch_user_services:
+  - whisper-dictate.service

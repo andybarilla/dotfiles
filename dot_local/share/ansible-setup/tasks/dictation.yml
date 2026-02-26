@@ -1,0 +1,6 @@
+- name: Add user to input group for evdev access
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    groups: input
+    append: true
+  become: true
