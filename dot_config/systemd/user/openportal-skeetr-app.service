@@ -1,0 +1,12 @@
+[Unit]
+Description=OpenPortal - skeetr-app
+After=network.target
+
+[Service]
+ExecStart=/usr/sbin/bunx openportal --name skeetr-app --port 4300
+WorkingDirectory=/home/andy/dev/andybarilla/skeetr-app
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
