@@ -4,6 +4,7 @@ After=network.target
 
 [Service]
 Environment=PATH=/home/andy/.opencode/bin:/home/andy/.local/bin:/home/andy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ExecStartPre=/bin/sleep 15
 ExecStart=/usr/sbin/bunx openportal --name auto-abstractor --port 4301
 WorkingDirectory=/home/andy/dev/titlevision-ai/auto-abstractor
 Restart=on-failure
