@@ -1,0 +1,64 @@
+keybindings:
+  prefix_table: Space
+
+items:
+  - name: +Windows
+    key: w
+    menu:
+      - name: New window
+        key: c
+        command: new-window
+      - name: Split horizontal
+        key: "-"
+        command: split-window -v
+      - name: Split vertical
+        key: "|"
+        command: split-window -h
+      - name: Select window
+        key: w
+        command: choose-window
+      - name: Kill window
+        key: X
+        command: confirm-before -p "Kill window? (y/n)" kill-window
+      - name: Rename window
+        key: ","
+        command: command-prompt -I "#W" "rename-window '%%'"
+
+  - name: +Panes
+    key: p
+    menu:
+      - name: Select pane
+        key: o
+        command: select-pane -t :.+
+      - name: Zoom pane
+        key: z
+        command: resize-pane -Z
+      - name: Kill pane
+        key: x
+        command: confirm-before -p "Kill pane? (y/n)" kill-pane
+
+  - name: +Sessions
+    key: s
+    menu:
+      - name: Choose session
+        key: s
+        command: choose-session
+      - name: Detach
+        key: d
+        command: detach-client
+      - name: Kill session
+        key: X
+        command: confirm-before -p "Kill session #S? (y/n)" kill-session
+
+  - name: +Misc
+    key: m
+    menu:
+      - name: Reload config
+        key: r
+        command: source-file ~/.config/tmux/tmux.conf \; display "Reloaded!"
+      - name: Toggle mouse
+        key: M
+        command: set mouse
+      - name: Sync panes
+        key: y
+        command: set synchronize-panes\; display 'synchronize-panes #{?synchronize-panes,on,off}'
