@@ -4,7 +4,8 @@ After=pipewire.service
 
 [Service]
 Type=simple
-ExecStart=op run --env-file=%h/.config/whisper-dictate/config -- %h/.local/bin/whisper-dictate
+ExecStart=%h/.local/bin/whisper-dictate
+EnvironmentFile=-%h/.config/whisper-dictate/config
 Restart=on-failure
 RestartSec=5
 StandardOutput=journal

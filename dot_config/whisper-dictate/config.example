@@ -1,2 +1,3 @@
-OPENAI_API_KEY=op://Personal/OPENAI_API_KEY/credential
+# OPENAI_API_KEY is loaded from ~/.profile
+# Uncomment to pin a specific language (default: auto-detect)
 # WHISPER_LANGUAGE=en
