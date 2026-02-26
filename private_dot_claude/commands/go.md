@@ -26,13 +26,13 @@ Find the most recently modified plan file in `~/.claude/plans/` and implement it
 - PR title and body should reflect the plan's context and what was implemented
 
 ## 6. Record learnings
-After the PR is created, append to the project's learnings file:
-- Detect the git repo root (`git rev-parse --show-toplevel`) and derive the project memory path:
-  `~/.claude/projects/<repo-path-with-slashes-replaced-by-dashes>/memory/learnings.md`
+After the PR is created, append to a learnings file in the repo:
+- Save to `<repo-root>/.claude/learnings.md`
 - Create the file if it doesn't exist
 - Append a dated entry with:
   - **Surprises / gotchas** — anything unexpectedly tricky or different from the plan
   - **Pattern confirmations** — existing patterns in the codebase that proved useful
   - **Tool / command tips** — commands or make targets that were especially helpful
+- Commit the learnings file and push it to the PR branch
 
 $ARGUMENTS
