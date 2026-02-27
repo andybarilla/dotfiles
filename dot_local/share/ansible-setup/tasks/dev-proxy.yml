@@ -10,11 +10,12 @@
 #   sudo caddy trust
 
 - name: Configure NetworkManager to use dnsmasq for DNS
-  ansible.builtin.lineinfile:
+  community.general.ini_file:
     path: /etc/NetworkManager/NetworkManager.conf
-    insertafter: '^\[main\]'
-    regexp: '^dns='
-    line: 'dns=dnsmasq'
+    section: main
+    option: dns
+    value: dnsmasq
+    mode: '0644'
   become: true
   register: nm_dns_config
 
