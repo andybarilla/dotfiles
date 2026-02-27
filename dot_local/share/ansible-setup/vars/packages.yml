@@ -84,6 +84,9 @@ arch_packages:
   # Networking
   - tailscale
   - networkmanager-openvpn
+  - dnsmasq
+  # Local dev proxy
+  - caddy
   # Audio stack
   - pipewire
   - wireplumber

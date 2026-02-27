@@ -73,6 +73,10 @@
       ansible.builtin.include_tasks: tasks/dictation.yml
       when: is_archlinux
 
+    - name: Setup local development proxy (Arch Linux)
+      ansible.builtin.include_tasks: tasks/dev-proxy.yml
+      when: is_archlinux
+
     - name: Install AUR packages (Arch Linux)
       ansible.builtin.include_tasks: tasks/packages-aur.yml
       when: is_archlinux

@@ -1,0 +1,70 @@
+# Setup dnsmasq + Caddy for local development with .test domains
+#
+# - NetworkManager spawns dnsmasq and resolves *.test -> 127.0.0.1
+# - Caddy reverse-proxies named hosts to local ports
+#
+# After setup, add sites to /etc/caddy/Caddyfile and run:
+#   sudo systemctl reload caddy
+#
+# For HTTPS to be trusted in browsers, run once manually:
+#   sudo caddy trust
+
+- name: Configure NetworkManager to use dnsmasq for DNS
+  ansible.builtin.lineinfile:
+    path: /etc/NetworkManager/NetworkManager.conf
+    insertafter: '^\[main\]'
+    regexp: '^dns='
+    line: 'dns=dnsmasq'
+  become: true
+  register: nm_dns_config
+
+- name: Create NetworkManager dnsmasq config directory
+  ansible.builtin.file:
+    path: /etc/NetworkManager/dnsmasq.d
+    state: directory
+    mode: '0755'
+    owner: root
+    group: root
+  become: true
+
+- name: Configure .test TLD to resolve to localhost
+  ansible.builtin.copy:
+    dest: /etc/NetworkManager/dnsmasq.d/dev.conf
+    content: |
+      address=/.test/127.0.0.1
+    mode: '0644'
+    owner: root
+    group: root
+  become: true
+  register: dnsmasq_dev_config
+
+- name: Restart NetworkManager to apply dnsmasq configuration
+  ansible.builtin.systemd:
+    name: NetworkManager
+    state: restarted
+  become: true
+  when: nm_dns_config.changed or dnsmasq_dev_config.changed
+
+- name: Create initial Caddyfile if not present
+  ansible.builtin.copy:
+    dest: /etc/caddy/Caddyfile
+    content: |
+      # Local development reverse proxy
+      # Add a block per project, then run: sudo systemctl reload caddy
+      #
+      # Example:
+      # myapp.test {
+      #     reverse_proxy localhost:8000
+      # }
+    force: false
+    mode: '0644'
+    owner: root
+    group: root
+  become: true
+
+- name: Enable and start Caddy service
+  ansible.builtin.systemd:
+    name: caddy
+    enabled: true
+    state: started
+  become: true
