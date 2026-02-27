@@ -146,7 +146,6 @@ arch_aur_packages:
   - slack-desktop-wayland
   - obsidian
   - remmina
-  - claude-desktop-bin
   - yubico-authenticator
   - linux-firmware-hauppauge
   - google-chrome 
