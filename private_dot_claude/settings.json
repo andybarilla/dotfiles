@@ -3,6 +3,16 @@
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
   "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"$TMUX\" ] && name=$(tmux display-message -p '#W') && clean=$(printf '%s' \"$name\" | sed 's/^[⏸✓] //') && [ \"$name\" != \"$clean\" ] && tmux rename-window \"$clean\""
+          }
+        ]
+      }
+    ],
     "Notification": [
       {
         "matcher": "",
@@ -10,6 +20,10 @@
           {
             "type": "command",
             "command": "msg=$(jq -r '.message// \"Done\"'); notify-send 'Claude Code' \"Waiting: $msg\""
+          },
+          {
+            "type": "command",
+            "command": "[ -n \"$TMUX\" ] && name=$(tmux display-message -p '#W') && clean=$(printf '%s' \"$name\" | sed 's/^[⏸✓] //') && tmux rename-window \"⏸ $clean\""
           }
         ]
       }
@@ -20,6 +34,10 @@
           {
             "type": "command",
             "command": "msg=$(jq -r '.stop_reason // \"Done\"'); notify-send 'Claude Code' \"$msg\""
+          },
+          {
+            "type": "command",
+            "command": "[ -n \"$TMUX\" ] && name=$(tmux display-message -p '#W') && clean=$(printf '%s' \"$name\" | sed 's/^[⏸✓] //') && tmux rename-window \"✓ $clean\""
           }
         ]
       }
