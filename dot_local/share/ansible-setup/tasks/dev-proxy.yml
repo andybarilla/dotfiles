@@ -3,11 +3,18 @@
 # - NetworkManager spawns dnsmasq and resolves *.test -> 127.0.0.1
 # - Caddy reverse-proxies named hosts to local ports
 #
-# After setup, add sites to /etc/caddy/Caddyfile and run:
-#   sudo systemctl reload caddy
+# After setup, add a file per project to /etc/caddy/conf.d/, e.g.:
+#
+#   /etc/caddy/conf.d/myapp.conf:
+#     myapp.test {
+#         reverse_proxy localhost:8000
+#     }
+#
+# Then reload: sudo systemctl reload caddy
 #
 # For HTTPS to be trusted in browsers, run once manually:
-#   sudo caddy trust
+#   sudo caddy trust --address "unix//run/caddy/admin.socket"
+# (Arch ships Caddy with the admin API on a Unix socket, not TCP)
 
 - name: Configure NetworkManager to use dnsmasq for DNS
   community.general.ini_file:
