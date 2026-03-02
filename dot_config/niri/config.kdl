@@ -186,8 +186,6 @@ overview {
     }
 }
 // Add lines like this to spawn processes at startup.
-// openportal instances are managed by systemd user services instead
-// spawn-sh-at-startup "~/SynologyDrive/scripts/start-openportal.sh"
 
 
 // Note that running niri as a session supports xdg-desktop-autostart,
