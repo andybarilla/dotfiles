@@ -101,17 +101,24 @@
     state: present
   become: true
 
-# avengemedia PPAs
-- name: Add avengemedia/danklinux PPA
+# WezTerm repository
+- name: Add WezTerm GPG key
   ansible.builtin.shell:
-    cmd: add-apt-repository -y ppa:avengemedia/danklinux
-    creates: /etc/apt/sources.list.d/avengemedia-ubuntu-danklinux-*.list
+    cmd: curl -fsSL https://apt.fury.io/wez/gpg.key | gpg --dearmor -o /usr/share/keyrings/wezterm-fury.gpg
+    creates: /usr/share/keyrings/wezterm-fury.gpg
   become: true
 
-- name: Add avengemedia/dms PPA
-  ansible.builtin.shell:
-    cmd: add-apt-repository -y ppa:avengemedia/dms
-    creates: /etc/apt/sources.list.d/avengemedia-ubuntu-dms-*.list
+- name: Set permissions on WezTerm GPG key
+  ansible.builtin.file:
+    path: /usr/share/keyrings/wezterm-fury.gpg
+    mode: '0644'
+  become: true
+
+- name: Add WezTerm apt repository
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *"
+    filename: wezterm
+    state: present
   become: true
 
 # Update apt cache after adding repositories

@@ -8,8 +8,6 @@
 # Packages available in Fedora repositories
 fedora_packages:
   - alacritty
-  - zsh
-  - btop
   - gh
   - NetworkManager-openvpn
   - ripgrep
@@ -54,6 +52,7 @@ ubuntu_external_packages:
   - docker-compose-plugin
   - google-chrome-stable
   - tailscale
+  - wezterm
 
 # DEBs to download and install directly
 remote_debs: []
