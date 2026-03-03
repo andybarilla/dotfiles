@@ -8,7 +8,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -n \"$TMUX\" ] && name=$(tmux display-message -p '#W') && clean=$(printf '%s' \"$name\" | sed 's/^[⏸✓] //') && [ \"$name\" != \"$clean\" ] && tmux rename-window \"$clean\""
+            "command": "[ -n \"$TMUX\" ] && name=$(tmux display-message -p '#W') && clean=$(printf '%s' \"$name\" | sed 's/^[⏸✓] //') && [ \"$name\" != \"$clean\" ] && tmux rename-window \"$clean\"; true"
+          },
+          {
+            "type": "command",
+            "command": "[ -n \"$ZELLIJ\" ] && { f=\"/tmp/zellij_claude.${ZELLIJ_PANE_ID:-$ZELLIJ_SESSION_NAME}\"; [ -f \"$f\" ] && zellij action rename-tab \"$(cat $f)\"; }; true"
           }
         ]
       }
@@ -23,7 +27,11 @@
           },
           {
             "type": "command",
-            "command": "[ -n \"$TMUX\" ] && name=$(tmux display-message -p '#W') && clean=$(printf '%s' \"$name\" | sed 's/^[⏸✓] //') && tmux rename-window \"⏸ $clean\""
+            "command": "[ -n \"$TMUX\" ] && name=$(tmux display-message -p '#W') && clean=$(printf '%s' \"$name\" | sed 's/^[⏸✓] //') && tmux rename-window \"⏸ $clean\"; true"
+          },
+          {
+            "type": "command",
+            "command": "[ -n \"$ZELLIJ\" ] && { f=\"/tmp/zellij_claude.${ZELLIJ_PANE_ID:-$ZELLIJ_SESSION_NAME}\"; [ -f \"$f\" ] || printf '%s' \"${ZELLIJ_SESSION_NAME:-claude}\" > \"$f\"; clean=$(sed 's/^[⏸✓] //' \"$f\"); printf '%s' \"$clean\" > \"$f\"; zellij action rename-tab \"⏸ $clean\"; }; true"
           }
         ]
       }
@@ -37,7 +45,11 @@
           },
           {
             "type": "command",
-            "command": "[ -n \"$TMUX\" ] && name=$(tmux display-message -p '#W') && clean=$(printf '%s' \"$name\" | sed 's/^[⏸✓] //') && tmux rename-window \"✓ $clean\""
+            "command": "[ -n \"$TMUX\" ] && name=$(tmux display-message -p '#W') && clean=$(printf '%s' \"$name\" | sed 's/^[⏸✓] //') && tmux rename-window \"✓ $clean\"; true"
+          },
+          {
+            "type": "command",
+            "command": "[ -n \"$ZELLIJ\" ] && { f=\"/tmp/zellij_claude.${ZELLIJ_PANE_ID:-$ZELLIJ_SESSION_NAME}\"; [ -f \"$f\" ] || printf '%s' \"${ZELLIJ_SESSION_NAME:-claude}\" > \"$f\"; clean=$(sed 's/^[⏸✓] //' \"$f\"); printf '%s' \"$clean\" > \"$f\"; zellij action rename-tab \"✓ $clean\"; }; true"
           }
         ]
       }
