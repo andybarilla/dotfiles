@@ -25,7 +25,7 @@ fi
 
 # --- Layered packages ---
 
-LAYERED_PACKAGES=(distrobox pam-u2f tailscale yubikey-manager zsh)
+LAYERED_PACKAGES=(distrobox pam-u2f podman tailscale yubikey-manager zsh)
 MISSING_PACKAGES=()
 
 for pkg in "${LAYERED_PACKAGES[@]}"; do
@@ -97,6 +97,7 @@ gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
 echo "Enabling user systemd timers..."
 systemctl --user daemon-reload
+systemctl --user enable --now podman.socket 2>/dev/null || true
 systemctl --user enable --now daily-dev-summary.timer 2>/dev/null || true
 systemctl --user enable --now distrobox-backup.timer 2>/dev/null || true
 systemctl --user enable --now home-backup.timer 2>/dev/null || true

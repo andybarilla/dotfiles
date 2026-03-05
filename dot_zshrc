@@ -47,7 +47,7 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 # --- Environment ---
 export HAPPY_SERVER_URL="https://happy.andybarilla.com"
-export PODMAN_COMPOSE_PROVIDER=""
+export DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
 
 # --- PATH ---
 typeset -U path
