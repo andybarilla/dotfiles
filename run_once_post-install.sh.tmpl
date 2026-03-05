@@ -1,0 +1,112 @@
+#!/bin/bash
+# Post-install setup for Fedora Atomic (Sway spin)
+# This runs once via chezmoi. For steps requiring SynologyDrive,
+# run ~/SynologyDrive/PostInstall/post-synology-setup.sh after sync.
+
+set -euo pipefail
+
+echo "=== Fedora Atomic Post-Install Setup ==="
+
+# --- Third-party repos ---
+
+# 1Password
+if [[ ! -f /etc/yum.repos.d/1password.repo ]]; then
+    echo "Adding 1Password repo..."
+    sudo rpm --import https://downloads.1password.com/linux/keys/1password.asc
+    sudo tee /etc/yum.repos.d/1password.repo > /dev/null <<'EOF'
+[1password]
+name=1Password Stable Channel
+baseurl=https://downloads.1password.com/linux/rpm/stable/$basearch
+enabled=1
+gpgcheck=1
+gpgkey="https://downloads.1password.com/linux/keys/1password.asc"
+EOF
+fi
+
+# --- Layered packages ---
+
+LAYERED_PACKAGES=(distrobox pam-u2f tailscale yubikey-manager zsh)
+MISSING_PACKAGES=()
+
+for pkg in "${LAYERED_PACKAGES[@]}"; do
+    if ! rpm -q "$pkg" &>/dev/null; then
+        MISSING_PACKAGES+=("$pkg")
+    fi
+done
+
+if [[ ${#MISSING_PACKAGES[@]} -gt 0 ]]; then
+    echo "Installing layered packages: ${MISSING_PACKAGES[*]}"
+    sudo rpm-ostree install --idempotent "${MISSING_PACKAGES[@]}"
+    echo "NOTE: A reboot may be required for layered packages to take effect."
+fi
+
+# 1Password (local package, installed separately)
+if ! rpm -q 1password &>/dev/null; then
+    echo "Installing 1Password..."
+    sudo rpm-ostree install --idempotent 1password
+fi
+
+# --- Default shell ---
+
+if [[ "$(getent passwd "$USER" | cut -d: -f7)" != "/usr/bin/zsh" ]]; then
+    echo "Setting default shell to zsh..."
+    sudo usermod -s /usr/bin/zsh "$USER"
+fi
+
+# --- Flatpaks ---
+
+if ! flatpak list --app --columns=application | grep -q com.synology.SynologyDrive; then
+    echo "Installing Synology Drive..."
+    flatpak install -y flathub com.synology.SynologyDrive
+fi
+
+# --- Fonts ---
+
+FONT_DIR="$HOME/.local/share/fonts"
+mkdir -p "$FONT_DIR"
+
+# Symbols Nerd Font (not in SynologyDrive, download from GitHub)
+if ! fc-list | grep -q "Symbols Nerd Font"; then
+    echo "Installing Symbols Nerd Font..."
+    curl -fsSL -o /tmp/NerdFontsSymbolsOnly.tar.xz \
+        "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.tar.xz"
+    tar -xf /tmp/NerdFontsSymbolsOnly.tar.xz -C "$FONT_DIR/"
+    rm /tmp/NerdFontsSymbolsOnly.tar.xz
+fi
+
+# Noto Nerd Fonts (from SynologyDrive - skip if not synced yet)
+if [[ -d "$HOME/SynologyDrive/Graphics/NotoSans" ]]; then
+    if ! fc-list | grep -q "NotoMono Nerd Font"; then
+        echo "Installing Noto Nerd Fonts from SynologyDrive..."
+        cp "$HOME/SynologyDrive/Graphics/NotoSans/"*.ttf "$FONT_DIR/"
+    fi
+else
+    echo "SKIP: Noto Nerd Fonts (SynologyDrive not synced yet)"
+    echo "  Re-run or manually: cp ~/SynologyDrive/Graphics/NotoSans/*.ttf ~/.local/share/fonts/"
+fi
+
+# Rebuild font cache
+fc-cache -f
+
+# --- Enable user systemd timers ---
+
+echo "Enabling user systemd timers..."
+systemctl --user daemon-reload
+systemctl --user enable --now daily-dev-summary.timer 2>/dev/null || true
+systemctl --user enable --now distrobox-backup.timer 2>/dev/null || true
+systemctl --user enable --now home-backup.timer 2>/dev/null || true
+
+# --- Summary ---
+
+echo ""
+echo "=== Setup Complete ==="
+echo ""
+echo "Remaining manual steps:"
+echo "  1. Reboot if layered packages were installed"
+echo "  2. Set up & sync SynologyDrive, then run:"
+echo "     ~/SynologyDrive/PostInstall/post-synology-setup.sh"
+echo "  3. Restore distrobox containers:"
+echo "     ~/SynologyDrive/PostInstall/distrobox-restore.sh tools"
+echo "     ~/SynologyDrive/PostInstall/distrobox-restore.sh talos"
+echo "  4. gh auth login"
+echo "  5. See ~/SynologyDrive/PostInstall/POST_INSTALL.md for additional logins"
