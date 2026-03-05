@@ -40,6 +40,7 @@ ubuntu_packages:
   - zsh
   - libnotify-bin
   - neovim
+  - tmux
 
 # Packages from external repositories (repos must be configured first)
 ubuntu_external_packages:
