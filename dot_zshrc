@@ -279,3 +279,5 @@ fi
 
 # Distrobox Aliases
 alias worktalos='distrobox enter talos -nw'
+alias workprintersrow='distrobox enter printersrow -nw'
+alias workflock='distrobox enter flock -nw'
