@@ -88,6 +88,11 @@ fi
 # Rebuild font cache
 fc-cache -f
 
+# --- Desktop appearance ---
+
+echo "Setting dark mode..."
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+
 # --- Enable user systemd timers ---
 
 echo "Enabling user systemd timers..."
