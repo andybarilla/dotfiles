@@ -161,7 +161,7 @@ gcptvdeploy() {
 
 ghcloneall() {
     gh repo list "$1" --limit 4000 | while read -r repo _rest; do
-        gh repo clone "$repo" "$repo"
+        gh repo clone "$repo" "$repo" < /dev/null
     done
 }
 
@@ -271,3 +271,11 @@ alias tmuxp='tmux new -A -s printersrow'
 alias qwen='ANTHROPIC_AUTH_TOKEN=ollama ANTHROPIC_API_KEY= ANTHROPIC_BASE_URL=http://apbmini:11434 claude --model qwen3-coder'
 alias zlm='ANTHROPIC_AUTH_TOKEN=$ZLM_API_KEY ANTHROPIC_BASE_URL=https://api.z.ai/api/anthropic claude'
 
+
+# 1Password SSH agent for distrobox containers
+if [ -f /run/.containerenv ]; then
+    export SSH_AUTH_SOCK=/run/host/home/andy/.1password/agent.sock
+fi
+
+# Distrobox Aliases
+alias worktalos='distrobox enter talos -nw'
