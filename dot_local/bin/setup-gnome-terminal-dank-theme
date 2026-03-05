@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Sets up a Ptyxis (Ubuntu default terminal) profile matching the dank-theme.
+# Run after 'chezmoi apply' to import the palette and activate it.
+set -euo pipefail
+
+PALETTE_SRC="${XDG_CONFIG_HOME:-$HOME/.config}/ptyxis/dank.palette"
+PALETTE_DEST="${XDG_DATA_HOME:-$HOME/.local/share}/org.gnome.Ptyxis/palettes/dank.palette"
+
+# Import palette (copies to Ptyxis user palette dir)
+if [ ! -f "$PALETTE_DEST" ]; then
+  echo "Importing dank palette..."
+  ptyxis --import-palette "$PALETTE_SRC"
+else
+  echo "Palette already imported, updating..."
+  cp "$PALETTE_SRC" "$PALETTE_DEST"
+fi
+
+# Apply to default profile
+DEFAULT_UUID=$(dconf read /org/gnome/Ptyxis/default-profile-uuid | tr -d "'")
+if [ -n "$DEFAULT_UUID" ]; then
+  dconf write "/org/gnome/Ptyxis/Profiles/$DEFAULT_UUID/palette" "'dank'"
+  echo "Applied dank palette to default profile ($DEFAULT_UUID)."
+else
+  echo "Could not find default profile UUID. Set palette to 'dank' manually in Ptyxis preferences."
+fi
