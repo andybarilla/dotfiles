@@ -95,14 +95,14 @@
     "custom/menu": {
          "format": "",
          "tooltip": false,
-         "on-click": "rofi -show combi -combi-modes drun#run -modes combi",
+         "on-click": "rofi -show drun",
          "on-click-right": "rofi -show run",
     },
 
     "custom/power": {
          "format": "󰐥",
          "tooltip": false,
-         "on-click": "wlogout",
+         "on-click": "$HOME/.config/waybar/powermenu",
     },
 
     "custom/lightmode": {

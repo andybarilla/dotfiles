@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+options="  Lock\n  Logout\n  Suspend\n  Reboot\n  Shutdown"
+
+chosen=$(echo -e "$options" | rofi -dmenu -i -p "Power" \
+    -theme-str 'window { width: 300px; height: unset; padding: 35% 0%; } mainbox { padding: 12px; } listview { lines: 5; }')
+
+case "$chosen" in
+    *Lock)
+        swaylock
+        ;;
+    *Logout)
+        swaymsg exit
+        ;;
+    *Suspend)
+        systemctl suspend
+        ;;
+    *Reboot)
+        systemctl reboot
+        ;;
+    *Shutdown)
+        systemctl poweroff
+        ;;
+esac
