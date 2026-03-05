@@ -27,6 +27,9 @@ if [[ -d "$HOME/.zsh/pure" ]]; then
     autoload -U promptinit; promptinit
     prompt pure
 
+    # Use a visible color for the prompt symbol (default magenta is too dark in our theme)
+    zstyle ':prompt:pure:prompt:success' color cyan
+
     # Always show hostname in Pure prompt
     prompt_pure_always_show_host() {
         psvar[13]=1
