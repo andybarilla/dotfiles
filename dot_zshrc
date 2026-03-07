@@ -1,5 +1,5 @@
 # =============================================================================
-# ZSH Configuration - Migrated from fish
+# ZSH Configuration
 # =============================================================================
 
 # --- History ---
@@ -41,11 +41,9 @@ else
     prompt walters 2>/dev/null || prompt clint 2>/dev/null || PS1="%n@%m %~ %# "
 fi
 
-# --- Man pages ---
+# --- Environment ---
 export MANROFFOPT="-c"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-
-# --- Environment ---
 export HAPPY_SERVER_URL="https://happy.andybarilla.com"
 export DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
 
@@ -56,231 +54,23 @@ typeset -U path
 [[ -d ~/Applications/depot_tools ]] && path=(~/Applications/depot_tools $path)
 [[ -d ~/.config/herd-lite/bin ]] && path=(~/.config/herd-lite/bin $path)
 [[ -d ~/.cargo/bin ]] && path=(~/.cargo/bin $path)
+[[ -d ~/.opencode/bin ]] && path=(~/.opencode/bin $path)
 
-# --- Neovim ---
+# --- Tool activation ---
 if command -v nvim &>/dev/null; then
-    alias vi='nvim' 
+    alias vi='nvim'
 fi
 
-# --- Mise ---
 if command -v mise &>/dev/null; then
     eval "$(mise activate zsh)"
 fi
 
-# --- Aliases ---
-# Replace ls with eza (if available)
-if command -v eza &>/dev/null; then
-    alias ls='eza -al --color=always --group-directories-first --icons'
-    alias la='eza -a --color=always --group-directories-first --icons'
-    alias ll='eza -l --color=always --group-directories-first --icons'
-    alias lt='eza -aT --color=always --group-directories-first --icons'
-    alias l.='eza -a | grep -e "^\."'
-else
-    alias ls='ls --color=auto'
-    alias la='ls -A --color=auto'
-    alias ll='ls -l --color=auto'
-    alias lt='ls -lA --color=auto'
-    alias l.='ls -A | grep -e "^\."'
-fi
-
-# Common use
-alias grubup="sudo grub-mkconfig -o /boot/grub/grub.cfg"
-alias fixpacman="sudo rm /var/lib/pacman/db.lck"
-alias tarnow='tar -acf '
-alias untar='tar -zxvf '
-alias wget='wget -c '
-alias psmem='ps auxf | sort -nr -k 4'
-alias psmem10='ps auxf | sort -nr -k 4 | head -10'
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias .....='cd ../../../..'
-alias ......='cd ../../../../..'
-alias dir='dir --color=auto'
-alias vdir='vdir --color=auto'
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
-alias hw='hwinfo --short'
-alias big="expac -H M '%m\t%n' | sort -h | nl"
-alias gitpkg='pacman -Q | grep -i "\-git" | wc -l'
-alias update='sudo pacman -Syu'
-
-# Get fastest mirrors
-alias mirror="sudo cachyos-rate-mirrors"
-
-# Help people new to Arch
-alias apt='man pacman'
-alias apt-get='man pacman'
-alias please='sudo'
-alias tb='nc termbin.com 9999'
-
-# Cleanup orphaned packages
-alias cleanup='sudo pacman -Rns $(pacman -Qtdq)'
-
-# Get the error messages from journalctl
-alias jctl="journalctl -p 3 -xb"
-
-# Recent installed packages
-alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
-
-# --- Functions ---
-history() {
-    builtin fc -li 1
-}
-
-backup() {
-    cp "$1" "$1.bak"
-}
-
-copy() {
-    if [[ $# -eq 2 && -d "$1" ]]; then
-        local from="${1%/}"
-        command cp -r "$from" "$2"
-    else
-        command cp "$@"
-    fi
-}
-
-gcptv() {
-    gcloud auth revoke
-    gcloud config configurations activate titlevision
-    gcloud auth login
-    gcloud auth application-default login --impersonate-service-account local-development@admin-6c4c.iam.gserviceaccount.com
-    gcloud container clusters get-credentials nonprod-autopilot --region us-central1 --project development-37c5
-    gcloud container clusters get-credentials prod-autopilot --region us-central1 --project production-7860
-    env GOPROXY=proxy.golang.org go run github.com/googlecloudplatform/artifact-registry-go-tools/cmd/auth@latest refresh
-}
-
-gcptvdeploy() {
-    gcloud auth revoke
-    gcloud config configurations activate tvtf
-    gcloud auth login
-    gcloud auth application-default login
-    gcloud container clusters get-credentials nonprod-autopilot --region us-central1 --project development-37c5
-    gcloud container clusters get-credentials prod-autopilot --region us-central1 --project production-7860
-    env GOPROXY=proxy.golang.org go run github.com/googlecloudplatform/artifact-registry-go-tools/cmd/auth@latest refresh
-}
-
-ghcloneall() {
-    gh repo list "$1" --limit 4000 | while read -r repo _rest; do
-        gh repo clone "$repo" "$repo" < /dev/null
-    done
-}
-
-runansible() {
-    (cd ~/.local/share/ansible-setup && ./bootstrap.sh)
-}
-
-# --- Pacman rehash hook ---
-# Auto-rehash completions when pacman installs new packages
-zshcache_time="$(date +%s%N)"
-autoload -Uz add-zsh-hook
-rehash_precmd() {
-    if [[ -a /var/cache/zsh/pacman ]]; then
-        local paccache_time="$(date -r /var/cache/zsh/pacman +%s%N)"
-        if (( zshcache_time < paccache_time )); then
-            rehash
-            zshcache_time="$paccache_time"
-        fi
-    fi
-}
-add-zsh-hook -Uz precmd rehash_precmd
-
-
-# --- Distrobox indicator ---
+# --- Distrobox / Container ---
 if [[ -n "$CONTAINER_ID" ]]; then
     PROMPT="[${CONTAINER_ID}] $PROMPT"
-fi
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/path.zsh.inc"; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
-
-# opencode
-export PATH="$HOME/.opencode/bin:$PATH"
-
-# rc = Run Claude: Start new session with auto-generated name
-rc() {
-    local session_name="agents-$(date +%m%d-%H%M)"
-    zellij --session "$session_name" --new-session-with-layout agents 
-}
-
-# rj = Run Join: Quick attach to session
-rj() {
-    local session="${1:-$(zellij list-sessions -n | head -1 | awk '{print $1}')}"
-    zellij attach "$session"
-}
-
-# rl = Run List: Interactive session picker with cleanup
-rl() {
-    local sessions=()
-    while IFS= read -r line; do
-        sessions+=("$line")
-    done < <(zellij list-sessions -n 2>/dev/null)
-
-    if [[ ${#sessions[@]} -eq 0 ]]; then
-        echo "No sessions. Use 'rc' to start one."
-        return 1
-    fi
-
-    echo "Sessions:"
-    local i=1
-    for session in "${sessions[@]}"; do
-        echo "  $i) $session"
-        ((i++))
-    done
-    echo "  c) Clean EXITED sessions"
-    echo "  d) Delete sessions >24h old"
-
-    read -r "choice?Select: "
-
-    case "$choice" in
-        c)
-            local deleted=0
-            for line in "${sessions[@]}"; do
-                if [[ "$line" == *"EXITED"* ]]; then
-                    local name=$(echo "$line" | awk '{print $1}')
-                    zellij delete-session "$name" 2>/dev/null && ((deleted++))
-                fi
-            done
-            echo "Deleted $deleted exited session(s)"
-            ;;
-        d)
-            local deleted=0
-            for line in "${sessions[@]}"; do
-                if [[ "$line" == *"day"* ]]; then
-                    local name=$(echo "$line" | awk '{print $1}')
-                    zellij delete-session --force "$name" 2>/dev/null && ((deleted++))
-                fi
-            done
-            echo "Deleted $deleted session(s) older than 24h"
-            ;;
-        [0-9]*)
-            local name=$(echo "${sessions[$choice]}" | awk '{print $1}')
-            zellij attach "$name"
-            ;;
-    esac
-}
-export PATH="$HOME/.config/herd-lite/bin:$PATH"
-export PHP_INI_SCAN_DIR="$HOME/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
-
-alias tmuxt='tmux new -c $HOME/dev/titlevision-ai -A -s talos'
-alias tmuxs='tmux new -c $HOME/dev/andybarilla/skeetr-app -A -s skeetr'
-alias tmuxp='tmux new -A -s printersrow'
-
-alias qwen='ANTHROPIC_AUTH_TOKEN=ollama ANTHROPIC_API_KEY= ANTHROPIC_BASE_URL=http://apbmini:11434 claude --model qwen3-coder'
-alias zlm='ANTHROPIC_AUTH_TOKEN=$ZLM_API_KEY ANTHROPIC_BASE_URL=https://api.z.ai/api/anthropic claude'
-
-
-# 1Password SSH agent for distrobox containers
-if [ -f /run/.containerenv ]; then
     export SSH_AUTH_SOCK=/run/host/home/andy/.1password/agent.sock
+    [[ -f /home/andy/.zshrc.d/containers/${CONTAINER_ID}.zsh ]] && source /home/andy/.zshrc.d/containers/${CONTAINER_ID}.zsh
 fi
 
-# Distrobox Aliases
-alias worktalos='distrobox enter talos -nw'
-alias workprintersrow='distrobox enter printersrow -nw'
-alias workflock='distrobox enter flock -nw'
+# --- Source modular configs ---
+for f in /home/andy/.zshrc.d/*.zsh(N); do source "$f"; done

@@ -1,0 +1,57 @@
+#!/bin/bash
+# Toggle speech-to-text dictation using nerd-dictation in the tools distrobox.
+# Uses VOSK for offline recognition, copies result to clipboard for Wayland.
+#
+# Usage: bind to a Sway key. First press starts listening, second press stops
+# and copies transcribed text to clipboard.
+
+VOSK_MODEL="$HOME/.local/share/vosk/vosk-model-small-en-us-0.15"
+PIDFILE="/tmp/dictation.pid"
+OUTFILE="/tmp/dictation-output.txt"
+
+start_dictation() {
+    rm -f "$OUTFILE"
+    # Run nerd-dictation inside the tools distrobox, capture output to file.
+    # --defer-output: accumulate all text until end, then write to stdout.
+    # --continuous: handle long dictation sessions efficiently.
+    distrobox enter tools -- nerd-dictation begin \
+        --vosk-model-dir "$VOSK_MODEL" \
+        --output STDOUT \
+        --continuous \
+        --defer-output \
+        > "$OUTFILE" 2>/dev/null &
+    echo $! > "$PIDFILE"
+    notify-send -t 2000 "Dictation" "Listening..."
+}
+
+stop_dictation() {
+    # Signal nerd-dictation to end (it flushes deferred output then exits)
+    distrobox enter tools -- nerd-dictation end 2>/dev/null
+
+    # Wait for the background process to finish writing
+    local pid
+    pid=$(cat "$PIDFILE" 2>/dev/null)
+    if [ -n "$pid" ]; then
+        wait "$pid" 2>/dev/null
+        # Extra moment for file flush
+        sleep 0.3
+    fi
+
+    if [ -s "$OUTFILE" ]; then
+        local text
+        text=$(cat "$OUTFILE")
+        wl-copy -- "$text"
+        notify-send -t 3000 "Dictation" "Copied to clipboard: ${text:0:80}"
+    else
+        notify-send -t 2000 "Dictation" "No speech detected"
+    fi
+
+    rm -f "$PIDFILE" "$OUTFILE"
+}
+
+if [ -f "$PIDFILE" ] && kill -0 "$(cat "$PIDFILE")" 2>/dev/null; then
+    stop_dictation
+else
+    rm -f "$PIDFILE" "$OUTFILE"
+    start_dictation
+fi
