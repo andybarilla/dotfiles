@@ -21,6 +21,12 @@
     creates: /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:emixampp:synology-drive.repo
   become: true
 
+- name: Enable WezTerm COPR repo
+  ansible.builtin.command:
+    cmd: dnf copr enable -y stefan-maassen/wezterm
+    creates: /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:stefan-maassen:wezterm.repo
+  become: true
+
 # Copy repository files
 - name: Copy repository files
   ansible.builtin.copy:

@@ -7,7 +7,6 @@
 
 # Packages available in Fedora repositories
 fedora_packages:
-  - alacritty
   - gh
   - NetworkManager-openvpn
   - ripgrep
@@ -22,6 +21,7 @@ external_packages:
   - google-chrome-stable
   - lens
   - synology-drive
+  - wezterm
 
 # RPMs to download and install directly
 remote_rpms: []
