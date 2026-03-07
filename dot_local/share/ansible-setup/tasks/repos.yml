@@ -23,8 +23,8 @@
 
 - name: Enable WezTerm COPR repo
   ansible.builtin.command:
-    cmd: dnf copr enable -y stefan-maassen/wezterm
-    creates: /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:stefan-maassen:wezterm.repo
+    cmd: dnf copr enable -y wezfurlong/wezterm-nightly
+    creates: /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:wezfurlong:wezterm-nightly.repo
   become: true
 
 # Copy repository files

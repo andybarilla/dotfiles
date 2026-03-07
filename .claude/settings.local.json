@@ -54,7 +54,10 @@
       "Bash(pgrep:*)",
       "Bash(dnf info:*)",
       "Bash(rpm-ostree search:*)",
-      "Bash(wl-paste:*)"
+      "Bash(wl-paste:*)",
+      "Bash(wezterm:*)",
+      "WebFetch(domain:wezfurlong.org)",
+      "WebFetch(domain:wezterm.org)"
     ]
   }
 }
