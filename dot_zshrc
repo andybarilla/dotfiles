@@ -74,3 +74,5 @@ fi
 
 # --- Source modular configs ---
 for f in /home/andy/.zshrc.d/*.zsh(N); do source "$f"; done
+export PATH="/home/andy/.config/herd-lite/bin:$PATH"
+export PHP_INI_SCAN_DIR="/home/andy/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"

@@ -59,7 +59,9 @@
       "WebFetch(domain:wezfurlong.org)",
       "WebFetch(domain:wezterm.org)",
       "WebFetch(domain:fedoraproject.org)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(git reset:*)",
+      "Bash(git push:*)"
     ]
   }
 }
