@@ -149,6 +149,27 @@
     state: present
   become: true
 
+# Charm (glow) repository
+- name: Ensure /etc/apt/keyrings directory exists
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Add Charm GPG key
+  ansible.builtin.shell:
+    cmd: curl -fsSL https://repo.charm.sh/apt/gpg.key | gpg --dearmor -o /etc/apt/keyrings/charm.gpg
+    creates: /etc/apt/keyrings/charm.gpg
+  become: true
+
+- name: Add Charm apt repository
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *"
+    filename: charm
+    state: present
+  become: true
+
 # Update apt cache after adding repositories
 - name: Update apt cache after adding repositories
   ansible.builtin.apt:

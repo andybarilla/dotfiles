@@ -57,6 +57,7 @@ ubuntu_external_packages:
   - docker-ce-cli
   - containerd.io
   - docker-compose-plugin
+  - glow
   - google-chrome-stable
   - tailscale
   - wezterm
