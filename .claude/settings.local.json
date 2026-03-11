@@ -61,7 +61,9 @@
       "WebFetch(domain:fedoraproject.org)",
       "WebSearch",
       "Bash(git reset:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "WebFetch(domain:eza.rocks)",
+      "WebFetch(domain:docs.k8slens.dev)"
     ]
   }
 }
