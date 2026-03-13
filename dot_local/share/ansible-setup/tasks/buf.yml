@@ -1,0 +1,16 @@
+# Install Buf CLI
+# https://buf.build/docs/cli/
+
+- name: Check if buf is installed
+  ansible.builtin.command: which buf
+  register: buf_check
+  changed_when: false
+  failed_when: false
+
+- name: Install Buf CLI
+  ansible.builtin.get_url:
+    url: "https://github.com/bufbuild/buf/releases/latest/download/buf-{{ ansible_system }}-{{ ansible_architecture }}"
+    dest: /usr/local/bin/buf
+    mode: '0755'
+  when: buf_check.rc != 0
+  become: true

@@ -1,0 +1,13 @@
+# Install watchexec via cargo binstall
+# https://watchexec.github.io/
+
+- name: Check if watchexec is installed
+  ansible.builtin.command: which watchexec
+  register: watchexec_check
+  changed_when: false
+  failed_when: false
+
+- name: Install watchexec-cli via cargo binstall
+  ansible.builtin.command: "{{ ansible_env.HOME }}/.cargo/bin/cargo binstall watchexec-cli --no-confirm"
+  when: watchexec_check.rc != 0
+  become: false

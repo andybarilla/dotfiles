@@ -12,7 +12,8 @@ fedora_packages:
   - ripgrep
   - python3-psutil
   - tailscale
- 
+  - postgresql
+
 # Packages from external repositories (repos must be configured first)
 external_packages:
   - 1password
@@ -46,6 +47,15 @@ ubuntu_packages:
   - podman-compose
   - bat
   - fzf
+  - jq
+  - yq
+  - delta
+  - httpie
+  - just
+  - direnv
+  - fd-find
+  - libreadline-dev
+  - postgresql-client
 
 # Packages from external repositories (repos must be configured first)
 ubuntu_external_packages:
@@ -118,6 +128,7 @@ arch_packages:
   - ttf-jetbrains-mono-nerd
   - ttf-noto-nerd
   - neovim
+  - postgresql-libs
   # System utilities
   - openssh
   - btop

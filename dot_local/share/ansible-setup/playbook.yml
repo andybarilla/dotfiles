@@ -88,8 +88,8 @@
     #  ansible.builtin.include_tasks: tasks/containers.yml
     #  when: is_archlinux
 
-    #- name: Install Ghostty
-    #  ansible.builtin.include_tasks: tasks/ghostty.yml
+    - name: Install Ghostty
+      ansible.builtin.include_tasks: tasks/ghostty.yml
 
     - name: Install Claude Code
       ansible.builtin.include_tasks: tasks/claude-code.yml
@@ -112,6 +112,16 @@
     - name: Install Nerd Fonts
       ansible.builtin.include_tasks: tasks/nerd-fonts.yml
       when: is_ubuntu
+
+    - name: Install cargo-binstall
+      ansible.builtin.include_tasks: tasks/cargo-binstall.yml
+
+    - name: Install Buf CLI
+      ansible.builtin.include_tasks: tasks/buf.yml
+      when: is_ubuntu
+
+    - name: Install watchexec
+      ansible.builtin.include_tasks: tasks/watchexec.yml
 
     - name: Install Mise-en-Place
       ansible.builtin.include_tasks: tasks/mise.yml
