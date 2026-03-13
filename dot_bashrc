@@ -65,3 +65,5 @@ eval "$(~/.local/bin/mise activate bash)"
 
 # opencode
 export PATH=/home/andy/.opencode/bin:$PATH
+eval "$(~/.local/bin/rust activate bash)"
+eval "$(~/.local/bin/ghostty activate bash)"
