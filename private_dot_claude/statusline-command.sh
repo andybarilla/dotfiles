@@ -48,4 +48,5 @@ if [ -n "$used_pct" ]; then
     fi
 fi
 
-echo -e "${cyan}[${model}]${reset} 📁 ${cwd##*/}${branch} | ${ctx_color}${used_pct}%${reset} | ⏱️ ${mins}m ${secs}s"
+echo -e "${cyan}[${model}]${reset} | ${ctx_color}${used_pct}%${reset} | ⏱️ ${mins}m ${secs}s"
+echo -e "📁 ${cwd##*/}${branch}"
