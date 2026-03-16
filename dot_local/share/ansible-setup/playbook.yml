@@ -116,6 +116,9 @@
     - name: Install cargo-binstall
       ansible.builtin.include_tasks: tasks/cargo-binstall.yml
 
+    - name: Install eza
+      ansible.builtin.include_tasks: tasks/eza.yml
+
     - name: Install Buf CLI
       ansible.builtin.include_tasks: tasks/buf.yml
       when: is_ubuntu

@@ -50,6 +50,10 @@ shell-integration = detect
 shell-integration-features = cursor,sudo,title,no-cursor
 keybind = shift+enter=text:\n
 
+# Workaround: GTK4/Wayland clipboard not updating from non-GTK apps
+clipboard-read = allow
+clipboard-write = allow
+
 # Rando stuff
 gtk-single-instance = true
 

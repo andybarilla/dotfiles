@@ -61,7 +61,6 @@ ubuntu_packages:
 ubuntu_external_packages:
   - 1password
   - code
-  - eza
   - gh
   - docker-ce
   - docker-ce-cli

@@ -94,7 +94,16 @@
     "ralph-loop@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true,
     "figma@claude-plugins-official": true,
-    "playwright@claude-plugins-official": true
+    "playwright@claude-plugins-official": true,
+    "titlevision-skills@titlevision-ai": true
+  },
+  "extraKnownMarketplaces": {
+    "titlevision-ai": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/titlevision-ai/Architecture-Central.git"
+      }
+    }
   },
   "voiceEnabled": true
 }

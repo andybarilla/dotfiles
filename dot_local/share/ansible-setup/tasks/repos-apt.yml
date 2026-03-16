@@ -121,20 +121,6 @@
     state: present
   become: true
 
-# Eza repository
-- name: Add Eza GPG key
-  ansible.builtin.shell:
-    cmd: curl -fsSL https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | gpg --dearmor -o /usr/share/keyrings/eza-archive-keyring.gpg
-    creates: /usr/share/keyrings/eza-archive-keyring.gpg
-  become: true
-
-- name: Add Eza apt repository
-  ansible.builtin.apt_repository:
-    repo: "deb [signed-by=/usr/share/keyrings/eza-archive-keyring.gpg] http://deb.gierens.de stable main"
-    filename: eza
-    state: present
-  become: true
-
 # Lens (Kubernetes IDE) repository
 - name: Add Lens GPG key
   ansible.builtin.shell:

@@ -1,9 +1,7 @@
 #!/bin/sh
 
 cd ~/dev/titlevision-ai
-tmux new -s titlevision -d
-tmux new-window -t titlevision
-tmux select-window -t titlevision:1
+./devex/dev-tmux.sh
 
 cd ~/dev/printersrow/kern-app
 tmux new -s kern -d
