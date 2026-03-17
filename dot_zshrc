@@ -55,6 +55,8 @@ typeset -U path
 [[ -d ~/.config/herd-lite/bin ]] && path=(~/.config/herd-lite/bin $path)
 [[ -d ~/.cargo/bin ]] && path=(~/.cargo/bin $path)
 [[ -d ~/.opencode/bin ]] && path=(~/.opencode/bin $path)
+[[ -d ~/go/bin ]] && path=(~/go/bin $path)
+[[ -d ~/SynologyDrive/scripts ]] && path=(~/SynologyDrive/scripts $path)
 
 # --- Tool activation ---
 if command -v nvim &>/dev/null; then
