@@ -2,6 +2,7 @@
 description: |
   Reviews code changes for production readiness — code quality, architecture, testing, and security. Dispatched after spec compliance review passes, or independently when requesting code review before merge. Uses git diff between base and head SHAs to scope the review. Categorizes issues by severity (Critical/Important/Minor) with file:line references. Returns clear merge verdict.
 mode: subagent
+model: zai-coding-plan/glm-5-turbo
 ---
 
 You are reviewing code changes for production readiness.
