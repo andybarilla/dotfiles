@@ -1,10 +1,24 @@
 # Google Cloud SDK installation tasks
 
-# Check if gcloud is already installed
+# Check if gcloud is already installed and working
 - name: Check if Google Cloud SDK is installed
   ansible.builtin.stat:
     path: "{{ gcloud_install_dir }}/bin/gcloud"
   register: gcloud_binary
+
+- name: Verify Google Cloud SDK works
+  ansible.builtin.command:
+    cmd: "{{ gcloud_install_dir }}/bin/gcloud version"
+  register: gcloud_version_check
+  changed_when: false
+  failed_when: false
+  when: gcloud_binary.stat.exists
+
+- name: Remove corrupted Google Cloud SDK installation
+  ansible.builtin.file:
+    path: "{{ gcloud_install_dir }}"
+    state: absent
+  when: gcloud_binary.stat.exists and gcloud_version_check.rc != 0
 
 # Download and install Google Cloud SDK
 - name: Create cache directory for downloads
@@ -12,19 +26,20 @@
     path: "{{ ansible_env.HOME }}/.cache/ansible-downloads"
     state: directory
     mode: "0755"
-  when: not gcloud_binary.stat.exists
+  when: not gcloud_binary.stat.exists or gcloud_version_check.rc != 0
 
 - name: Download Google Cloud SDK installer
   ansible.builtin.get_url:
     url: https://sdk.cloud.google.com
     dest: "{{ ansible_env.HOME }}/.cache/ansible-downloads/gcloud-install.sh"
     mode: "0755"
-  when: not gcloud_binary.stat.exists
+    force: true
+  when: not gcloud_binary.stat.exists or gcloud_version_check.rc != 0
 
 - name: Install Google Cloud SDK
   ansible.builtin.command:
     cmd: bash {{ ansible_env.HOME }}/.cache/ansible-downloads/gcloud-install.sh --disable-prompts --install-dir={{ ansible_env.HOME }}
-  when: not gcloud_binary.stat.exists
+  when: not gcloud_binary.stat.exists or gcloud_version_check.rc != 0
 
 # Install gcloud components
 - name: Install gcloud components

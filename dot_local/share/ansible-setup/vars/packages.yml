@@ -78,8 +78,11 @@ ubuntu_packages:
   - fd-find
   - libreadline-dev
   - postgresql-client
-  - rust
+  - rustc
   - zsh
+  - cargo
+  - gnome-tweaks
+  - gnome-shell-extension-manager
 
 # Packages from external repositories (repos must be configured first)
 ubuntu_external_packages:

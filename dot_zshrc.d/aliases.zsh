@@ -5,10 +5,6 @@ if command -v eza &>/dev/null; then
     alias ll='eza -l --color=always --group-directories-first --icons'
     alias lt='eza -aT --color=always --group-directories-first --icons'
     alias l.='eza -a | grep -e "^\."'
-    compdef ls=eza
-    compdef la=eza
-    compdef ll=eza
-    compdef lt=eza
 else
     alias ls='ls --color=auto'
     alias la='ls -A --color=auto'
