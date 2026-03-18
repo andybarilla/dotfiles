@@ -49,6 +49,8 @@ gtk-titlebar = false
 shell-integration = detect
 shell-integration-features = cursor,sudo,title,no-cursor
 keybind = shift+enter=text:\n
+keybind = super+shift+backslash=new_split:right
+keybind = super+minus=new_split:down
 
 # Workaround: GTK4/Wayland clipboard not updating from non-GTK apps
 clipboard-read = allow
