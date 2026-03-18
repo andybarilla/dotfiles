@@ -95,7 +95,8 @@
     "superpowers@claude-plugins-official": true,
     "figma@claude-plugins-official": true,
     "playwright@claude-plugins-official": true,
-    "titlevision-skills@titlevision-ai": true
+    "titlevision-skills@titlevision-ai": true,
+    "context7@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "titlevision-ai": {
