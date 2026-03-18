@@ -85,7 +85,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "bash /home/andy/.claude/statusline-command.sh"
+    "command": "wt list statusline --format=claude-code"
   },
   "enabledPlugins": {
     "gopls-lsp@claude-plugins-official": true,
@@ -96,13 +96,26 @@
     "figma@claude-plugins-official": true,
     "playwright@claude-plugins-official": true,
     "titlevision-skills@titlevision-ai": true,
-    "context7@claude-plugins-official": true
+    "context7@claude-plugins-official": true,
+    "worktrunk@worktrunk": true,
+    "github@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "commit-commands@claude-plugins-official": true,
+    "claude-code-setup@claude-plugins-official": true,
+    "chrome-devtools-mcp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "titlevision-ai": {
       "source": {
         "source": "git",
         "url": "https://github.com/titlevision-ai/Architecture-Central.git"
+      }
+    },
+    "worktrunk": {
+      "source": {
+        "source": "github",
+        "repo": "max-sixty/worktrunk"
       }
     }
   },

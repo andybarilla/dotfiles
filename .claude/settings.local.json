@@ -72,7 +72,9 @@
       "Bash(find /home/andy/.local/share/chezmoi/dot_config -type f -name \"*.sh\" -o -name \"*.py\" 2>/dev/null | head -40)",
       "Bash(find /home/andy/.local/share/chezmoi -type f -name \"*prompt*\" -o -name \"*status*\" 2>/dev/null | grep -v node_modules | grep -v pyyaml)",
       "Bash(grep -r \"statusline\\\\|status.line\\\\|icon.*claude\\\\|claude.*icon\" /home/andy/.local/share/chezmoi --include=\"*.sh\" --include=\"*.json\" --include=\"*.yml\" --include=\"*.yaml\" 2>/dev/null | head -20)",
-      "Bash(grep -r \"⏸\\\\|✓\\\\|⚙\" /home/andy/.local/share/chezmoi --include=\"*.sh\" --include=\"*.json\" --include=\"*.yml\" 2>/dev/null | head -20)"
+      "Bash(grep -r \"⏸\\\\|✓\\\\|⚙\" /home/andy/.local/share/chezmoi --include=\"*.sh\" --include=\"*.json\" --include=\"*.yml\" 2>/dev/null | head -20)",
+      "WebFetch(domain:ghostty.org)",
+      "Bash(dconf dump:*)"
     ]
   }
 }

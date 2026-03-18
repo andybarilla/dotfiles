@@ -67,3 +67,5 @@ eval "$(~/.local/bin/mise activate bash)"
 export PATH=/home/andy/.opencode/bin:$PATH
 eval "$(~/.local/bin/rust activate bash)"
 eval "$(~/.local/bin/ghostty activate bash)"
+
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init bash)"; fi

@@ -91,3 +91,5 @@ export OPENAI_BASE_URL=http://apbmini:11434/v1
 export OPENAI_API_KEY=ollama
 export OPENAI_API_MODEL=deepseek-r1:8b
 
+
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi

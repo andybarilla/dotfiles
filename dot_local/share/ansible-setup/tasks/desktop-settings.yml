@@ -6,3 +6,67 @@
     key: "/org/gnome/desktop/interface/color-scheme"
     value: "'prefer-dark'"
     state: present
+
+# Keyboard shortcuts - workspace switching
+- name: Set switch-to-workspace 1-4
+  community.general.dconf:
+    key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-{{ item }}"
+    value: "['<Super>{{ item }}']"
+    state: present
+  loop: [1, 2, 3, 4]
+
+- name: Set move-to-workspace 1-4
+  community.general.dconf:
+    key: "/org/gnome/desktop/wm/keybindings/move-to-workspace-{{ item }}"
+    value: "['<Shift><Super>{{ item }}']"
+    state: present
+  loop: [1, 2, 3, 4]
+
+# Disable switch-to-application (conflicts with workspace switching)
+- name: Disable switch-to-application 1-4
+  community.general.dconf:
+    key: "/org/gnome/shell/keybindings/switch-to-application-{{ item }}"
+    value: "@as []"
+    state: present
+  loop: [1, 2, 3, 4]
+
+# Disable move-to-monitor shortcuts (conflicts with Ghostty split navigation)
+- name: Disable move-to-monitor shortcuts
+  community.general.dconf:
+    key: "/org/gnome/desktop/wm/keybindings/move-to-monitor-{{ item }}"
+    value: "@as []"
+    state: present
+  loop: [down, left, right, up]
+
+# Disable mutter tiling shortcuts
+- name: Disable toggle-tiled-left/right
+  community.general.dconf:
+    key: "/org/gnome/mutter/keybindings/toggle-tiled-{{ item }}"
+    value: "@as []"
+    state: present
+  loop: [left, right]
+
+# Custom shortcuts
+- name: Set custom keybinding list
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings"
+    value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']"
+    state: present
+
+- name: Set Ghostty launcher name
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name"
+    value: "'Launch Ghostty'"
+    state: present
+
+- name: Set Ghostty launcher command
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command"
+    value: "'/usr/bin/ghostty'"
+    state: present
+
+- name: Set Ghostty launcher binding
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding"
+    value: "'<Super>t'"
+    state: present
