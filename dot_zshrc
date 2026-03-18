@@ -86,3 +86,8 @@ fi
 for f in /home/andy/.zshrc.d/*.zsh(N); do source "$f"; done
 export PATH="/home/andy/.config/herd-lite/bin:$PATH"
 export PHP_INI_SCAN_DIR="/home/andy/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
+
+export OPENAI_BASE_URL=http://apbmini:11434/v1 
+export OPENAI_API_KEY=ollama
+export OPENAI_API_MODEL=deepseek-r1:8b
+
