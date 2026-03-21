@@ -83,6 +83,15 @@ ubuntu_packages:
   - cargo
   - gnome-tweaks
   - gnome-shell-extension-manager
+  - libicu76
+  - libxml2-16
+  - libevent-2.1-7t64
+  - libavif16
+  - libmanette-0.2-0
+  - libgtk-3-dev
+  - libwebkit2gtk-4.1-dev
+  - libayatana-appindicator3-dev
+  - librsvg2-dev
 
 # Packages from external repositories (repos must be configured first)
 ubuntu_external_packages:

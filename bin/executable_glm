@@ -1,0 +1,17 @@
+#!/bin/sh
+
+export ANTHROPIC_BASE_URL=https://api.z.ai/api/anthropic
+export ANTHROPIC_AUTH_TOKEN=$GLM_CODING_PLAN_KEY
+
+export ANTHROPIC_DEFAULT_HAIKU_MODEL=glm-4.7-flash
+export ANTHROPIC_DEFAULT_SONNET_MODEL=glm-5
+export ANTHROPIC_DEFAULT_OPUS_MODEL=glm-5
+
+# Setup the custom config dir, creating it if it doesn't exists
+
+export CLAUDE_CONFIG_DIR="${HOME}/.glm"
+mkdir -p "${CLAUDE_CONFIG_DIR}"
+
+# Run claude
+
+claude "$@"
