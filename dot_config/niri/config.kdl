@@ -60,10 +60,6 @@ input {
             // If this section is empty, niri will fetch xkb settings
             // from org.freedesktop.locale1. You can control these using
             // localectl set-x11-keymap.
-
-            // caps:none — Caps Lock is a no-op (no toggle), but still fires
-            // KEY_CAPSLOCK keycodes for the whisper-dictate evdev daemon.
-            options "caps:none"
         }
 
         // Enable numlock on startup, omitting this setting disables it.
@@ -76,8 +72,8 @@ input {
     touchpad {
         // off
         tap
-        // dwt
-        // dwtp
+        dwt
+        dwtp
         // drag false
         // drag-lock
         natural-scroll
@@ -186,12 +182,20 @@ overview {
     }
 }
 // Add lines like this to spawn processes at startup.
+spawn-sh-at-startup "dms run"
 
+spawn-sh-at-startup "pipewire"
+
+spawn-at-startup "1password" "--silent"
 
 // Note that running niri as a session supports xdg-desktop-autostart,
 // which may be more convenient to use.
 // See the binds section below for more spawn examples.
 // This line starts waybar, a commonly used bar for Wayland compositors.
+spawn-at-startup "xwayland-satellite"
+
+spawn-sh-at-startup "sleep 3 && flatpak run com.synology.SynologyDrive"
+
 environment {
   XDG_CURRENT_DESKTOP "niri"
 }
@@ -286,6 +290,7 @@ window-rule {
 // Open dms windows as floating by default
 window-rule {
     match app-id=r#"org.quickshell$"#
+    match app-id=r#"com.danklinux.dms$"#
     open-floating true
 }
 debug {

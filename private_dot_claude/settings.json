@@ -1,49 +1,22 @@
 {
   "enabledPlugins": {
-    "chrome-devtools-mcp@claude-plugins-official": true,
-    "claude-code-setup@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
     "code-review@claude-plugins-official": true,
-    "code-simplifier@claude-plugins-official": true,
-    "commit-commands@claude-plugins-official": true,
     "context7@claude-plugins-official": true,
     "feature-dev@claude-plugins-official": true,
-    "figma@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
-    "github@claude-plugins-official": true,
-    "gopls-lsp@claude-plugins-official": true,
-    "hookify@claude-plugins-official": true,
     "playwright@claude-plugins-official": true,
-    "ralph-loop@claude-plugins-official": true,
-    "rust-analyzer-lsp@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true,
-    "titlevision-skills@titlevision-ai": true,
-    "worktrunk@worktrunk": true
-  },
-  "env": {
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
-  },
-  "extraKnownMarketplaces": {
-    "titlevision-ai": {
-      "source": {
-        "source": "git",
-        "url": "https://github.com/titlevision-ai/Architecture-Central.git"
-      }
-    },
-    "worktrunk": {
-      "source": {
-        "repo": "max-sixty/worktrunk",
-        "source": "github"
-      }
-    }
+    "zoominfo@claude-plugins-official": true
   },
   "hooks": {
     "Notification": [
       {
         "hooks": [
           {
+            "command": "jackdaw-send",
             "timeout": 5,
-            "type": "http",
-            "url": "http://localhost:9876/events"
+            "type": "command"
           }
         ]
       }
@@ -52,9 +25,9 @@
       {
         "hooks": [
           {
+            "command": "jackdaw-send",
             "timeout": 5,
-            "type": "http",
-            "url": "http://localhost:9876/events"
+            "type": "command"
           }
         ]
       }
@@ -63,9 +36,9 @@
       {
         "hooks": [
           {
+            "command": "jackdaw-send",
             "timeout": 5,
-            "type": "http",
-            "url": "http://localhost:9876/events"
+            "type": "command"
           }
         ]
       }
@@ -74,9 +47,9 @@
       {
         "hooks": [
           {
+            "command": "jackdaw-send",
             "timeout": 5,
-            "type": "http",
-            "url": "http://localhost:9876/events"
+            "type": "command"
           }
         ]
       }
@@ -85,9 +58,9 @@
       {
         "hooks": [
           {
+            "command": "jackdaw-send",
             "timeout": 5,
-            "type": "http",
-            "url": "http://localhost:9876/events"
+            "type": "command"
           }
         ]
       }
@@ -96,9 +69,9 @@
       {
         "hooks": [
           {
+            "command": "jackdaw-send",
             "timeout": 5,
-            "type": "http",
-            "url": "http://localhost:9876/events"
+            "type": "command"
           }
         ]
       }
@@ -107,9 +80,9 @@
       {
         "hooks": [
           {
+            "command": "jackdaw-send",
             "timeout": 5,
-            "type": "http",
-            "url": "http://localhost:9876/events"
+            "type": "command"
           }
         ]
       }
@@ -118,9 +91,9 @@
       {
         "hooks": [
           {
+            "command": "jackdaw-send",
             "timeout": 5,
-            "type": "http",
-            "url": "http://localhost:9876/events"
+            "type": "command"
           }
         ]
       }
@@ -129,17 +102,12 @@
       {
         "hooks": [
           {
+            "command": "jackdaw-send",
             "timeout": 5,
-            "type": "http",
-            "url": "http://localhost:9876/events"
+            "type": "command"
           }
         ]
       }
     ]
-  },
-  "statusLine": {
-    "command": "wt list statusline --format=claude-code",
-    "type": "command"
-  },
-  "voiceEnabled": true
+  }
 }
