@@ -33,6 +33,8 @@ else
   tmux new-session -d -s "$SESSION" -c "$BASE_DIR/${SERVICES[0]}"
 fi
 
+tmux new-window -t "$SESSION" -c "$BASE_DIR/${SERVICES[0]}"
+
 # Services window — first pane was created with the session
 tmux rename-window -t "$SESSION" "services"
 tmux send-keys -t "$SESSION" "mvn quarkus:dev" C-m
@@ -49,12 +51,6 @@ tmux send-keys -t "$SESSION" "npm run dev" C-m
 tmux select-layout -t "$SESSION" tiled
 
 # Infra window
-tmux new-window -t "$SESSION" -c "$BASE_DIR/devex"
-tmux rename-window -t "$SESSION" "infra"
-tmux send-keys -t "$SESSION" 'podman-compose up' C-m
+tmux split-window -t "$SESSION" -c "$BASE_DIR/devex"
+tmux send-keys -t "$SESSION" 'make up' C-m
 
-if [ -n "${TMUX:-}" ]; then
-  tmux switch-client -t "$SESSION"
-else
-  tmux attach-session -t "$SESSION"
-fi

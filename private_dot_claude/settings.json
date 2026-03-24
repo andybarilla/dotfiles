@@ -1,22 +1,12 @@
 {
-  "enabledPlugins": {
-    "claude-md-management@claude-plugins-official": true,
-    "code-review@claude-plugins-official": true,
-    "context7@claude-plugins-official": true,
-    "feature-dev@claude-plugins-official": true,
-    "frontend-design@claude-plugins-official": true,
-    "playwright@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true,
-    "zoominfo@claude-plugins-official": true
-  },
   "hooks": {
     "Notification": [
       {
         "hooks": [
           {
-            "command": "jackdaw-send",
-            "timeout": 5,
-            "type": "command"
+            "type": "command",
+            "command": "/home/andy/.local/bin/jackdaw send",
+            "timeout": 5
           }
         ]
       }
@@ -25,9 +15,9 @@
       {
         "hooks": [
           {
-            "command": "jackdaw-send",
-            "timeout": 5,
-            "type": "command"
+            "type": "command",
+            "command": "/home/andy/.local/bin/jackdaw send",
+            "timeout": 5
           }
         ]
       }
@@ -36,9 +26,9 @@
       {
         "hooks": [
           {
-            "command": "jackdaw-send",
-            "timeout": 5,
-            "type": "command"
+            "type": "command",
+            "command": "/home/andy/.local/bin/jackdaw send",
+            "timeout": 5
           }
         ]
       }
@@ -47,9 +37,9 @@
       {
         "hooks": [
           {
-            "command": "jackdaw-send",
-            "timeout": 5,
-            "type": "command"
+            "type": "command",
+            "command": "/home/andy/.local/bin/jackdaw send",
+            "timeout": 5
           }
         ]
       }
@@ -58,9 +48,9 @@
       {
         "hooks": [
           {
-            "command": "jackdaw-send",
-            "timeout": 5,
-            "type": "command"
+            "type": "command",
+            "command": "/home/andy/.local/bin/jackdaw send",
+            "timeout": 5
           }
         ]
       }
@@ -69,9 +59,9 @@
       {
         "hooks": [
           {
-            "command": "jackdaw-send",
-            "timeout": 5,
-            "type": "command"
+            "type": "command",
+            "command": "/home/andy/.local/bin/jackdaw send",
+            "timeout": 5
           }
         ]
       }
@@ -80,9 +70,9 @@
       {
         "hooks": [
           {
-            "command": "jackdaw-send",
-            "timeout": 5,
-            "type": "command"
+            "type": "command",
+            "command": "/home/andy/.local/bin/jackdaw send",
+            "timeout": 5
           }
         ]
       }
@@ -91,9 +81,9 @@
       {
         "hooks": [
           {
-            "command": "jackdaw-send",
-            "timeout": 5,
-            "type": "command"
+            "type": "command",
+            "command": "/home/andy/.local/bin/jackdaw send",
+            "timeout": 5
           }
         ]
       }
@@ -102,12 +92,37 @@
       {
         "hooks": [
           {
-            "command": "jackdaw-send",
-            "timeout": 5,
-            "type": "command"
+            "type": "command",
+            "command": "/home/andy/.local/bin/jackdaw send",
+            "timeout": 5
           }
         ]
       }
     ]
+  },
+  "enabledPlugins": {
+    "claude-md-management@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "context7@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "playwright@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": true,
+    "commit-commands@claude-plugins-official": true,
+    "github@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "pr-review-toolkit@claude-plugins-official": true,
+    "claude-code-setup@claude-plugins-official": true,
+    "playground@claude-plugins-official": true,
+    "worktrunk@worktrunk": true
+  },
+  "extraKnownMarketplaces": {
+    "worktrunk": {
+      "source": {
+        "source": "github",
+        "repo": "max-sixty/worktrunk"
+      }
+    }
   }
 }
