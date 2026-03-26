@@ -21,3 +21,7 @@ gcptvdeploy() {
     gcloud container clusters get-credentials prod-autopilot --region us-central1 --project production-7860
     env GOPROXY=proxy.golang.org go run github.com/googlecloudplatform/artifact-registry-go-tools/cmd/auth@latest refresh
 }
+
+gcp-secret() {
+    gcloud secrets versions access latest --secret="${1}-database" | jq .POSTGRES_PASSWORD -r | tr -d '\n' | wl-copy
+}

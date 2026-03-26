@@ -7,7 +7,7 @@ description: Use when the user accepts completed work and wants it merged, commi
 
 ## Overview
 
-Handle the post-acceptance workflow: commit any loose files, merge to base branch, clean up worktrees/branches, and leave the repo ready for the next task.
+Handle the post-acceptance workflow: commit any loose files, merge via PR or locally, clean up worktrees/branches, and leave the repo ready for the next task.
 
 **Core principle:** The user said "looks good" — wrap it up with minimal interruption.
 
@@ -20,14 +20,19 @@ digraph accept {
   "Dirty working tree?" -> "Stage all, show summary, ask once" [label="yes"];
   "Dirty working tree?" -> "Determine context" [label="no"];
   "Stage all, show summary, ask once" -> "User confirms?" ;
-  "User confirms?" -> "Commit" [label="yes"];
+  "User confirms?" -> "Commit + push" [label="yes"];
   "User confirms?" -> "Ask what to exclude" [label="no"];
-  "Ask what to exclude" -> "Commit";
-  "Commit" -> "Determine context";
+  "Ask what to exclude" -> "Commit + push";
+  "Commit + push" -> "Determine context";
   "Determine context" -> "On feature branch?" ;
-  "On feature branch?" -> "Merge to base + delete branch" [label="yes"];
+  "On feature branch?" -> "Open PR exists?" [label="yes"];
   "On feature branch?" -> "Done" [label="no (on main)"];
-  "Merge to base + delete branch" -> "In worktree?";
+  "Open PR exists?" -> "Merge PR via gh" [label="yes"];
+  "Open PR exists?" -> "Merge locally" [label="no"];
+  "Merge PR via gh" -> "Pull base + delete local branch";
+  "Merge locally" -> "Delete branch";
+  "Pull base + delete local branch" -> "In worktree?";
+  "Delete branch" -> "In worktree?";
   "In worktree?" -> "Exit worktree + remove it" [label="yes"];
   "In worktree?" -> "Done" [label="no"];
   "Exit worktree + remove it" -> "Done";
@@ -53,6 +58,8 @@ If the user says no, ask what to exclude, unstage those, then commit the rest.
 
 Commit message: Write a concise message describing what the uncommitted changes are (e.g., "Add auth utility and test coverage for login flow"). Don't use generic messages like "final changes" or "cleanup".
 
+After committing, push the branch: `git push`
+
 ### Step 2: Determine Context
 
 Detect which situation we're in:
@@ -68,17 +75,27 @@ main_gitdir=$(git rev-parse --git-dir 2>/dev/null)
 
 # What's the base branch?
 base=$(git show-ref --verify refs/heads/main >/dev/null 2>&1 && echo main || echo master)
+
+# Is there an open PR for this branch?
+pr_number=$(gh pr list --head "$current" --state open --json number --jq '.[0].number' 2>/dev/null)
 ```
 
-Three possible states:
+### Step 3: Merge
 
-| State | current branch | worktree? | Action |
-|-------|---------------|-----------|--------|
-| Working on main | main/master | no | Nothing to merge — done |
-| Feature branch | not main | no | Merge to base, delete branch |
-| Worktree | not main | yes | Merge to base, delete branch, remove worktree |
+**If an open PR exists (`pr_number` is set):** Merge via GitHub.
 
-### Step 3: Merge (if on feature branch)
+```bash
+# Squash merge the PR
+gh pr merge "$pr_number" --squash --delete-branch
+
+# Switch to base branch locally and pull
+git checkout "$base"
+git pull
+```
+
+The `--delete-branch` flag deletes the remote branch. The local branch may still exist — clean it up in Step 4.
+
+**If no PR exists:** Merge locally.
 
 ```bash
 # Get the repo root (for worktree case, this is the main worktree)
@@ -97,7 +114,11 @@ git merge "$current"
 After successful merge:
 
 ```bash
-git branch -d "$current"
+# Delete local branch (may already be gone if PR --delete-branch handled it)
+git branch -d "$current" 2>/dev/null
+
+# Clean up any local branches whose remote tracking branch is gone
+git fetch --prune
 ```
 
 ### Step 5: Clean Up Worktree (if applicable)
@@ -116,10 +137,14 @@ Report: "Merged `<branch>` → `<base>`, removed worktree. Ready for next task."
 Keep it brief:
 
 - **Was on main:** "Committed. Ready for next task."
-- **Feature branch:** "Merged `<branch>` → `<base>`. Ready for next task."
+- **Feature branch (via PR):** "Merged PR #N (`<branch>` → `<base>`). Ready for next task."
+- **Feature branch (local):** "Merged `<branch>` → `<base>`. Ready for next task."
 - **Worktree:** "Merged `<branch>` → `<base>`, cleaned up worktree. Ready for next task."
 
 ## Common Mistakes
+
+**Merging locally when a PR is open**
+Always check for an open PR first. Merging locally leaves the PR dangling and skips CI checks, review comments, and PR history.
 
 **Running tests again**
 The user already accepted the work. Don't re-run the test suite unless something went wrong during merge.
@@ -139,3 +164,4 @@ Use `git branch -d` (not `-D`). If it fails, the branch wasn't fully merged — 
 - `git branch -d` fails → Branch not fully merged, investigate
 - Worktree has changes in other branches → Don't touch them
 - User says "no" to staged files → Ask what to exclude, don't abort entirely
+- PR merge fails (CI red, review required) → Report the failure, don't force merge

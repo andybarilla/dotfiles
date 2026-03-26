@@ -124,5 +124,6 @@
         "repo": "max-sixty/worktrunk"
       }
     }
-  }
+  },
+  "voiceEnabled": true
 }
