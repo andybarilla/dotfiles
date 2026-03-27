@@ -41,13 +41,11 @@ tmux send-keys -t "$SESSION" "mvn quarkus:dev" C-m
 
 for svc in "${SERVICES[@]:1}"; do
   tmux split-window -t "$SESSION" -c "$BASE_DIR/$svc"
-  tmux send-keys -t "$SESSION" "mvn quarkus:dev" C-m
   tmux select-layout -t "$SESSION" tiled
 done
 
 # Node apps
 tmux split-window -t "$SESSION" -c "$BASE_DIR/demo-web"
-tmux send-keys -t "$SESSION" "npm run dev" C-m
 tmux select-layout -t "$SESSION" tiled
 
 # Infra window
