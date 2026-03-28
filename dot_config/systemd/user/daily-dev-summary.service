@@ -5,6 +5,7 @@ After=network-online.target
 
 [Service]
 Type=oneshot
+EnvironmentFile=%h/.config/daily-dev-summary.env
 ExecStart=/usr/bin/python3 %h/SynologyDrive/scripts/daily-dev-summary.py
 StandardOutput=journal
 StandardError=journal
