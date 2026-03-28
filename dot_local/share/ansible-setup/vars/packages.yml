@@ -92,6 +92,8 @@ ubuntu_packages:
   - libwebkit2gtk-4.1-dev
   - libayatana-appindicator3-dev
   - librsvg2-dev
+  - bubblewrap
+  - wl-clipboard
 
 # Packages from external repositories (repos must be configured first)
 ubuntu_external_packages:
