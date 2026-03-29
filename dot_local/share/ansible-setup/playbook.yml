@@ -119,6 +119,9 @@
     - name: Install eza
       ansible.builtin.include_tasks: tasks/eza.yml
 
+    - name: Install DuckDB
+      ansible.builtin.include_tasks: tasks/duckdb.yml
+
     - name: Install Buf CLI
       ansible.builtin.include_tasks: tasks/buf.yml
       when: is_ubuntu

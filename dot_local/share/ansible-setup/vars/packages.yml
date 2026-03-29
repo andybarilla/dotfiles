@@ -83,7 +83,7 @@ ubuntu_packages:
   - cargo
   - gnome-tweaks
   - gnome-shell-extension-manager
-  - libicu76
+  - libicu78
   - libxml2-16
   - libevent-2.1-7t64
   - libavif16
@@ -94,13 +94,23 @@ ubuntu_packages:
   - librsvg2-dev
   - bubblewrap
   - wl-clipboard
+  - gh
+  - nodejs
+  - npm
+  - git-delta
+  - xh
+  - lazygit
+  - hyperfine
+  - sd
+  - du-dust
+  - procs
+  - glow
 
 # Packages from external repositories (repos must be configured first)
 ubuntu_external_packages:
   - 1password
   - 1password-cli
   - code
-  - gh
   - containerd.io
   - glow
   - google-chrome-stable

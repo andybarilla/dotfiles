@@ -1,0 +1,13 @@
+# Install DuckDB
+# https://duckdb.org/
+
+- name: Check if DuckDB is installed
+  ansible.builtin.command: which duckdb
+  register: duckdb_check
+  changed_when: false
+  failed_when: false
+
+- name: Install DuckDB
+  ansible.builtin.shell: curl -fsSL https://install.duckdb.org | sh
+  when: duckdb_check.rc != 0
+  become: false
