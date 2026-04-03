@@ -13,22 +13,22 @@
     key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-{{ item }}"
     value: "['<Super>{{ item }}']"
     state: present
-  loop: [1, 2, 3, 4]
+  loop: [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-- name: Set move-to-workspace 1-4
+- name: Set move-to-workspace 1-9
   community.general.dconf:
     key: "/org/gnome/desktop/wm/keybindings/move-to-workspace-{{ item }}"
     value: "['<Shift><Super>{{ item }}']"
     state: present
-  loop: [1, 2, 3, 4]
+  loop: [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 # Disable switch-to-application (conflicts with workspace switching)
-- name: Disable switch-to-application 1-4
+- name: Disable switch-to-application 1-9
   community.general.dconf:
     key: "/org/gnome/shell/keybindings/switch-to-application-{{ item }}"
     value: "@as []"
     state: present
-  loop: [1, 2, 3, 4]
+  loop: [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 # Disable move-to-monitor shortcuts (conflicts with Ghostty split navigation)
 - name: Disable move-to-monitor shortcuts

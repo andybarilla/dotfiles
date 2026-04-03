@@ -41,3 +41,4 @@ Apply these style guidelines to all writing:
 - Thought-leader posturing — a phrase that "has lost all meaning and should probably be retired"
 - Hedging language when you actually have an opinion ("I think maybe perhaps it could be argued that...")
 - Emojis unless explicitly requested
+- Em dashes. They're an AI writing tell at this point. Use commas, periods, colons, or parentheses instead.

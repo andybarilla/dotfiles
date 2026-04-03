@@ -50,13 +50,13 @@ keybind = super+ctrl+\=new_split:right
 keybind = super+ctrl+-=new_split:down
 
 # Split navigation
-keybind = super+ctrl+left=goto_split:left
-keybind = super+ctrl+right=goto_split:right
-keybind = super+ctrl+up=goto_split:top
-keybind = super+ctrl+down=goto_split:bottom
+keybind = super+ctrl+left=goto_split:previous
+keybind = super+ctrl+right=goto_split:next
 
 # Rando stuff
 # gtk-single-instance = true
 
 # Dank color generation
 theme = dankcolors
+
+term = xterm-256color

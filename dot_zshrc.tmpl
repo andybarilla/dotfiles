@@ -78,8 +78,6 @@ if command -v mise &>/dev/null; then
     eval "$(mise activate zsh)"
 fi
 
-alias claude='command claude; reset'
-
 # --- Distrobox / Container ---
 if [[ -n "$CONTAINER_ID" ]]; then
     PROMPT="[${CONTAINER_ID}] $PROMPT"
