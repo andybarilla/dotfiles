@@ -78,13 +78,9 @@ ubuntu_packages:
   - fd-find
   - libreadline-dev
   - postgresql-client
-  - rustc
   - zsh
-  - cargo
   - gnome-tweaks
   - gnome-shell-extension-manager
-  - libicu78
-  - libxml2-16
   - libevent-2.1-7t64
   - libavif16
   - libmanette-0.2-0
@@ -98,20 +94,19 @@ ubuntu_packages:
   - nodejs
   - npm
   - git-delta
-  - xh
-  - lazygit
+  #- lazygit
   - hyperfine
   - sd
-  - du-dust
-  - procs
-  - glow
+  #- du-dust
+  #- procs
+  #- glow
 
 # Packages from external repositories (repos must be configured first)
 ubuntu_external_packages:
   - 1password
   - 1password-cli
   - code
-  - containerd.io
+  #- containerd.io
   - glow
   - google-chrome-stable
   - tailscale

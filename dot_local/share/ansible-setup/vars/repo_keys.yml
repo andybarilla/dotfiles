@@ -3,8 +3,6 @@
 repo_gpg_keys:
   - name: 1Password
     url: https://downloads.1password.com/linux/keys/1password.asc
-  - name: Dropbox
-    url: https://linux.dropbox.com/fedora/rpm-public-key.asc
   - name: Microsoft
     url: https://packages.microsoft.com/keys/microsoft.asc
   - name: Google

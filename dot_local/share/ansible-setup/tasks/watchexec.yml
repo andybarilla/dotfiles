@@ -2,7 +2,7 @@
 # https://watchexec.github.io/
 
 - name: Check if watchexec is installed
-  ansible.builtin.command: which watchexec
+  ansible.builtin.command: ~/.cargo/bin/watchexec --version
   register: watchexec_check
   changed_when: false
   failed_when: false

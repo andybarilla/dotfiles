@@ -2,12 +2,14 @@
 # https://github.com/cargo-bins/cargo-binstall
 
 - name: Check if cargo-binstall is installed
-  ansible.builtin.command: which cargo-binstall
+  ansible.builtin.command: ~/.cargo/bin/cargo-binstall --version
   register: cargo_binstall_check
   changed_when: false
   failed_when: false
 
 - name: Install cargo-binstall
   ansible.builtin.shell: curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
   when: cargo_binstall_check.rc != 0
   become: false

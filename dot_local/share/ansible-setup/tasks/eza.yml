@@ -2,12 +2,12 @@
 # https://github.com/eza-community/eza
 
 - name: Check if eza is installed
-  ansible.builtin.command: which eza
+  ansible.builtin.command: ~/.cargo/bin/eza --version
   register: eza_check
   changed_when: false
   failed_when: false
 
 - name: Install eza via cargo
-  ansible.builtin.command: cargo install eza
+  ansible.builtin.command: ~/.cargo/bin/cargo install eza
   when: eza_check.rc != 0
   become: false
