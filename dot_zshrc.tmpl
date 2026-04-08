@@ -46,7 +46,7 @@ export MANROFFOPT="-c"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export HAPPY_SERVER_URL="https://happy.andybarilla.com"
 export DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
-export ANTHROPIC_API_KEY={{ onepasswordRead "op://Personal/Anthropic API Key/credential" "me@andybarilla.com" | quote }}
+export ANTHROPIC_API_KEY={{ onepasswordRead "op://dev/Anthropic API/credential" "andy@titlevision.ai" | quote }}
 export GITHUB_PERSONAL_ACCESS_TOKEN={{ onepasswordRead "op://Personal/GitHub PAT/password" "me@andybarilla.com" | quote }}
 export GLM_CODING_PLAN_KEY={{ onepasswordRead "op://Personal/Z.AI GLM Coding Plan Key/password" "me@andybarilla.com" | quote }}
 
