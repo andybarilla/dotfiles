@@ -36,3 +36,4 @@ Several projects use a task-based workflow with `docs/tasks/` and `docs/plans/` 
 - Don't summarize what you just did — I can read the diff.
 - Ask before making changes to dependencies or creating new top-level directories.
 - **Showing markdown for review**: When asking me to review a markdown file, read it with the Read tool and then output the full contents as a markdown code block in your response text so I can see it directly without expanding tool results or opening the file myself.
+- **No parallelisms**: Never use the "it's not X, it's Y" structure. Make direct assertions instead. If a claim can't stand on its own as a positive statement, it isn't strong enough to include.
