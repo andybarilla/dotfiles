@@ -49,6 +49,7 @@ export DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
 export ANTHROPIC_API_KEY={{ onepasswordRead "op://dev/Anthropic API/credential" "andy@titlevision.ai" | quote }}
 export GITHUB_PERSONAL_ACCESS_TOKEN={{ onepasswordRead "op://Personal/GitHub PAT/password" "me@andybarilla.com" | quote }}
 export GLM_CODING_PLAN_KEY={{ onepasswordRead "op://Personal/Z.AI GLM Coding Plan Key/password" "me@andybarilla.com" | quote }}
+export SUPABASE_ACCESS_TOKEN={{ onepasswordRead "op://Personal/Supabase/credential" "me@andybarilla.com" | quote }}
 
 # --- PATH ---
 typeset -U path
@@ -100,3 +101,6 @@ if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)
 export PATH="$HOME/.npm-global/bin:$PATH"
 
 export GPG_TTY=$(tty)
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+

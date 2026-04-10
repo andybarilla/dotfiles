@@ -1,6 +1,5 @@
 {
   "permissions": {
-    "defaultMode": "dontAsk",
     "allow": [
       "Read",
       "Glob",
@@ -20,7 +19,8 @@
       "Bash(rm -rf *)",
       "Bash(git push --force *)",
       "Bash(git reset --hard *)"
-    ]
+    ],
+    "defaultMode": "dontAsk"
   },
   "hooks": {
     "SessionStart": [
@@ -161,9 +161,10 @@
     },
     "andybarilla-skills-and-agents": {
       "source": {
-        "source": "github",
-        "repo": "andybarilla/skills-and-agents"
-      }
+        "source": "git",
+        "url": "https://github.com/andybarilla/skills-and-agents.git"
+      },
+      "autoUpdate": true
     }
   },
   "voiceEnabled": true
