@@ -218,8 +218,7 @@ arch_services:
   - tailscaled
 
 # Systemd user timers to enable
-arch_user_timers:
-  - daily-dev-summary.timer
+arch_user_timers: []
 
 # Systemd user services to enable
 arch_user_services:
