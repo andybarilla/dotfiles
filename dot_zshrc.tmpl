@@ -79,13 +79,6 @@ if command -v mise &>/dev/null; then
     eval "$(mise activate zsh)"
 fi
 
-# --- Distrobox / Container ---
-if [[ -n "$CONTAINER_ID" ]]; then
-    PROMPT="[${CONTAINER_ID}] $PROMPT"
-    export SSH_AUTH_SOCK=/run/host/home/andy/.1password/agent.sock
-    [[ -f /home/andy/.zshrc.d/containers/${CONTAINER_ID}.zsh ]] && source /home/andy/.zshrc.d/containers/${CONTAINER_ID}.zsh
-fi
-
 # --- Source modular configs ---
 for f in /home/andy/.zshrc.d/*.zsh(N); do source "$f"; done
 export PATH="/home/andy/.config/herd-lite/bin:$PATH"
@@ -102,5 +95,6 @@ export PATH="$HOME/.npm-global/bin:$PATH"
 
 export GPG_TTY=$(tty)
 
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-
+if [[ -d "/home/linuxbrew" ]]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
