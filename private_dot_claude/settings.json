@@ -43,7 +43,7 @@
     "security-guidance@claude-plugins-official": true,
     "worktrunk@worktrunk": true,
     "codex@openai-codex": true,
-    "apb@andybarilla-skills-and-agents": true
+    "apb@andybarilla-hq": true
   },
   "extraKnownMarketplaces": {
     "worktrunk": {
@@ -58,12 +58,11 @@
         "repo": "openai/codex-plugin-cc"
       }
     },
-    "andybarilla-skills-and-agents": {
+    "andybarilla-hq": {
       "source": {
-        "source": "git",
-        "url": "https://github.com/andybarilla/skills-and-agents.git"
-      },
-      "autoUpdate": true
+        "source": "github",
+        "repo": "andybarilla/hq"
+      }
     }
   },
   "voiceEnabled": true

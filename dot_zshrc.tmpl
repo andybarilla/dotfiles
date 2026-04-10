@@ -53,6 +53,9 @@ export GITHUB_PERSONAL_ACCESS_TOKEN={{ onepasswordRead "op://Personal/GitHub PAT
 export GLM_CODING_PLAN_KEY={{ onepasswordRead "op://Personal/Z.AI GLM Coding Plan Key/password" "me@andybarilla.com" | quote }}
 export SUPABASE_ACCESS_TOKEN={{ onepasswordRead "op://Personal/Supabase/credential" "me@andybarilla.com" | quote }}
 
+export TELEGRAM_CHAT_ID={{ onepasswordRead "op://Personal/Telegram/username" "me@andybarilla.com" | quote }}
+export TELEGRAM_BOT_TOKEN={{ onepasswordRead "op://Personal/Telegram/credential" "me@andybarilla.com" | quote }}
+
 # --- PATH ---
 typeset -U path
 [[ -d ~/.local/bin ]] && path=(~/.local/bin $path)
