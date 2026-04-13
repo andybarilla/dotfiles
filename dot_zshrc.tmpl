@@ -48,13 +48,7 @@ export HAPPY_SERVER_URL="https://happy.andybarilla.com"
 if command -v podman &>/dev/null; then
     export DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
 fi
-export ANTHROPIC_API_KEY={{ onepasswordRead "op://dev/Anthropic API/credential" "andy@titlevision.ai" | quote }}
-export GITHUB_PERSONAL_ACCESS_TOKEN={{ onepasswordRead "op://Personal/GitHub PAT/password" "me@andybarilla.com" | quote }}
 export GLM_CODING_PLAN_KEY={{ onepasswordRead "op://Personal/Z.AI GLM Coding Plan Key/password" "me@andybarilla.com" | quote }}
-export SUPABASE_ACCESS_TOKEN={{ onepasswordRead "op://Personal/Supabase API/credential" "me@andybarilla.com" | quote }}
-
-export TELEGRAM_CHAT_ID={{ onepasswordRead "op://Personal/Telegram/username" "me@andybarilla.com" | quote }}
-export TELEGRAM_BOT_TOKEN={{ onepasswordRead "op://Personal/Telegram/credential" "me@andybarilla.com" | quote }}
 
 # --- PATH ---
 typeset -U path

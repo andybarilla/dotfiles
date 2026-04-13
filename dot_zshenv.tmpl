@@ -1,0 +1,9 @@
+# Sourced by all zsh instances (including non-interactive/cron).
+# Keep to env vars only — no aliases, functions, or interactive settings.
+
+export ANTHROPIC_API_KEY={{ onepasswordRead "op://dev/Anthropic API/credential" "andy@titlevision.ai" | quote }}
+export GITHUB_PERSONAL_ACCESS_TOKEN={{ onepasswordRead "op://Personal/GitHub PAT/password" "me@andybarilla.com" | quote }}
+export HQ_SUPABASE_ACCESS_TOKEN={{ onepasswordRead "op://Personal/Supabase API/credential" "me@andybarilla.com" | quote }}
+export TELEGRAM_CHAT_ID={{ onepasswordRead "op://Personal/Telegram/username" "me@andybarilla.com" | quote }}
+export TELEGRAM_BOT_TOKEN={{ onepasswordRead "op://Personal/Telegram/credential" "me@andybarilla.com" | quote }}
+export HQ_DATABASE_URL=postgresql://postgres.ygrcfhltcqzfrzwdzwea:{{ onepasswordRead "op://Personal/Supabase API/password" "me@andybarilla.com" }}@aws-1-us-east-1.pooler.supabase.com:6543/postgres 
