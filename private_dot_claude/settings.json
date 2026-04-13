@@ -67,5 +67,6 @@
     }
   },
   "voiceEnabled": true,
+  "advisorModel": "opus",
   "model": "sonnet"
 }
