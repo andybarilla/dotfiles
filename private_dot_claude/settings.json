@@ -10,6 +10,7 @@
       "Agent",
       "WebFetch",
       "WebSearch",
+      "mcp__supabase__*",
       "mcp__plugin_github_github__*",
       "mcp__plugin_playwright_playwright__*",
       "mcp__context7__*",
@@ -65,5 +66,6 @@
       }
     }
   },
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "model": "sonnet"
 }
