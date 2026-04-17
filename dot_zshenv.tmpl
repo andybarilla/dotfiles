@@ -7,3 +7,4 @@ export HQ_SUPABASE_ACCESS_TOKEN={{ onepasswordRead "op://Personal/Supabase API/c
 export TELEGRAM_CHAT_ID={{ onepasswordRead "op://Personal/Telegram/username" "me@andybarilla.com" | quote }}
 export TELEGRAM_BOT_TOKEN={{ onepasswordRead "op://Personal/Telegram/credential" "me@andybarilla.com" | quote }}
 export HQ_DATABASE_URL=postgresql://postgres.ygrcfhltcqzfrzwdzwea:{{ onepasswordRead "op://Personal/Supabase API/password" "me@andybarilla.com" }}@aws-1-us-east-1.pooler.supabase.com:6543/postgres 
+export FIGMA_ACCESS_TOKEN={{ onepasswordRead "op://Personal/Figma API/credential" "me@andybarilla.com" | quote }}
