@@ -1,0 +1,3 @@
+# Login shell entry point. Most config lives in ~/.bashrc.
+[ -f ~/.bash_env ] && . ~/.bash_env
+[ -f ~/.bashrc ] && . ~/.bashrc

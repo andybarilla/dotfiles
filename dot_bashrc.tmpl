@@ -1,0 +1,120 @@
+# =============================================================================
+# Bash Configuration
+# =============================================================================
+
+# Skip the rest for non-interactive shells.
+case $- in *i*) ;; *) return ;; esac
+
+# --- Shared env (mirrors zshenv) ---
+[ -f ~/.bash_env ] && . ~/.bash_env
+
+# --- History ---
+HISTFILE=~/.bash_history
+HISTSIZE=10000
+HISTFILESIZE=10000
+HISTCONTROL=ignoredups:erasedups
+HISTTIMEFORMAT='%F %T '
+shopt -s histappend
+# Append each command to HISTFILE immediately and reload so new shells see it.
+PROMPT_COMMAND='history -a; history -n'"${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
+
+# --- Shell options ---
+shopt -s checkwinsize
+shopt -s nullglob
+shopt -s globstar 2>/dev/null
+
+# --- Completion ---
+if ! shopt -oq posix; then
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+        . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
+fi
+
+# --- Prompt (pure-inspired) ---
+# Pure prompt has no native bash port; this mimics the two-line layout
+# (path + git branch, then a colored prompt symbol that turns red on error).
+if [ -f /usr/lib/git-core/git-sh-prompt ]; then
+    . /usr/lib/git-core/git-sh-prompt
+elif [ -f /usr/share/git/completion/git-prompt.sh ]; then
+    . /usr/share/git/completion/git-prompt.sh
+fi
+GIT_PS1_SHOWDIRTYSTATE=1
+GIT_PS1_SHOWUPSTREAM=auto
+
+__prompt_command() {
+    local last=$?
+    # Wrap ANSI escapes in \[ \] so readline knows they take zero display
+    # columns — otherwise long lines wrap wrong and Ctrl-R redraws break.
+    local r='\[\e[0m\]' b='\[\e[1m\]'
+    local blue='\[\e[34m\]' cyan='\[\e[36m\]' grey='\[\e[90m\]' red='\[\e[31m\]'
+    local branch=""
+    if declare -F __git_ps1 >/dev/null; then
+        local raw
+        raw=$(__git_ps1 " %s")
+        [ -n "$raw" ] && branch="${grey}${raw}${r}"
+    fi
+    local sym=$cyan
+    [ $last -ne 0 ] && sym=$red
+    PS1="\n${grey}\u@\h${r} ${b}${blue}\w${r}${branch}\n${sym}❯${r} "
+}
+PROMPT_COMMAND='__prompt_command'"${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
+
+# --- Environment ---
+export MANROFFOPT="-c"
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+export HAPPY_SERVER_URL="https://happy.andybarilla.com"
+if command -v podman &>/dev/null; then
+    export DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
+fi
+export GLM_CODING_PLAN_KEY={{ onepasswordRead "op://Personal/Z.AI GLM Coding Plan Key/password" "me@andybarilla.com" | quote }}
+
+# --- PATH ---
+# Prepend $1 to PATH if the directory exists and isn't already present.
+_path_prepend() {
+    [ -d "$1" ] || return
+    case ":$PATH:" in *":$1:"*) return ;; esac
+    PATH="$1:$PATH"
+}
+_path_prepend "$HOME/SynologyDrive/scripts"
+_path_prepend "$HOME/go/bin"
+_path_prepend "$HOME/.opencode/bin"
+_path_prepend "$HOME/.cargo/bin"
+_path_prepend "$HOME/.config/herd-lite/bin"
+_path_prepend "$HOME/Applications/depot_tools"
+_path_prepend "$HOME/bin"
+_path_prepend "$HOME/.local/bin"
+
+# --- Tool activation ---
+if command -v nvim &>/dev/null; then
+    alias vi='nvim'
+fi
+
+if command -v batcat &>/dev/null; then
+    alias bat='batcat'
+fi
+
+if command -v fdfind &>/dev/null; then
+    alias fd='fdfind'
+fi
+
+if command -v mise &>/dev/null; then
+    eval "$(mise activate bash)"
+fi
+
+# --- Source modular configs ---
+for f in ~/.bashrc.d/*.bash; do . "$f"; done
+
+export PATH="$HOME/.config/herd-lite/bin:$PATH"
+export PHP_INI_SCAN_DIR="$HOME/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
+
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init bash)"; fi
+
+export PATH="$HOME/.npm-global/bin:$PATH"
+
+export GPG_TTY=$(tty)
+
+if [ -d "/home/linuxbrew" ]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
