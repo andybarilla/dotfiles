@@ -22,7 +22,7 @@
       "Bash(git push --force *)",
       "Bash(git reset --hard *)"
     ],
-    "defaultMode": "dontAsk"
+    "defaultMode": "auto"
   },
   "statusLine": {
     "type": "command",
@@ -64,10 +64,23 @@
       "source": {
         "source": "github",
         "repo": "andybarilla/hq"
-      }
+      },
+      "autoUpdate": true
     }
   },
-  "voiceEnabled": true,
   "advisorModel": "opus",
-  "model": "sonnet"
+  "skipAutoPermissionPrompt": true,
+  "voiceEnabled": true,
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/andy/.local/share/pnpm/global/5/.pnpm/unbrowse@6.0.0/node_modules/unbrowse/bin/unbrowse-update-hint.mjs\""
+          }
+        ]
+      }
+    ]
+  }
 }

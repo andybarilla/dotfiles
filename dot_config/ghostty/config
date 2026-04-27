@@ -43,7 +43,7 @@ gtk-titlebar = true
 # Shell integration
 shell-integration = detect
 shell-integration-features = sudo,title,no-cursor
-keybind = shift+enter=text:\n
+#keybind = shift+enter=text:\n
 
 # Split
 keybind = super+ctrl+\=new_split:right

@@ -37,7 +37,6 @@ tmux new-window -t "$SESSION" -c "$BASE_DIR/${SERVICES[0]}"
 
 # Services window — first pane was created with the session
 tmux rename-window -t "$SESSION" "services"
-tmux send-keys -t "$SESSION" "mvn quarkus:dev" C-m
 
 for svc in "${SERVICES[@]:1}"; do
   tmux split-window -t "$SESSION" -c "$BASE_DIR/$svc"

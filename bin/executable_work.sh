@@ -24,6 +24,5 @@ if tmux has-session -t "$SESSION" 2>/dev/null; then
 fi
 
 tmux -CC new -s "$SESSION" -d
-tmux send-keys -t "$SESSION" 'claude' C-m
 tmux new-window -t "$SESSION"
 tmux select-window -t "$SESSION":1

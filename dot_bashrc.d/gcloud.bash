@@ -23,5 +23,5 @@ gcptvdeploy() {
 }
 
 gcp-secret() {
-    gcloud secrets versions access latest --secret="${1}-database" | jq .POSTGRES_PASSWORD -r | tr -d '\n' | wl-copy
+    gcloud secrets versions access latest --secret="${1}-database" --project admin-6c4c | jq .POSTGRES_PASSWORD -r | tr -d '\n' | wl-copy
 }

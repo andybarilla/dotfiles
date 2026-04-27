@@ -2,3 +2,8 @@
 [ -f ~/.bash_env ] && . ~/.bash_env
 [ -f ~/.bashrc ] && . ~/.bashrc
 [ -f ~/.cargo/env ] && ~/.cargo/env
+
+
+# Added by Toolbox App
+export PATH="$PATH:/home/andy/.local/share/JetBrains/Toolbox/scripts"
+
