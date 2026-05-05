@@ -6,3 +6,5 @@
 ~/bin/work.sh jackdaw ~/dev/andybarilla/jackdaw
 ~/bin/work.sh janus ~/dev/andybarilla/janushc-dash
 ~/bin/work.sh hq ~/dev/andybarilla/hq
+~/bin/work.sh web-presence ~/dev/andybarilla/web-presence
+

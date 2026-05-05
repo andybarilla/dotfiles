@@ -94,8 +94,9 @@ if command -v batcat &>/dev/null; then
     alias bat='batcat'
 fi
 
-if command -v fdfind &>/dev/null; then
-    alias fd='fdfind'
+if command -v tea-cli &>/dev/null; then
+    alias tea='tea-cli'
+    source <(tea-cli completion bash)
 fi
 
 if command -v mise &>/dev/null; then
