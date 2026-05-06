@@ -27,6 +27,12 @@
     creates: /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:wezfurlong:wezterm-nightly.repo
   become: true
 
+- name: Enable Ghostty COPR repo
+  ansible.builtin.command:
+    cmd: dnf copr enable -y scottames/ghostty
+    creates: /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:scottames:ghostty.repo
+  become: true
+
 # Copy repository files
 - name: Copy repository files
   ansible.builtin.copy:

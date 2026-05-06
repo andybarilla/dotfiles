@@ -100,8 +100,9 @@
     #  ansible.builtin.include_tasks: tasks/containers.yml
     #  when: is_archlinux
 
-    - name: Install Ghostty
+    - name: Install Ghostty (Ubuntu)
       ansible.builtin.include_tasks: tasks/ghostty.yml
+      when: is_ubuntu
 
     - name: Install Claude Code
       ansible.builtin.include_tasks: tasks/claude-code.yml

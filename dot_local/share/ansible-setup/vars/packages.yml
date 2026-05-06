@@ -45,6 +45,7 @@ external_packages:
   - lens
   - synology-drive
   - wezterm
+  - ghostty
 
 # RPMs to download and install directly
 remote_rpms: []
