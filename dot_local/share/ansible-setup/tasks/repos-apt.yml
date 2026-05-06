@@ -1,148 +1,123 @@
 # Tasks for setting up external repositories on Ubuntu/Debian-based systems
+# Uses the modern DEB822 .sources format (Ubuntu 24.04+ default).
 
-# First, clean up any conflicting sources files that might break apt
-- name: Remove conflicting VS Code sources file (before apt operations)
-  ansible.builtin.file:
-    path: /etc/apt/sources.list.d/vscode.sources
-    state: absent
-  become: true
-
-- name: Install apt-transport-https and gpg
+- name: Install prerequisites for apt repository management
   ansible.builtin.apt:
     name:
-      - apt-transport-https
       - gpg
       - curl
     state: present
     update_cache: true
   become: true
 
-# 1Password repository
-- name: Add 1Password GPG key
-  ansible.builtin.shell:
-    cmd: curl -sS https://downloads.1password.com/linux/keys/1password.asc | gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
-    creates: /usr/share/keyrings/1password-archive-keyring.gpg
+# Remove legacy .list files from previous runs (now superseded by .sources files)
+- name: Remove legacy one-line apt source files
+  ansible.builtin.file:
+    path: "/etc/apt/sources.list.d/{{ item }}.list"
+    state: absent
+  loop:
+    - 1password
+    - vscode
+    - github-cli
+    - google-chrome
+    - tailscale
+    - wezterm
+    - lens
+    - charm
   become: true
 
 - name: Add 1Password apt repository
-  ansible.builtin.apt_repository:
-    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/amd64 stable main"
-    filename: 1password
+  ansible.builtin.deb822_repository:
+    name: 1password
+    types: deb
+    uris: https://downloads.1password.com/linux/debian/amd64
+    suites: stable
+    components: main
+    architectures: amd64
+    signed_by: https://downloads.1password.com/linux/keys/1password.asc
     state: present
-  become: true
-
-# VS Code repository
-- name: Add Microsoft GPG key
-  ansible.builtin.shell:
-    cmd: curl -sS https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor --output /usr/share/keyrings/microsoft-archive-keyring.gpg
-    creates: /usr/share/keyrings/microsoft-archive-keyring.gpg
   become: true
 
 - name: Add VS Code apt repository
-  ansible.builtin.apt_repository:
-    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/repos/code stable main"
-    filename: vscode
+  ansible.builtin.deb822_repository:
+    name: vscode
+    types: deb
+    uris: https://packages.microsoft.com/repos/code
+    suites: stable
+    components: main
+    architectures: amd64
+    signed_by: https://packages.microsoft.com/keys/microsoft.asc
     state: present
-  become: true
-
-# GitHub CLI repository
-- name: Add GitHub CLI GPG key
-  ansible.builtin.shell:
-    cmd: curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | gpg --dearmor -o /usr/share/keyrings/githubcli-archive-keyring.gpg
-    creates: /usr/share/keyrings/githubcli-archive-keyring.gpg
   become: true
 
 - name: Add GitHub CLI apt repository
-  ansible.builtin.apt_repository:
-    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main"
-    filename: github-cli
+  ansible.builtin.deb822_repository:
+    name: github-cli
+    types: deb
+    uris: https://cli.github.com/packages
+    suites: stable
+    components: main
+    architectures: amd64
+    signed_by: https://cli.github.com/packages/githubcli-archive-keyring.gpg
     state: present
-  become: true
-
-# Google Chrome repository
-- name: Add Google Chrome GPG key
-  ansible.builtin.shell:
-    cmd: curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor --output /usr/share/keyrings/google-chrome-keyring.gpg
-    creates: /usr/share/keyrings/google-chrome-keyring.gpg
   become: true
 
 - name: Add Google Chrome apt repository
-  ansible.builtin.apt_repository:
-    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome-keyring.gpg] https://dl.google.com/linux/chrome/deb/ stable main"
-    filename: google-chrome
+  ansible.builtin.deb822_repository:
+    name: google-chrome
+    types: deb
+    uris: https://dl.google.com/linux/chrome/deb/
+    suites: stable
+    components: main
+    architectures: amd64
+    signed_by: https://dl.google.com/linux/linux_signing_key.pub
     state: present
-  become: true
-
-# Tailscale repository
-- name: Add Tailscale GPG key
-  ansible.builtin.shell:
-    cmd: curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/{{ ubuntu_codename }}.noarmor.gpg --output /usr/share/keyrings/tailscale-archive-keyring.gpg
-    creates: /usr/share/keyrings/tailscale-archive-keyring.gpg
   become: true
 
 - name: Add Tailscale apt repository
-  ansible.builtin.apt_repository:
-    repo: "deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/ubuntu {{ ubuntu_codename }} main"
-    filename: tailscale
+  ansible.builtin.deb822_repository:
+    name: tailscale
+    types: deb
+    uris: "https://pkgs.tailscale.com/stable/ubuntu"
+    suites: "{{ ubuntu_codename }}"
+    components: main
+    signed_by: "https://pkgs.tailscale.com/stable/ubuntu/{{ ubuntu_codename }}.noarmor.gpg"
     state: present
   become: true
 
-# WezTerm repository
-- name: Add WezTerm GPG key
-  ansible.builtin.shell:
-    cmd: curl -fsSL https://apt.fury.io/wez/gpg.key | gpg --dearmor -o /usr/share/keyrings/wezterm-fury.gpg
-    creates: /usr/share/keyrings/wezterm-fury.gpg
-  become: true
-
-- name: Set permissions on WezTerm GPG key
-  ansible.builtin.file:
-    path: /usr/share/keyrings/wezterm-fury.gpg
-    mode: '0644'
-  become: true
-
+# WezTerm and Charm are flat repositories: trailing slash on URI, suite is "/", no components.
 - name: Add WezTerm apt repository
-  ansible.builtin.apt_repository:
-    repo: "deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *"
-    filename: wezterm
+  ansible.builtin.deb822_repository:
+    name: wezterm
+    types: deb
+    uris: https://apt.fury.io/wez/
+    suites: /
+    signed_by: https://apt.fury.io/wez/gpg.key
     state: present
-  become: true
-
-# Lens (Kubernetes IDE) repository
-- name: Add Lens GPG key
-  ansible.builtin.shell:
-    cmd: curl -fsSL https://downloads.k8slens.dev/keys/gpg | gpg --dearmor -o /usr/share/keyrings/lens-archive-keyring.gpg
-    creates: /usr/share/keyrings/lens-archive-keyring.gpg
   become: true
 
 - name: Add Lens apt repository
-  ansible.builtin.apt_repository:
-    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/lens-archive-keyring.gpg] https://downloads.k8slens.dev/apt/debian stable main"
-    filename: lens
+  ansible.builtin.deb822_repository:
+    name: lens
+    types: deb
+    uris: https://downloads.k8slens.dev/apt/debian
+    suites: stable
+    components: main
+    architectures: amd64
+    signed_by: https://downloads.k8slens.dev/keys/gpg
     state: present
-  become: true
-
-# Charm (glow) repository
-- name: Ensure /etc/apt/keyrings directory exists
-  ansible.builtin.file:
-    path: /etc/apt/keyrings
-    state: directory
-    mode: '0755'
-  become: true
-
-- name: Add Charm GPG key
-  ansible.builtin.shell:
-    cmd: curl -fsSL https://repo.charm.sh/apt/gpg.key | gpg --dearmor -o /etc/apt/keyrings/charm.gpg
-    creates: /etc/apt/keyrings/charm.gpg
   become: true
 
 - name: Add Charm apt repository
-  ansible.builtin.apt_repository:
-    repo: "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *"
-    filename: charm
+  ansible.builtin.deb822_repository:
+    name: charm
+    types: deb
+    uris: https://repo.charm.sh/apt/
+    suites: /
+    signed_by: https://repo.charm.sh/apt/gpg.key
     state: present
   become: true
 
-# Update apt cache after adding repositories
 - name: Update apt cache after adding repositories
   ansible.builtin.apt:
     update_cache: true

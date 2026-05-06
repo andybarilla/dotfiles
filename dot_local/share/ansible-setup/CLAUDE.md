@@ -36,7 +36,7 @@ The bootstrap script creates a temporary NOPASSWD sudoers rule for the playbook 
 
 **Variables:** All package lists and configuration are in `vars/`. To add/remove packages, edit `vars/packages.yml`. Flatpak apps go in `vars/flatpaks.yml`. GPG keys for repos are in `vars/repo_keys.yml`.
 
-**Repo files:** Fedora `.repo` files live in `files/repos/` and are copied to `/etc/yum.repos.d/`. Ubuntu repos are configured inline in `tasks/repos-apt.yml` using `apt_repository`.
+**Repo files:** Fedora `.repo` files live in `files/repos/` and are copied to `/etc/yum.repos.d/`. Ubuntu repos are configured inline in `tasks/repos-apt.yml` using `ansible.builtin.deb822_repository` (DEB822 `.sources` format, the modern Ubuntu 24.04+ default). The module fetches GPG keys from URLs and stores them under `/etc/apt/keyrings/` automatically.
 
 ## Conventions
 
