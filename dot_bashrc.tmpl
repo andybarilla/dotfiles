@@ -31,34 +31,10 @@ if ! shopt -oq posix; then
     fi
 fi
 
-# --- Prompt (pure-inspired) ---
-# Pure prompt has no native bash port; this mimics the two-line layout
-# (path + git branch, then a colored prompt symbol that turns red on error).
-if [ -f /usr/lib/git-core/git-sh-prompt ]; then
-    . /usr/lib/git-core/git-sh-prompt
-elif [ -f /usr/share/git/completion/git-prompt.sh ]; then
-    . /usr/share/git/completion/git-prompt.sh
+# --- Prompt (Starship) ---
+if command -v starship &>/dev/null; then
+    eval "$(starship init bash)"
 fi
-GIT_PS1_SHOWDIRTYSTATE=1
-GIT_PS1_SHOWUPSTREAM=auto
-
-__prompt_command() {
-    local last=$?
-    # Wrap ANSI escapes in \[ \] so readline knows they take zero display
-    # columns — otherwise long lines wrap wrong and Ctrl-R redraws break.
-    local r='\[\e[0m\]' b='\[\e[1m\]'
-    local blue='\[\e[34m\]' cyan='\[\e[36m\]' grey='\[\e[90m\]' red='\[\e[31m\]'
-    local branch=""
-    if declare -F __git_ps1 >/dev/null; then
-        local raw
-        raw=$(__git_ps1 " %s")
-        [ -n "$raw" ] && branch="${grey}${raw}${r}"
-    fi
-    local sym=$cyan
-    [ $last -ne 0 ] && sym=$red
-    PS1="\n${grey}\u@\h${r} ${b}${blue}\w${r}${branch}\n${sym}❯${r} "
-}
-PROMPT_COMMAND='__prompt_command'"${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
 
 # --- Environment ---
 export MANROFFOPT="-c"

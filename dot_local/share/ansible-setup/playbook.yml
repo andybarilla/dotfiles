@@ -148,8 +148,8 @@
     - name: Install Google Cloud SDK
       ansible.builtin.include_tasks: tasks/gcloud.yml
 
-    - name: Install Pure prompt for zsh
-      ansible.builtin.include_tasks: tasks/pure-prompt.yml
+    - name: Install Starship prompt
+      ansible.builtin.include_tasks: tasks/starship.yml
 
     - name: Configure git
       ansible.builtin.include_tasks: tasks/git.yml
