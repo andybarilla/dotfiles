@@ -1,4 +1,73 @@
 {
+  "advisorModel": "opus",
+  "enabledPlugins": {
+    "apb@andybarilla-hq": true,
+    "claude-code-setup@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "codex@openai-codex": true,
+    "commit-commands@claude-plugins-official": true,
+    "context7@claude-plugins-official": false,
+    "feature-dev@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "github@claude-plugins-official": true,
+    "playground@claude-plugins-official": true,
+    "playwright@claude-plugins-official": true,
+    "pr-review-toolkit@claude-plugins-official": true,
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": true,
+    "titlevision-skills@titlevision-ai": true,
+    "worktrunk@worktrunk": true
+  },
+  "extraKnownMarketplaces": {
+    "andybarilla-hq": {
+      "autoUpdate": true,
+      "source": {
+        "repo": "andybarilla/hq",
+        "source": "github"
+      }
+    },
+    "openai-codex": {
+      "source": {
+        "repo": "openai/codex-plugin-cc",
+        "source": "github"
+      }
+    },
+    "titlevision-ai": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/titlevision-ai/Architecture-Central.git"
+      }
+    },
+    "worktrunk": {
+      "source": {
+        "repo": "max-sixty/worktrunk",
+        "source": "github"
+      }
+    }
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "command": "node \"/home/andy/.local/share/pnpm/global/5/.pnpm/unbrowse@6.0.0/node_modules/unbrowse/bin/unbrowse-update-hint.mjs\"",
+            "type": "command"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "command": "magpie memory claude-hook --memory-db '/home/andy/.local/share/magpie/magpie.db'",
+            "type": "command"
+          }
+        ],
+        "matcher": "*"
+      }
+    ]
+  },
   "permissions": {
     "allow": [
       "Read",
@@ -17,70 +86,18 @@
       "mcp__context7__*",
       "mcp__claude_ai_*"
     ],
+    "defaultMode": "auto",
     "deny": [
       "Bash(rm -rf *)",
       "Bash(git push --force *)",
       "Bash(git reset --hard *)"
-    ],
-    "defaultMode": "auto"
-  },
-  "statusLine": {
-    "type": "command",
-    "command": "bash ~/.claude/statusline-command.sh"
-  },
-  "enabledPlugins": {
-    "claude-code-setup@claude-plugins-official": true,
-    "claude-md-management@claude-plugins-official": true,
-    "code-review@claude-plugins-official": true,
-    "code-simplifier@claude-plugins-official": true,
-    "commit-commands@claude-plugins-official": true,
-    "context7@claude-plugins-official": false,
-    "feature-dev@claude-plugins-official": true,
-    "frontend-design@claude-plugins-official": true,
-    "github@claude-plugins-official": true,
-    "playground@claude-plugins-official": true,
-    "playwright@claude-plugins-official": true,
-    "pr-review-toolkit@claude-plugins-official": true,
-    "rust-analyzer-lsp@claude-plugins-official": true,
-    "security-guidance@claude-plugins-official": true,
-    "worktrunk@worktrunk": true,
-    "codex@openai-codex": true,
-    "apb@andybarilla-hq": true
-  },
-  "extraKnownMarketplaces": {
-    "worktrunk": {
-      "source": {
-        "source": "github",
-        "repo": "max-sixty/worktrunk"
-      }
-    },
-    "openai-codex": {
-      "source": {
-        "source": "github",
-        "repo": "openai/codex-plugin-cc"
-      }
-    },
-    "andybarilla-hq": {
-      "source": {
-        "source": "github",
-        "repo": "andybarilla/hq"
-      },
-      "autoUpdate": true
-    }
-  },
-  "advisorModel": "opus",
-  "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true,
-  "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"/home/andy/.local/share/pnpm/global/5/.pnpm/unbrowse@6.0.0/node_modules/unbrowse/bin/unbrowse-update-hint.mjs\""
-          }
-        ]
-      }
     ]
-  }
+  },
+  "skipAutoPermissionPrompt": true,
+  "statusLine": {
+    "command": "bash ~/.claude/statusline-command.sh",
+    "type": "command"
+  },
+  "theme": "dark",
+  "voiceEnabled": true
 }

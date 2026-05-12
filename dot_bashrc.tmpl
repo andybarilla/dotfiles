@@ -31,11 +31,6 @@ if ! shopt -oq posix; then
     fi
 fi
 
-# --- Prompt (Starship) ---
-if command -v starship &>/dev/null; then
-    eval "$(starship init bash)"
-fi
-
 # --- Environment ---
 export MANROFFOPT="-c"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
@@ -105,3 +100,8 @@ esac
 
 eval "$(~/.local/bin/mise activate bash)"
 
+# --- Prompt (Starship) ---
+# Must be last so $PATH is finalized before `command -v starship` runs.
+if command -v starship &>/dev/null; then
+    eval "$(starship init bash)"
+fi

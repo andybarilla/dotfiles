@@ -20,14 +20,6 @@ setopt COMPLETE_IN_WORD
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
-# --- Prompt (Starship) ---
-if command -v starship &>/dev/null; then
-    eval "$(starship init zsh)"
-else
-    autoload -Uz promptinit; promptinit
-    prompt walters 2>/dev/null || prompt clint 2>/dev/null || PS1="%n@%m %~ %# "
-fi
-
 # --- Environment ---
 export MANROFFOPT="-c"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
@@ -88,4 +80,13 @@ export GPG_TTY=$(tty)
 
 if [[ -d "/home/linuxbrew" ]]; then
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
+# --- Prompt (Starship) ---
+# Must be last so $PATH is finalized before `command -v starship` runs.
+if command -v starship &>/dev/null; then
+    eval "$(starship init zsh)"
+else
+    autoload -Uz promptinit; promptinit
+    prompt walters 2>/dev/null || prompt clint 2>/dev/null || PS1="%n@%m %~ %# "
 fi
