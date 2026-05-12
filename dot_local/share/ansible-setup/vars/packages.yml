@@ -199,7 +199,6 @@ arch_packages:
 # Packages from AUR (requires yay or similar)
 arch_aur_packages:
   - wtype
-  - 1password-beta
   - github-cli
   - synology-drive
   - postman-bin
@@ -210,7 +209,6 @@ arch_aur_packages:
   - linux-firmware-hauppauge
   - google-chrome 
   - lens-bin
-  - dms-shell-bin
 
 # Systemd services to enable
 arch_services:
