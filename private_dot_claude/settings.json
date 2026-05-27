@@ -24,34 +24,11 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "sonnet",
-  "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"/home/andy/.local/share/pnpm/global/5/.pnpm/unbrowse@6.0.0/node_modules/unbrowse/bin/unbrowse-update-hint.mjs\""
-          }
-        ]
-      },
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "magpie memory claude-hook --memory-db '/home/andy/.local/share/magpie/magpie.db'"
-          }
-        ]
-      }
-    ]
-  },
   "statusLine": {
     "type": "command",
     "command": "bash ~/.claude/statusline-command.sh"
   },
   "enabledPlugins": {
-    "apb@andybarilla-hq": true,
     "claude-code-setup@claude-plugins-official": true,
     "claude-md-management@claude-plugins-official": true,
     "code-review@claude-plugins-official": true,
@@ -68,16 +45,10 @@
     "rust-analyzer-lsp@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": true,
     "titlevision-skills@titlevision-ai": true,
-    "worktrunk@worktrunk": true
+    "worktrunk@worktrunk": true,
+    "superpowers@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
-    "andybarilla-hq": {
-      "source": {
-        "source": "github",
-        "repo": "andybarilla/hq"
-      },
-      "autoUpdate": true
-    },
     "openai-codex": {
       "source": {
         "source": "github",
@@ -100,7 +71,7 @@
   "effortLevel": "medium",
   "advisorModel": "opus",
   "theme": "dark",
+  "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true,
-  "agentPushNotifEnabled": true
+  "voiceEnabled": true
 }

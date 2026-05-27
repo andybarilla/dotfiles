@@ -1,1 +1,0 @@
-I accidentally dismissed, cancelled, or skipped the last question, prompt, or permission request you asked me. Please find the most recent question you asked in this conversation and ask it again exactly as before. If it was an AskUserQuestion, re-ask it. If it was a permission/confirmation prompt, re-attempt the same action that triggered it.
