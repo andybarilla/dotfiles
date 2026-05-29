@@ -38,7 +38,6 @@
     "context7@claude-plugins-official": false,
     "feature-dev@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
-    "github@claude-plugins-official": true,
     "playground@claude-plugins-official": true,
     "playwright@claude-plugins-official": true,
     "pr-review-toolkit@claude-plugins-official": true,
@@ -46,32 +45,38 @@
     "security-guidance@claude-plugins-official": true,
     "titlevision-skills@titlevision-ai": true,
     "worktrunk@worktrunk": true,
-    "superpowers@claude-plugins-official": true
+    "superpowers@claude-plugins-official": true,
+    "github@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "openai-codex": {
       "source": {
         "source": "github",
         "repo": "openai/codex-plugin-cc"
-      }
+      },
+      "autoUpdate": true
     },
     "titlevision-ai": {
       "source": {
         "source": "git",
         "url": "https://github.com/titlevision-ai/Architecture-Central.git"
-      }
+      },
+      "autoUpdate": true
     },
     "worktrunk": {
       "source": {
         "source": "github",
         "repo": "max-sixty/worktrunk"
-      }
+      },
+      "autoUpdate": true
     }
   },
   "effortLevel": "medium",
   "advisorModel": "opus",
   "theme": "dark",
+  "remoteControlAtStartup": true,
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "tui": "fullscreen"
 }

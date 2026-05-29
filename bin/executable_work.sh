@@ -23,6 +23,11 @@ if tmux has-session -t "$SESSION" 2>/dev/null; then
   exit 0
 fi
 
-tmux -CC new -s "$SESSION" -d
-tmux new-window -t "$SESSION"
-tmux select-window -t "$SESSION":1
+if [ -f "mprocs.yaml" ]; then
+  tmux -CC new -s "$SESSION" -d -c "$PWD" -n services "mprocs"
+  tmux new-window -t "$SESSION" -c "$PWD"
+  tmux select-window -t "$SESSION":1
+else
+  tmux -CC new -s "$SESSION" -d -c "$PWD"
+  tmux new-window -t "$SESSION" -c "$PWD"
+fi
