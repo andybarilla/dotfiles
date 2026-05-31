@@ -36,6 +36,10 @@ alias please='sudo'
 alias tb='nc termbin.com 9999'
 alias jctl="journalctl -p 3 -xb"
 
+# --- VPN ---
+alias vpnup='nmcli connection up 1754498868766'
+alias vpndown='nmcli connection down 1754498868766'
+
 # --- Distrobox shortcuts ---
 alias worktalos='distrobox enter talos -nw'
 alias workprintersrow='distrobox enter printersrow -nw'

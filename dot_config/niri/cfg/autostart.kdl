@@ -3,4 +3,3 @@
 
     spawn-sh-at-startup "qs -c noctalia-shell"
     spawn-at-startup "1password" "--silent"
-    spawn-at-startup "synology-drive"
