@@ -8,12 +8,13 @@
 ## How I Work
 
 - **Be concise**: Documentation, comments, commit messages, PR descriptions, and variable names should contain useful information and nothing more. Don't explain obvious things.
-- **Don't create documentation files** (README, docs, etc.) unless I explicitly ask for it.
+- **Don't create explanatory documentation** (READMEs, guides, design docs, API references — prose written to be read about the code) unless I explicitly ask for it. This does not cover working artifacts that a skill or workflow produces as part of its own process (specs, implementation plans, task files); create those when the workflow calls for them.
 - **Don't add unnecessary abstractions**: No tiny wrapper functions, getters/setters, or premature helpers. Three similar lines is better than a forced abstraction.
 
 ## Git Workflow
 
 - **Feature branches**: Never commit directly to `main`. Create a branch before starting work.
+- **Opening PRs**: When you offer opening a PR as one of the options, assume the answer is yes — just open it.
 
 ## Task-Based Development
 
