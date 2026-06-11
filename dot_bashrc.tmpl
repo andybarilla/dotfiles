@@ -74,6 +74,10 @@ if command -v mise &>/dev/null; then
     eval "$(mise activate bash)"
 fi
 
+if command -v fzf &>/dev/null; then
+    eval "$(fzf --bash)"
+fi
+
 # --- Source modular configs ---
 for f in ~/.bashrc.d/*.bash; do . "$f"; done
 
