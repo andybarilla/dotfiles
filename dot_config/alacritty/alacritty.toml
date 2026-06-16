@@ -29,19 +29,19 @@ multiplier = 3
 size = 12
 
 [font.normal]
-family = "monospace"
-style = "Regular"
+family = "Cascadia Code"
+style = "Medium"
 
 [font.bold]
-family = "monospace"
+family = "Cascadia Code"
 style = "Bold"
 
 [font.italic]
-family = "monospace"
+family = "Cascadia Code"
 style = "Italic"
 
 [font.bold_italic]
-family = "monospace"
+family = "Cascadia Code"
 style = "Bold Italic"
 
 [selection]
