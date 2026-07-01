@@ -1,4 +1,4 @@
-export GOOGLE_CLOUD_PROJECT=development-37c5
+export GOOGLE_CLOUD_PROJECT=talostitle-development
 export GOOGLE_CLOUD_LOCATION=us-central1
 export GOOGLE_GENAI_USE_VERTEXAI=true 
 
