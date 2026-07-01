@@ -6,7 +6,7 @@ WINIT_X11_SCALE_FACTOR = "1"
 dynamic_padding = true
 decorations = "full"
 title = "Alacritty@CachyOS"
-opacity = 0.9
+opacity = 1.0
 decorations_theme_variant = "Dark"
 
 [window.padding]
@@ -29,19 +29,19 @@ multiplier = 3
 size = 12
 
 [font.normal]
-family = "Cascadia Code"
-style = "Medium"
+family = "iMWritingMono Nerd Font"
+style = "Regular"
 
 [font.bold]
-family = "Cascadia Code"
+family = "iMWritingMono Nerd Font"
 style = "Bold"
 
 [font.italic]
-family = "Cascadia Code"
+family = "iMWritingMono Nerd Font"
 style = "Italic"
 
 [font.bold_italic]
-family = "Cascadia Code"
+family = "iMWritingMono Nerd Font"
 style = "Bold Italic"
 
 [selection]
