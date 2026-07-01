@@ -1,7 +1,47 @@
 {
-  "advisorModel": "opus",
-  "agentPushNotifEnabled": true,
-  "effortLevel": "medium",
+  "permissions": {
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Edit",
+      "Write",
+      "Bash",
+      "Agent",
+      "WebFetch",
+      "WebSearch",
+      "mcp__supabase__*",
+      "mcp__plugin_apb_supabase__*",
+      "mcp__plugin_github_github__*",
+      "mcp__plugin_playwright_playwright__*",
+      "mcp__context7__*",
+      "mcp__claude_ai_Context7__*",
+      "mcp__claude_ai_Mermaid_Chart__*"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(git push --force *)",
+      "Bash(git reset --hard *)"
+    ],
+    "defaultMode": "auto"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "magpie memory session-start-hook --memory-db '/home/andy/.local/share/magpie/magpie.db'"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash ~/.claude/statusline-command.sh"
+  },
   "enabledPlugins": {
     "chrome-devtools-mcp@claude-plugins-official": true,
     "claude-code-setup@claude-plugins-official": true,
@@ -25,74 +65,35 @@
   },
   "extraKnownMarketplaces": {
     "openai-codex": {
-      "autoUpdate": true,
       "source": {
-        "repo": "openai/codex-plugin-cc",
-        "source": "github"
-      }
+        "source": "github",
+        "repo": "openai/codex-plugin-cc"
+      },
+      "autoUpdate": true
     },
     "titlevision-ai": {
-      "autoUpdate": true,
       "source": {
         "source": "git",
         "url": "https://github.com/titlevision-ai/Architecture-Central.git"
-      }
+      },
+      "autoUpdate": true
     },
     "worktrunk": {
-      "autoUpdate": true,
       "source": {
-        "repo": "max-sixty/worktrunk",
-        "source": "github"
-      }
+        "source": "github",
+        "repo": "max-sixty/worktrunk"
+      },
+      "autoUpdate": true
     }
   },
-  "hooks": {
-        "SessionStart": [
-            {
-                "matcher": "",
-                "hooks": [
-                    {
-                        "command": "magpie memory session-start-hook --memory-db '/home/andy/.local/share/magpie/magpie.db'",
-                        "type": "command"
-                    }
-                ]
-            }
-        ]
-  },
-  "permissions": {
-    "allow": [
-      "Read",
-      "Glob",
-      "Grep",
-      "Edit",
-      "Write",
-      "Bash",
-      "Agent",
-      "WebFetch",
-      "WebSearch",
-      "mcp__supabase__*",
-      "mcp__plugin_apb_supabase__*",
-      "mcp__plugin_github_github__*",
-      "mcp__plugin_playwright_playwright__*",
-      "mcp__context7__*",
-      "mcp__claude_ai_Context7__*",
-      "mcp__claude_ai_Mermaid_Chart__*"
-    ],
-    "defaultMode": "auto",
-    "deny": [
-      "Bash(rm -rf *)",
-      "Bash(git push --force *)",
-      "Bash(git reset --hard *)"
-    ]
-  },
-  "remoteControlAtStartup": true,
-  "skipAutoPermissionPrompt": true,
-  "skipWorkflowUsageWarning": true,
-  "statusLine": {
-    "command": "bash ~/.claude/statusline-command.sh",
-    "type": "command"
-  },
-  "theme": "dark",
+  "effortLevel": "medium",
+  "advisorModel": "opus",
   "tui": "fullscreen",
-  "voiceEnabled": true
+  "skipWorkflowUsageWarning": true,
+  "theme": "dark",
+  "remoteControlAtStartup": false,
+  "agentPushNotifEnabled": true,
+  "skipAutoPermissionPrompt": true,
+  "voiceEnabled": true,
+  "model": "opus[1m]"
 }
