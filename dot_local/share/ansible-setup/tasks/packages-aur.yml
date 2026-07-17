@@ -1,37 +1,37 @@
 # Package installation for Arch Linux (using aur)
 
-- name: Check if paru is installed
+- name: Check if yay is installed
   ansible.builtin.command:
-    cmd: which paru
-  register: paru_check
+    cmd: which yay
+  register: yay_check
   changed_when: false
   failed_when: false
 
-- name: Install paru if not present
-  when: paru_check.rc != 0
+- name: Install yay if not present
+  when: yay_check.rc != 0
   block:
-    - name: Clone paru repository
+    - name: Clone yay repository
       ansible.builtin.git:
-        repo: https://aur.archlinux.org/paru.git
-        dest: /tmp/paru-build
+        repo: https://aur.archlinux.org/yay.git
+        dest: /tmp/yay-build
         depth: 1
 
-    - name: Build and install paru
+    - name: Build and install yay
       ansible.builtin.command:
         cmd: makepkg -si --noconfirm
-        chdir: /tmp/paru-build
+        chdir: /tmp/yay-build
       become: false
 
-    - name: Clean up paru build directory
+    - name: Clean up yay build directory
       ansible.builtin.file:
-        path: /tmp/paru-build
+        path: /tmp/yay-build
         state: absent
 
-- name: Install AUR packages with paru
+- name: Install AUR packages with yay
   ansible.builtin.command:
-    cmd: "paru -S --noconfirm --needed {{ item }}"
+    cmd: "yay -S --noconfirm --needed {{ item }}"
   loop: "{{ arch_aur_packages }}"
   become: false
-  register: paru_result
-  changed_when: "'installing' in paru_result.stdout or 'upgrading' in paru_result.stdout"
+  register: yay_result
+  changed_when: "'installing' in yay_result.stdout or 'upgrading' in yay_result.stdout"
   when: arch_aur_packages | length > 0

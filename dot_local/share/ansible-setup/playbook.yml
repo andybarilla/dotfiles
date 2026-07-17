@@ -81,20 +81,15 @@
       ansible.builtin.include_tasks: tasks/user-services.yml
       when: is_archlinux
 
-    - name: Setup dictation system (Arch Linux)
-      ansible.builtin.include_tasks: tasks/dictation.yml
-      when: is_archlinux
-
-    - name: Setup local development proxy (Arch Linux)
-      ansible.builtin.include_tasks: tasks/dev-proxy.yml
-      when: is_archlinux
-
     - name: Install AUR packages (Arch Linux)
       ansible.builtin.include_tasks: tasks/packages-aur.yml
       when: is_archlinux
 
     - name: Install Rust
       ansible.builtin.include_tasks: tasks/rust.yml
+
+    - name: Install Homebrew
+      ansible.builtin.include_tasks: tasks/homebrew.yml
 
     #- name: Configure container registries
     #  ansible.builtin.include_tasks: tasks/containers.yml
@@ -116,10 +111,6 @@
 
     - name: Install Obsidian
       ansible.builtin.include_tasks: tasks/obsidian.yml
-      when: is_ubuntu
-
-    - name: Install Synology Drive Client
-      ansible.builtin.include_tasks: tasks/synology-drive.yml
       when: is_ubuntu
 
     - name: Install Nerd Fonts

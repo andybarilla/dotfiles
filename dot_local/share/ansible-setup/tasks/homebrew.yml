@@ -1,0 +1,51 @@
+# Install Homebrew on Linux
+# https://docs.brew.sh/Homebrew-on-Linux
+
+- name: Install Homebrew build dependencies (Fedora)
+  ansible.builtin.dnf:
+    name:
+      - "@Development Tools"
+      - procps-ng
+      - curl
+      - file
+      - git
+      - libxcrypt-compat
+    state: present
+  become: true
+  when: is_fedora
+
+- name: Install Homebrew build dependencies (Ubuntu)
+  ansible.builtin.apt:
+    name:
+      - build-essential
+      - procps
+      - curl
+      - file
+      - git
+    state: present
+  become: true
+  when: is_ubuntu
+
+- name: Install Homebrew build dependencies (Arch Linux)
+  community.general.pacman:
+    name:
+      - base-devel
+      - procps-ng
+      - curl
+      - file
+      - git
+    state: present
+  become: true
+  when: is_archlinux
+
+- name: Check if Homebrew is installed
+  ansible.builtin.command: /home/linuxbrew/.linuxbrew/bin/brew --version
+  register: brew_check
+  changed_when: false
+  failed_when: false
+
+- name: Install Homebrew
+  ansible.builtin.shell: |
+    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  when: brew_check.rc != 0
+  become: false

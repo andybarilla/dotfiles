@@ -123,64 +123,30 @@ remote_debs: []
 
 # Packages available in Arch repositories
 arch_packages:
-  # Desktop environment and display
-  - niri
-  - fuzzel
-  - xdg-desktop-portal-gtk
-  - swaybg
-  - swayidle
-  - swaylock
-  - xwayland-satellite
-  - udiskie
-  - gvfs
-  - gvfs-smb
-  - gnome-keyring
-  - avahi
-  - qt6ct
-  - qt6-wayland
-  - qt5-wayland
-  - xorg-xwayland
   # Networking
   - tailscale
   - networkmanager-openvpn
-  - dnsmasq
-  # Local dev proxy
-  - caddy
-  # Audio stack
-  - pipewire
-  - wireplumber
-  - pipewire-pulse
-  - pipewire-alsa
-  - wiremix
-  - python-evdev
   # Development
   - base-devel
   - git
   - go
   - less
   - vi
-  - jdk21-openjdk
-  - maven
-  - npm
-  - nodejs
-  - valkey
   - mise
-  - 7zip
-  - ttf-jetbrains-mono-nerd
   - ttf-noto-nerd
   - neovim
   - postgresql-libs
   # System utilities
-  - openssh
   - btop
   - ripgrep
   - rsync
   - firefox
   - wget
   - tmux
+  - zoxide
   # Container tools
-  - docker
-  - docker-compose 
+  - podman
+  - podman-compose 
   # Authentication
   - yubikey-manager
   - pam-u2f
@@ -189,26 +155,19 @@ arch_packages:
   - pcsclite
   - ccid
   - usbutils
-  # Shell
-  - zsh
-  - zellij
-  - cups-pk-helper
-  - kimageformats
-  - cava
 
 # Packages from AUR (requires yay or similar)
 arch_aur_packages:
   - wtype
   - github-cli
-  - synology-drive
-  - postman-bin
   - slack-desktop-wayland
   - obsidian
   - remmina
   - yubico-authenticator
-  - linux-firmware-hauppauge
   - google-chrome 
-  - lens-bin
+  - zapzap
+  - 1password
+  - 1password-cli
 
 # Systemd services to enable
 arch_services:
@@ -220,5 +179,4 @@ arch_services:
 arch_user_timers: []
 
 # Systemd user services to enable
-arch_user_services:
-  - whisper-dictate.service
+arch_user_services: []
