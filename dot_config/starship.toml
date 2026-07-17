@@ -5,6 +5,8 @@ format = """
 $username\
 $hostname\
 $directory\
+${custom.gcp_scoped}\
+${custom.gcp_agent}\
 $git_branch\
 $git_state\
 $git_status\
@@ -58,3 +60,18 @@ style = "yellow"
 [python]
 format = "[$virtualenv]($style) "
 style = "bright-black"
+
+# GCP active-identity indicator (operator-agent-onramp). The onramp sets $PROMPT
+# directly, which starship overwrites — so we rebuild its [gcp:role@tier] tag here
+# from the exported env instead. Two modules keep the onramp's color coding:
+# cyan for scoped dev/infra, yellow for the agent identity. Shown only inside a
+# titlevision-ai working tree.
+[custom.gcp_scoped]
+command = 'r="${GCP_IDENTITY%%:*}"; t=""; case "$CLOUDSDK_CORE_PROJECT" in *staging*) t="@staging";; esac; printf "[gcp:%s%s]" "$r" "$t"'
+when = '[ -n "$GCP_IDENTITY" ] && [ "${GCP_IDENTITY%%:*}" != agent ] && echo "$PWD" | grep -q titlevision-ai'
+format = "[$output](cyan) "
+
+[custom.gcp_agent]
+command = 't=""; case "$CLOUDSDK_CORE_PROJECT" in *staging*) t="@staging";; esac; printf "[gcp:agent%s]" "$t"'
+when = '[ "${GCP_IDENTITY%%:*}" = agent ] && echo "$PWD" | grep -q titlevision-ai'
+format = "[$output](yellow) "
